@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  # ----- Servicio Usuarios -----
+  usuarios:
+    container_name: usuarios
+    image: "users:latest"
+    build:
+      context: ./servicio-usuarios
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=usuarios_db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=usuarios_db
+    networks:
+      - usuarios_net
+      - app_net
+    depends_on:
+      - usuarios_db
+
+  # ----- Users Data Base -----
+  usuarios_db:
+    container_name: usuarios_db
+    image: postgres:13
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=usuarios_db
+    volumes:
+      - usuarios-db-data:/var/lib/postgresql/data
+    networks:
+      - usuarios_net
+
+volumes:
+  usuarios-db-data: { }
+
+networks:
+  usuarios_net:
+    driver: bridge
+  app_net:
+    driver: bridge
