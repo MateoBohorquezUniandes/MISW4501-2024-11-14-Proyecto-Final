@@ -24,4 +24,4 @@ pytest-env = "~=0.8.1"
 python-dotenv = "*"
 
 [requires]
-python_version = "3.11"
+python_version = "3.9"
