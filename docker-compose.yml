@@ -1,0 +1,56 @@
+version: "3.9"
+
+networks:
+  deportistas_net:
+
+volumes:
+  postgres_data:
+
+services:
+  deportistas-db:
+    container_name: 'deportistas-db'
+    image: postgres
+    env_file:
+      - ./envs/.env.db.local
+    environment:
+      PGDATA: /data/postgres
+    volumes:
+       - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - deportistas_net
+    ports:
+      - 5432:5432
+    restart: always
+  
+  usuarios-api:
+    container_name: usuarios-api
+    depends_on:
+      - deportistas-db
+    build:
+      context: ./
+      dockerfile: usuarios.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      - ./envs/.env.usuarios.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3000:3000
+    restart: always
+  
+  perfiles-queries-api:
+    container_name: 'perfiles-queries-api'
+    depends_on:
+      - deportistas-db
+    build:
+      context: ./
+      dockerfile: perfiles.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      - ./envs/.env.perfiles.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3001:3001
+    restart: always
+
