@@ -1,0 +1,62 @@
+name: 'Pull Request Checks'
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  verificar-commits:
+    name: Verificar Commits
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Obtener commits del Pull Request
+        id: 'get-pr-commits'
+        uses: tim-actions/get-pr-commits@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verificar Longitud Asunto
+        uses: tim-actions/commit-message-checker-with-regex@v0.3.1
+        with:
+          commits: ${{ steps.get-pr-commits.outputs.commits }}
+          pattern: '^.{0,75}(\n.*)*$'
+          error: 'Linea de asunto excede la longitud maxima (75 chars)'
+
+      - name: Verificar Formato Asunto
+        if: ${{ success() || failure() }}
+        uses: tim-actions/commit-message-checker-with-regex@v0.3.1
+        with:
+          commits: ${{ steps.get-pr-commits.outputs.commits }}
+          pattern: '^(release|feat|fix){1}(\([\w\-\.]+\))?(!)?: ([\w ])+([\s\S]*)|(Merge).*|(fixup!.*)'
+          error: 'No "'
+          one_pass_all_pass: 'true'
+
+      - name: Verificar Longitud Cuerpo
+        if: ${{ success() || failure() }}
+        uses: tim-actions/commit-message-checker-with-regex@v0.3.1
+        with:
+          commits: ${{ steps.get-pr-commits.outputs.commits }}
+          pattern: '^.+(\n.{0,72})*$'
+          error: 'El cuerpo excede la longitud maxima (72 chars)'
+
+  verificar-rama:
+    name: Verificar Rama
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Verificar Rama
+        uses: commit-check/commit-check-action@v1
+        with:
+          message: false
+          branch: true
+          author-name: false
+          author-email: false
+          commit-signoff: false
