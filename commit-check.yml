@@ -1,0 +1,24 @@
+checks:
+  - check: message
+    regex: '^(release|feat|fix){1}(\([\w\-\.]+\))?(!)?: ([\w ])+([\s\S]*)|(Merge).*|(fixup!.*)'
+    error: "The commit message should be structured as follows:\n\n
+    <type>(<scope>): <description>\n
+    [optional body]\n
+    [optional footer(s)]\n\n
+    More details please refer to https://www.conventionalcommits.org"
+    suggest: git commit --amend --no-verify
+
+  - check: branch
+    regex: ^(feat|fix|chore|release)\/.+|(master)|(main)|(HEAD)|(PR-.+)
+    error: "Branches must begin with these types: feat/ fix/ chore/ release/"
+    suggest: git checkout -b type/branch_name
+
+  - check: author_name
+    regex: ^[A-Za-z ,.\'-]+$|.*(\[bot])
+    error: The committer name seems invalid
+    suggest: git config user.name "Peter Shen"
+
+  - check: author_email
+    regex: ^\S+@\S+\.\S+$
+    error: The committer email seems invalid
+    suggest: git config user.email petershen@example.com
