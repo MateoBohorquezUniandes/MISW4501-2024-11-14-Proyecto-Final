@@ -20,5 +20,3 @@ def get_perfil_demografico(id=None):
     mapper = PerfilDemograficoJsonDtoMapper()
 
     return mapper.dto_to_external(query_result.result)
-git config user.name "Your Name Here"
-git config user.email your@email.example
