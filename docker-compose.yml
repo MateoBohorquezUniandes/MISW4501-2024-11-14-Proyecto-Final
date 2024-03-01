@@ -35,10 +35,10 @@ services:
     networks:
       - deportistas_net
     ports:
-      - 3000:3000
+      - 3011:3011
     restart: always
   
-  perfiles-queries-api:
+  perfiles-api:
     container_name: 'perfiles-queries-api'
     depends_on:
       - deportistas-db
@@ -51,6 +51,6 @@ services:
     networks:
       - deportistas_net
     ports:
-      - 3001:3001
+      - 3021:3021
     restart: always
 
