@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway-ingress-k8
+  labels:
+    name: gateway-ingress-k8
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /usuarios
+        backend:
+          service:
+            name: usuarios-service
+            port: 
+              number: 80
+      - pathType: Prefix
+        path: /perfiles
+        backend:
+          service:
+            name: perfiles-service
+            port: 
+              number: 80
+      - pathType: Prefix
+        path: /auth
+        backend:
+          service:
+            name: auth-service
+            port: 
+              number: 80
+      - pathType: Prefix
+        path: /monitor
+        backend:
+          service:
+            name: monitor-service
+            port: 
+              number: 80

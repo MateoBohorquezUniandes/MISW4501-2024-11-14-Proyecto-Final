@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autenticador
+  labels:
+    app: autenticador
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autenticador
+  template:
+    metadata:
+      labels:
+        app: autenticador
+    spec:
+      containers:
+        - name: autenticador
+          image: us-central1-docker.pkg.dev/misw4301-g19/uniandes-misw-4301-registry/autenticador-api:1.0.0
+          env:
+            - name: "JWT_SECRET_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: authsecretes 
+                  key: jwtsecretkey
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: Always
+---
+
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: autenticador-backend-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3000
+    type: HTTP
+    requestPath: /healthcheck
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: autenticador-service
+  annotations:
+    cloud.google.com/backend-config: '{"default": "autenticador-backend-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: autenticador
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 30000
+---

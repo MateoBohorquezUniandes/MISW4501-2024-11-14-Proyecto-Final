@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usuarios
+  labels:
+    app: usuarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: usuarios
+  template:
+    metadata:
+      labels:
+        app: usuarios
+    spec:
+      containers:
+        - name: usuarios
+          image: us-central1-docker.pkg.dev/misw4301-g19/uniandes-misw-4301-registry/usuarios-api:1.0.0
+          env:
+            - name: "JWT_SECRET_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: authsecretes 
+                  key: jwtsecretkey
+            - name: "DB_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets 
+                  key: pgsqluser
+            - name: "DB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets 
+                  key: pgsqlpassword
+            - name: "DB_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets 
+                  key: pgsqlhost
+            - name: "DB_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets 
+                  key: pgsqlport
+            - name: "DB_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets 
+                  key: pgsqlname
+          ports:
+            - containerPort: 3011
+          imagePullPolicy: Always
+---
+
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: usuarios-backend-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3011
+    type: HTTP
+    requestPath: /healthcheck
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: usuarios-service
+  annotations:
+    cloud.google.com/backend-config: '{"default": "usuarios-backend-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: usuarios
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3011
+      nodePort: 30011
+---
