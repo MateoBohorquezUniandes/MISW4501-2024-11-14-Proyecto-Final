@@ -56,6 +56,10 @@ services:
 
   monitor-api:
     container_name: 'monitor-api'
+    depends_on:
+      - usuarios-api
+    volumes:
+      - ./src/monitor/outputs:/src/monitor/outputs
     build:
       context: ./
       dockerfile: monitor.Dockerfile
