@@ -53,6 +53,27 @@ spec:
           imagePullPolicy: Always
 ---
 
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: usuarios
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: usuarios
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+
+---
+
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
