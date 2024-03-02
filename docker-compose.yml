@@ -60,6 +60,7 @@ services:
     container_name: 'monitor-api'
     depends_on:
       - usuarios-api
+      - perfiles-api
     volumes:
       - ./src/monitor/outputs:/src/monitor/outputs
     build:
