@@ -53,4 +53,19 @@ services:
     ports:
       - 3001:3001
     restart: always
-
+    
+  jwt-api:
+    container_name: 'jwt-api'
+    depends_on:
+      - deportistas-db
+    build:
+      context: ./
+      dockerfile: jwt.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      #- ./envs/.env.jwt.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3002:3002
+    restart: always
