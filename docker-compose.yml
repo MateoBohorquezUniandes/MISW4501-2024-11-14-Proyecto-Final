@@ -63,7 +63,7 @@ services:
       dockerfile: jwt.Dockerfile
     env_file:
       - ./envs/.env.db.local
-      #- ./envs/.env.jwt.local
+      - ./envs/.env.jwt.local
     networks:
       - deportistas_net
     ports:

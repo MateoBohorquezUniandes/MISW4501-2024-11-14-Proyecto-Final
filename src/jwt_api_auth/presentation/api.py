@@ -10,7 +10,7 @@ bp: Blueprint = api.create_blueprint("token", "/jwt")
 @bp.route("create", methods=("POST",))
 def create_token():
     request_create = request.json
-    if(request.user and request.password):
+    if(request_create.user and request_create.password):
         mapper = CreateTokenJsonMapper()
         token_dto = mapper.external_to_dto(request_create)
         comando = CreateToken(token_dto)

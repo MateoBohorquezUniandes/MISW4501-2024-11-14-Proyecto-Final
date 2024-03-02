@@ -11,9 +11,11 @@ def import_alchemy_models():
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
-    from jwt_api_auth.config.db import generate_database_uri    
+    from jwt_api_auth.config.db import generate_database_uri
+    from seedwork.infrastructure.jwt import retrieve_secret_key
     app.config["SQLALCHEMY_DATABASE_URI"] = generate_database_uri()
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config["JWT_SECRET_KEY"] = retrieve_secret_key()
 
      # Inicializa la DB
     from jwt_api_auth.config.db import init_db
