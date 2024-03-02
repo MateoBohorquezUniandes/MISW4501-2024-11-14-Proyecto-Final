@@ -31,7 +31,6 @@ services:
       dockerfile: usuarios.Dockerfile
     env_file:
       - ./envs/.env.db.local
-      - ./envs/.env.jwt.local
       - ./envs/.env.usuarios.local
     networks:
       - deportistas_net
@@ -48,7 +47,6 @@ services:
       dockerfile: perfiles.Dockerfile
     env_file:
       - ./envs/.env.db.local
-      - ./envs/.env.jwt.local
       - ./envs/.env.perfiles.local
     networks:
       - deportistas_net
