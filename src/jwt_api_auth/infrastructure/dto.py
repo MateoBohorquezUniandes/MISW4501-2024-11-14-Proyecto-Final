@@ -1,6 +1,8 @@
 from jwt_api_auth.config.db import db
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, ForeignKey, Integer, Table
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from marshmallow import fields, Schema
 
 import enum
 import uuid
@@ -34,3 +36,15 @@ class Usuario(db.Model):
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updateAt = db.Column(db.DateTime, onupdate=datetime.utcnow)
     expireAt = db.Column(db.DateTime, default=datetime.utcnow)
+
+class UsuarioSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Usuario
+        include_relationships = True
+        include_fk = True
+        load_instance = True
+        
+    id = fields.String()
+    nombre_usuario = fields.String()
+    password = fields.String()
+    role_usuario = fields.String()
