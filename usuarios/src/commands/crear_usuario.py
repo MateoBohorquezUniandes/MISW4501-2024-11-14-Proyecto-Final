@@ -44,23 +44,25 @@ class CrearUsuario(BaseCommannd):
         if not all ([self.nombre_usuario,self.apellido_usuario,self.numero_identificacion]):
            raise InformacionIncompletaNoValida
         
-        #Validar que el nombre no tiene caracteres especiales
-        regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
-
-        if(regex.search(self.nombre_usuario) != None):
-            raise CaractersEspeciales
+        ##Se comentan estas validaciones para pruebas en JMeter
         
-        if " " in self.nombre_usuario:
-            raise EspacioenNombreUsuario
+        # #Validar que el nombre no tiene caracteres especiales
+        # regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
 
-        #Validar que el ID es ingresado en números   
-        if len(self.numero_identificacion)>1:
-            if not (self.numero_identificacion.isnumeric()):
-                raise FormatoInvalidoID
+        # if(regex.search(self.nombre_usuario) != None):
+        #     raise CaractersEspeciales
+        
+        # if " " in self.nombre_usuario:
+        #     raise EspacioenNombreUsuario
+
+        # #Validar que el ID es ingresado en números   
+        # if len(self.numero_identificacion)>1:
+        #     if not (self.numero_identificacion.isnumeric()):
+        #         raise FormatoInvalidoID
 
 
-        if Usuario.query.filter_by(nombre_usuario=self.nombre_usuario).first() or Usuario.query.filter_by(numero_identificacion=self.numero_identificacion).first():
-            raise UsuarioyaExiste
+        # if Usuario.query.filter_by(nombre_usuario=self.nombre_usuario).first() or Usuario.query.filter_by(numero_identificacion=self.numero_identificacion).first():
+        #     raise UsuarioyaExiste
         
         # password hashed
         hashed_password = set_password(self.password)
