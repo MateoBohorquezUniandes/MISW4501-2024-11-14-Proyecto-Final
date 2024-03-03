@@ -1,45 +1,56 @@
 version: "3.9"
 
-services:
-  # ----- Servicio Usuarios -----
-  usuarios:
-    container_name: usuarios
-    image: "users:latest"
-    build:
-      context: ./servicio-usuarios
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
-    environment:
-      - DB_HOST=usuarios_db
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=usuarios_db
-    networks:
-      - usuarios_net
-      - app_net
-    depends_on:
-      - usuarios_db
-
-  # ----- Users Data Base -----
-  usuarios_db:
-    container_name: usuarios_db
-    image: postgres:13
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=usuarios_db
-    volumes:
-      - usuarios-db-data:/var/lib/postgresql/data
-    networks:
-      - usuarios_net
+networks:
+  deportistas_net:
 
 volumes:
-  usuarios-db-data: { }
+  postgres_data:
 
-networks:
-  usuarios_net:
-    driver: bridge
-  app_net:
-    driver: bridge
+services:
+  deportistas-db:
+    container_name: 'deportistas-db'
+    image: postgres
+    env_file:
+      - ./envs/.env.db.local
+    environment:
+      PGDATA: /data/postgres
+    volumes:
+       - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - deportistas_net
+    ports:
+      - 5432:5432
+    restart: always
+  
+  usuarios-api:
+    container_name: usuarios-api
+    depends_on:
+      - deportistas-db
+    build:
+      context: ./
+      dockerfile: usuarios.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      - ./envs/.env.usuarios.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3000:3000
+    restart: always
+  
+  perfiles-queries-api:
+    container_name: 'perfiles-queries-api'
+    depends_on:
+      - deportistas-db
+    build:
+      context: ./
+      dockerfile: perfiles.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      - ./envs/.env.perfiles.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3001:3001
+    restart: always
+
