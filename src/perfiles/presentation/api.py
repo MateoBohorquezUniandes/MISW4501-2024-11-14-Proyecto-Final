@@ -19,4 +19,4 @@ def get_perfil_demografico(id=None):
     query_result = execute_query(ObtenerPerfilDemografico(id))
     mapper = PerfilDemograficoJsonDtoMapper()
 
-    return mapper.dto_to_external(query_result.result)
+    return jsonify(mapper.dto_to_external(query_result.result))

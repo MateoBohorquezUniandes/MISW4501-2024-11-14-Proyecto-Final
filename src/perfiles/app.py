@@ -51,14 +51,15 @@ def create_app(config={}):
 
     @app.route("/health")
     def health():
-        return {"status": "healthy"}
+        return jsonify({"status": "healthy"})
 
     @app.after_request
     def after_request(response: Response):
-        data = json.loads(response.get_data())
         data = dict(
-            response=jsonify(data),
-            checksum=md5(json.dumps(data, sort_keys=True).encode("utf-8")).hexdigest(),
+            data=response.json,
+            checksum=md5(
+                json.dumps(response.json, sort_keys=True).encode("utf-8")
+            ).hexdigest(),
         )
         response.set_data(json.dumps(data))
         return response
