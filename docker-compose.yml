@@ -87,5 +87,5 @@ services:
     networks:
       - deportistas_net
     ports:
-      - 3002:3002
+      - 3000:3000
     restart: always

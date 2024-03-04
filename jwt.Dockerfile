@@ -6,8 +6,8 @@ ADD ./src/seedwork ./src/seedwork
 RUN pip install pipenv
 RUN PIPENV_PIPFILE=./src/jwt_api_auth/Pipfile pipenv install --system --deploy
 
-EXPOSE 3002/tcp
+EXPOSE 3000/tcp
 
-CMD [ "flask", "--app", "./src/jwt_api_auth/app", "run", "--host=0.0.0.0", "-p", "3002"]
+CMD [ "flask", "--app", "./src/jwt_api_auth/app", "run", "--host=0.0.0.0", "-p", "3000"]
 
 LABEL author="i.bohorquezp@uniandes.edu.co"

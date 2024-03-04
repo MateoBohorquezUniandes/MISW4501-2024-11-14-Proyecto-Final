@@ -17,7 +17,7 @@ class RoleUsuario(enum.Enum):
 
 class Usuario(db.Model):
     id = db.Column(db.String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    nombre_usuario = db.Column(db.String(120), unique=True, nullable=False)
+    nombre_usuario = db.Column(db.String(120), nullable=False)
     apellido_usuario = db.Column(db.String(120))
     tipo_identificacion = db.Column(db.String(120))
     numero_identificacion = db.Column(db.String(120))
