@@ -29,5 +29,47 @@ def validate_token():
         return validation, 200
     return Response({}, status=400)
 
-#
-#
+# Consumo Create Token
+"""
+import requests
+
+url = 'https://jsonplaceholder.typicode.com/users'
+#url = os.environ.get("JWT_URL")
+
+data = {'user': "Mateo", 'password': 'mateo'}
+
+response = requests.post(
+    url,
+    data=data,
+    timeout=30
+)
+
+json_data = response.json()
+
+token = json_data.get("accessToken")
+"""
+
+# Consumo Validate Token
+"""
+import requests
+
+url = 'https://jsonplaceholder.typicode.com/users'
+#url = os.environ.get("JWT_URL")
+
+authorization = request.headers.get('Authorization')
+token = authorization.split(' ')[-1]
+
+headers = {
+    "Authorization": "Bearer " + str(token),
+}
+
+response = requests.get(
+    url,
+    headers=headers,
+    timeout=30
+)
+
+json_data = response.json()
+
+isValidToken = json_data.get("isValid")
+"""
