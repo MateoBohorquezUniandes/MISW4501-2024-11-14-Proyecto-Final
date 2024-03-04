@@ -15,8 +15,7 @@ class MissingDatabaseCredentials(InfrastructureException):
 
     def __str__(self):
         return str(self.__message)
-
-
+    
 class MissingJWTSecrets(InfrastructureException):
     def __init__(self, message="Missing jwt secret configuration"):
         self.__message = message
