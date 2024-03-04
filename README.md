@@ -1,4 +1,4 @@
-## Descrición
+## Descripción
 
 SportApp es una empresa enfocada en el desarrollo de aplicaciones para el apoyo y acompañamiento de deportistas no profesionales, al igual que en la gestión de eventos y servicios deportivos. Particularmente, esta pretende “diferenciarse de otras aplicaciones y plataformas ya existentes, ofreciendo servicios a usuarios latinoamericano” (equipo docente MISW4501, 2024). 
 
@@ -17,8 +17,9 @@ Respecto al modelo de negocios, SportApp plantea crear una prueba de concepto (P
 
 
 ### Instalación
-
-
+```shell
+git clone https://github.com/MateoBohorquezUniandes/MISW4501-2024-11-14-Proyecto-Final.git
+```
 
 ## Contribución
 
@@ -33,7 +34,12 @@ Respecto al modelo de negocios, SportApp plantea crear una prueba de concepto (P
 
 
 ### Despliegue Local
+Para correr la aplicación se debe ejecutar alguno de los siguientes comandos:
 
+```shell
+docker compose up
+docker compose up -d
+```
 
 
 ## Despliegue
