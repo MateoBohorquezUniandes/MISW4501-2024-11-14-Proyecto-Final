@@ -60,11 +60,10 @@ def create_user():
             password=data["password"],
         )
         usuario = command.execute()
-        token_de_acceso = create_access_token(identity=usuario.id)
 
         return (
             jsonify(
-                id=usuario.id, fechaCreacion=usuario.createdAt, token=token_de_acceso
+                id=usuario.id, fechaCreacion=usuario.createdAt
             ),
             201,
         )

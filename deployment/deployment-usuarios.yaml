@@ -16,13 +16,9 @@ spec:
     spec:
       containers:
         - name: usuarios
-          image: us-central1-docker.pkg.dev/misw4301-g19/uniandes-misw-4301-registry/usuarios-api:1.0.0
+          imagePullPolicy: Always
+          image: us-central1-docker.pkg.dev/proyecto-final-416123/proyecto-final/usuarios-api:1.0.0
           env:
-            - name: "JWT_SECRET_KEY"
-              valueFrom:
-                secretKeyRef:
-                  name: authsecretes 
-                  key: jwtsecretkey
             - name: "DB_USER"
               valueFrom:
                 secretKeyRef:
@@ -53,7 +49,7 @@ spec:
           imagePullPolicy: Always
 ---
 
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: usuarios
@@ -101,4 +97,22 @@ spec:
       port: 80
       targetPort: 3011
       nodePort: 30011
+
+# Vamos a especificar el balanceador de carga en este mismo archivo
+# para ello vamos a crear otro documento separado, esto se hace con el operador "---"
 ---
+kind: Service
+apiVersion: v1
+metadata:
+  name: servicio-usuarios
+spec:
+  type: LoadBalancer
+  selector:
+    app: usuarios
+  # Declaracion y redireccion del trafico por los puertos
+  # En este caso, estamos ocupando el puerto 80 para la conexión HTTP
+  # y lo estamos redirigiendo al 3011 de la red virtual del pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3011
