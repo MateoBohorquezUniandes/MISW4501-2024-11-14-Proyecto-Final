@@ -55,7 +55,7 @@ services:
     ports:
       - 3021:3021
     restart: always
-
+    
   monitor-api:
     container_name: 'monitor-api'
     depends_on:
@@ -74,3 +74,18 @@ services:
       - 3200:3200
     restart: always
 
+  jwt-api:
+    container_name: 'jwt-api'
+    depends_on:
+      - deportistas-db
+    build:
+      context: ./
+      dockerfile: jwt.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      - ./envs/.env.jwt.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3000:3000
+    restart: always
