@@ -1,5 +1,4 @@
 from flask import (Blueprint, Response, redirect, render_template, request, session, url_for)
-from flask_jwt_extended import create_access_token, jwt_required
 import seedwork.presentation.api as api
 from seedwork.application.commands import execute_command
 from seedwork.application.queries import execute_query as query
