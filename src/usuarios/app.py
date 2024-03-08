@@ -1,7 +1,10 @@
 from flask import Flask, jsonify
 from flask_swagger import swagger
+from flask_jwt_extended import JWTManager
 
 from usuarios.errors.errors import ApiError
+
+import os
 
 
 def create_app(config={}):
@@ -14,21 +17,16 @@ def create_app(config={}):
     app = Flask(__name__, instance_relative_config=True)
 
     from seedwork.infrastructure.db import generate_database_uri
-    from seedwork.infrastructure.jwt import retrieve_secret_key
 
     db_provider = config.get("database_provider", "postgresql")
     app.config["SQLALCHEMY_DATABASE_URI"] = generate_database_uri(db_provider)
-    app.config["JWT_SECRET_KEY"] = retrieve_secret_key()
+    app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
 
     with app.app_context():
         from usuarios.models.model import db
 
         db.init_app(app=app)
         db.create_all()
-
-        from usuarios.infrastructure.jwt import jwt
-
-        jwt.init_app(app)
 
     from usuarios.blueprints.usuarios import bp, bp_prefix
 
@@ -53,5 +51,7 @@ def create_app(config={}):
     @app.route("/health")
     def health():
         return {"status": "healthy"}
+
+    JWTManager(app)
 
     return app
