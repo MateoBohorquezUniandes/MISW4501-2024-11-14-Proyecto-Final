@@ -56,3 +56,21 @@ services:
       - 3021:3021
     restart: always
 
+  monitor-api:
+    container_name: 'monitor-api'
+    depends_on:
+      - usuarios-api
+      - perfiles-api
+    volumes:
+      - ./src/monitor/outputs:/src/monitor/outputs
+    build:
+      context: ./
+      dockerfile: monitor.Dockerfile
+    env_file:
+      - ./src/monitor/.env.monitor.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3200:3200
+    restart: always
+
