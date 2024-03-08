@@ -13,6 +13,7 @@ from http import HTTPStatus
 import requests
 import os
 import logging
+import random
 
 logging.basicConfig(format='%(message)s',level=logging.INFO)
 log = logging.getLogger(__name__)
@@ -133,3 +134,12 @@ def get_usuario(nombre: str):
 def clear_data():
     db_restore.execute()
     return jsonify({"msg": "OK"}, 200)
+
+@bp.route("/healthexperimento", methods=["GET"])
+def health_experimento():
+    fail_rate = float(os.environ["FAIL_RATE"])
+    r = random.random()
+    if r > fail_rate:
+        raise HTTPStatus.INTERNAL_SERVER_ERROR.value
+    else:
+        return jsonify({"msg": "OK"}, 200)
