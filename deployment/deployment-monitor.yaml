@@ -77,7 +77,7 @@ spec:
     checkIntervalSec: 30
     port: 3010
     type: HTTP
-    requestPath: /healthcheck
+    requestPath: /health
 ---
 
 apiVersion: v1
