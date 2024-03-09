@@ -2,6 +2,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.cpython-310.pyc
+*.pyc
 
 # C extensions
 *.so
@@ -152,3 +154,5 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# Experimentos
+/outputs/*.csv

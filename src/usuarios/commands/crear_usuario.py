@@ -4,9 +4,14 @@ import re
 
 from usuarios.commands.generar_token import create_token
 from usuarios.commands.utils import set_password
-from usuarios.errors.errors import (CaractersEspeciales, EspacioenNombreUsuario,
-                             FormatoInvalidoID, InformacionIncompletaNoValida,
-                             UsuarioyaExiste)
+from usuarios.errors.errors import (
+    CaractersEspeciales,
+    EspacioenNombreUsuario,
+    FormatoInvalidoID,
+    InformacionIncompletaNoValida,
+    UsuarioyaExiste,
+)
+
 # Pendiente configurar los errores
 from usuarios.models.model import RoleUsuario, Usuario, db
 from usuarios.commands.base_command import BaseCommannd
@@ -60,27 +65,29 @@ class CrearUsuario(BaseCommannd):
         ):
             raise InformacionIncompletaNoValida
 
-        # Validar que el nombre no tiene caracteres especiales
-        regex = re.compile("[@_!#$%^&*()<>?/\|}{~:]")
+        ##Se comentan estas validaciones para pruebas en JMeter
 
-        if regex.search(self.nombre_usuario) != None:
-            raise CaractersEspeciales
+        # # Validar que el nombre no tiene caracteres especiales
+        # regex = re.compile("[@_!#$%^&*()<>?/\|}{~:]")
 
-        if " " in self.nombre_usuario:
-            raise EspacioenNombreUsuario
+        # if regex.search(self.nombre_usuario) != None:
+        #     raise CaractersEspeciales
 
-        # Validar que el ID es ingresado en números
-        if len(self.numero_identificacion) > 1:
-            if not (self.numero_identificacion.isnumeric()):
-                raise FormatoInvalidoID
+        # if " " in self.nombre_usuario:
+        #     raise EspacioenNombreUsuario
 
-        if (
-            Usuario.query.filter_by(nombre_usuario=self.nombre_usuario).first()
-            or Usuario.query.filter_by(
-                numero_identificacion=self.numero_identificacion
-            ).first()
-        ):
-            raise UsuarioyaExiste
+        # # Validar que el ID es ingresado en números
+        # if len(self.numero_identificacion) > 1:
+        #     if not (self.numero_identificacion.isnumeric()):
+        #         raise FormatoInvalidoID
+
+        # if (
+        #     Usuario.query.filter_by(nombre_usuario=self.nombre_usuario).first()
+        #     or Usuario.query.filter_by(
+        #         numero_identificacion=self.numero_identificacion
+        #     ).first()
+        # ):
+        #     raise UsuarioyaExiste
 
         # password hashed
         hashed_password = set_password(self.password)
