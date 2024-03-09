@@ -16,13 +16,28 @@ spec:
     spec:
       containers:
         - name: monitor
-          image: us-central1-docker.pkg.dev/misw4301-g19/uniandes-misw-4301-registry/monitor-api:1.0.0
+          image: us-central1-docker.pkg.dev/proyecto-final-416123/proyecto-final/monitor-api:1.0.0
           env:
-            - name: "JWT_SECRET_KEY"
+            - name: "SERVICE_BASE_URL"
               valueFrom:
                 secretKeyRef:
-                  name: authsecretes 
-                  key: jwtsecretkey
+                  name: experimentsecrets 
+                  key: serviceurl
+            - name: "TIME_SCHEDULER_SECS"
+              valueFrom:
+                secretKeyRef:
+                  name: experimentsecrets 
+                  key: timescheduler
+            - name: "EXPERIMENTO_ID"
+              valueFrom:
+                secretKeyRef:
+                  name: experimentsecrets 
+                  key: expirimentoid
+            - name: "CHECKSUM_ENABLE"
+              valueFrom:
+                secretKeyRef:
+                  name: experimentsecrets 
+                  key: checksumenable
             - name: "DB_USER"
               valueFrom:
                 secretKeyRef:
@@ -80,4 +95,3 @@ spec:
       port: 80
       targetPort: 3010
       nodePort: 30010
----

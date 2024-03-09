@@ -56,7 +56,7 @@ def create_app(config={}):
         return jsonify({"status": "healthy"})
     
     @app.route("/health-test")
-    def health():
+    def health_test():
         return jsonify({"status": "healthy"})
 
     @app.after_request

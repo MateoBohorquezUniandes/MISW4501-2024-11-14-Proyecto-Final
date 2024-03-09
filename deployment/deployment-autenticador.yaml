@@ -16,13 +16,38 @@ spec:
     spec:
       containers:
         - name: autenticador
-          image: us-central1-docker.pkg.dev/misw4301-g19/uniandes-misw-4301-registry/autenticador-api:1.0.0
+          image: us-central1-docker.pkg.dev/proyecto-final-416123/proyecto-final/jwt-api:1.0.0
           env:
             - name: "JWT_SECRET_KEY"
               valueFrom:
                 secretKeyRef:
-                  name: authsecretes 
+                  name: authsecrets 
                   key: jwtsecretkey
+            - name: "DB_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets 
+                  key: pgsqluser
+            - name: "DB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets 
+                  key: pgsqlpassword
+            - name: "DB_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets 
+                  key: pgsqlhost
+            - name: "DB_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets 
+                  key: pgsqlport
+            - name: "DB_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets 
+                  key: pgsqlname
           ports:
             - containerPort: 3000
           imagePullPolicy: Always
@@ -55,4 +80,3 @@ spec:
       port: 80
       targetPort: 3000
       nodePort: 30000
----

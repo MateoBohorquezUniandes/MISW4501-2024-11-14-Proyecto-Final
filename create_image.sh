@@ -30,7 +30,7 @@ fi
 image_path=$registry/${microservice}-api:${version}
 
 echo "\n[$microservice] Building image for $microservice-api:$version"
-docker build --platform=linux/amd64 -t $image_path ./${components[i]}
+docker build --platform=linux/amd64 -t $image_path -f $microservice.Dockerfile .
 
 echo "\n[$microservice] Pushing image to container registry"
 docker push $image_path

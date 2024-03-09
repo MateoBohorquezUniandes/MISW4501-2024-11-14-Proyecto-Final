@@ -16,13 +16,20 @@ spec:
     spec:
       containers:
         - name: usuarios
-          image: us-central1-docker.pkg.dev/misw4301-g19/uniandes-misw-4301-registry/usuarios-api:1.0.0
+          image: us-central1-docker.pkg.dev/proyecto-final-416123/proyecto-final/usuarios-api:1.0.0
           env:
             - name: "JWT_SECRET_KEY"
               valueFrom:
                 secretKeyRef:
-                  name: authsecretes 
+                  name: authsecrets 
                   key: jwtsecretkey
+            - name: "JWt_BASE_URL"
+              value: http://autenticador-service
+            - name: "FAIL_RATE"
+              valueFrom:
+                secretKeyRef:
+                  name: experimentsecrets 
+                  key: failrate
             - name: "DB_USER"
               valueFrom:
                 secretKeyRef:
@@ -53,7 +60,7 @@ spec:
           imagePullPolicy: Always
 ---
 
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: usuarios
@@ -101,4 +108,3 @@ spec:
       port: 80
       targetPort: 3011
       nodePort: 30011
----

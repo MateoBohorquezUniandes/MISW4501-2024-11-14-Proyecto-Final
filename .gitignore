@@ -156,3 +156,5 @@ cython_debug/
 
 # Experimentos
 /outputs/*.csv
+*.csv
+secrets.yaml
