@@ -1,5 +1,7 @@
+import os
 from hashlib import md5
 import json
+import random
 from flask import Flask, jsonify, Response
 from flask_swagger import swagger
 
@@ -52,13 +54,21 @@ def create_app(config={}):
     @app.route("/health")
     def health():
         return jsonify({"status": "healthy"})
+    
+    @app.route("/health-test")
+    def health():
+        return jsonify({"status": "healthy"})
 
     @app.after_request
     def after_request(response: Response):
+        fail_rate = float(os.environ["FAIL_RATE"])
+        r = random.random()
+        check_input = response.json if r <= fail_rate else {"data": "fake"}
+        
         data = dict(
             data=response.json,
             checksum=md5(
-                json.dumps(response.json, sort_keys=True).encode("utf-8")
+                json.dumps(check_input, sort_keys=True).encode("utf-8")
             ).hexdigest(),
         )
         response.set_data(json.dumps(data))
