@@ -17,13 +17,18 @@ spec:
     spec:
       containers:
         - name: perfiles
-          image: us-central1-docker.pkg.dev/misw4301-g19/uniandes-misw-4301-registry/perfiles-api:1.0.0
+          image: us-central1-docker.pkg.dev/proyecto-final-416123/proyecto-final/perfiles-api:1.0.0
           env:
             - name: "JWT_SECRET_KEY"
               valueFrom:
                 secretKeyRef:
-                  name: authsecretes 
+                  name: authsecrets 
                   key: jwtsecretkey
+            - name: "FAIL_RATE"
+              valueFrom:
+                secretKeyRef:
+                  name: experimentsecrets 
+                  key: failrate            
             - name: "DB_USER"
               valueFrom:
                 secretKeyRef:
@@ -81,4 +86,3 @@ spec:
       port: 80
       targetPort: 3021
       nodePort: 30021
----

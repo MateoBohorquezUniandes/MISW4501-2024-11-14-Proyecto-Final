@@ -13,7 +13,6 @@ do
   case $REPLY in
     1)
       echo "\n[K8s] Starting Deployment from '.deployment'"
-      # kubectl create secret generic tasks-key --from-file=key.json=./deployment/misw4301-g19-2eea198443c9.json
       kubectl apply -f ./deployment
       echo "\n[K8s] Finished Deployment from '.deployment'\n"
       break;;
