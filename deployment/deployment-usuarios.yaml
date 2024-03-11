@@ -24,7 +24,7 @@ spec:
                   name: authsecrets 
                   key: jwtsecretkey
             - name: "JWt_BASE_URL"
-              value: http://autenticador-service
+              value: http://autenticador-service/jwt
             - name: "FAIL_RATE"
               valueFrom:
                 secretKeyRef:
@@ -55,6 +55,7 @@ spec:
                 secretKeyRef:
                   name: deportistasecrets 
                   key: pgsqlname
+
           ports:
             - containerPort: 3011
           imagePullPolicy: Always
@@ -90,7 +91,7 @@ spec:
     checkIntervalSec: 30
     port: 3011
     type: HTTP
-    requestPath: /healthcheck
+    requestPath: /health
 ---
 
 apiVersion: v1
