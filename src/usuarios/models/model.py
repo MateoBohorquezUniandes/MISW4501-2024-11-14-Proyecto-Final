@@ -38,6 +38,9 @@ class Usuario(db.Model):
     deportes_practicar = db.Column(db.String(120))
     role_usuario = db.Column(db.Enum(RoleUsuario))
     password = db.Column(db.String(150))
+    #Asociacion con Planes
+    #planesDeportivos = db.relationship('PlanDeportivo')
+    #planesDeportivos= db.Column(db.String)
     # token = db.Column(db.String(120), unique=True)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updateAt = db.Column(db.DateTime, onupdate=datetime.utcnow)
