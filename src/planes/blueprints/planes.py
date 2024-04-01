@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required
 import seedwork.presentation.api as api
 from planes.commands.db_restore import db_restore
 from planes.commands.crear_planDeportivo import CrearPlanDeportivo
+from planes.commands.asociar_planDeportivo import AsociarPlanDeportivo
 from planes.errors.errors import InformacionIncompletaNoValida
 from planes.models.model import PlanDeportivo, PlanDeportivoSchema, db
 
@@ -40,6 +41,19 @@ def create_plan():
         return plan_deportivo_schema.dump(planDeportivo)
     else:
         raise InformacionIncompletaNoValida
+    
+#Asociar Plan
+@bp.route('/asociarplan', methods =['POST'])
+def asociar_plan():
+    data = request.json
+    if all (fields in data for fields in ("id", "userId")):
+        command = AsociarPlanDeportivo(id=data["id"], userId=data["userId"])
+        planDeportivo=command.execute()
+
+        return plan_deportivo_schema.dump(planDeportivo)
+    else:
+        raise InformacionIncompletaNoValida
+
 
 #Obtener todos los planes deportivos
 @bp.route("/", methods=["GET"])

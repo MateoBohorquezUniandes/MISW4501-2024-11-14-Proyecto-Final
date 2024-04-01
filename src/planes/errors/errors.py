@@ -9,3 +9,7 @@ class InformacionEliminada(ApiError):
 class InformacionIncompletaNoValida(ApiError):
     code = 400
     description = "Información Incompleta o no valida"
+
+class PlanDeportivoNoExiste(ApiError):
+    code = 404
+    description = 'El Plan Deprotivo no Existe'
