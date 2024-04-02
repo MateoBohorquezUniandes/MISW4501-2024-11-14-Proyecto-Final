@@ -21,8 +21,12 @@ touch src/$1/application/__init__.py
 touch src/$1/application/mappers.py
 mkdir src/$1/application/commands
 touch src/$1/application/commands/__init__.py
+touch src/$1/application/commands/base.py
 mkdir src/$1/application/queries
 touch src/$1/application/queries/__init__.py
+touch src/$1/application/queries/base.py
+touch src/$1/application/dtos.py
+touch src/$1/application/handlers.py
 
 mkdir src/$1/domain
 touch src/$1/domain/__init__.py
@@ -45,6 +49,8 @@ touch src/$1/infrastructure/exceptions.py
 touch src/$1/infrastructure/factories.py
 touch src/$1/infrastructure/mappers.py
 touch src/$1/infrastructure/repositories.py
+touch src/$1/infrastructure/services.py
+touch src/$1/infrastructure/db.py
 
 
 mkdir src/$1/presentation
