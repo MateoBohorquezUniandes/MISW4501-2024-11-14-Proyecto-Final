@@ -1,0 +1,104 @@
+name: Usuarios (Continuos Integration)
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+    paths:
+      - src/usuarios/**.py
+
+  pull_request:
+    branches:
+      - 'feat/usuario**'
+      - 'fix/usuario**'
+      - 'chore/usuario**'
+      - 'release/usuario**'
+    paths:
+      - src/usuarios/**.py
+
+jobs:
+  pruebas-unitarias:
+    name: Pruebas Unitarias (CI)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.9 ]
+
+    services:
+      postgres:
+        image: postgres
+
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: usuarios
+
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python v${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install pipenv
+        working-directory: ./usuarios
+        run: pip install pipenv
+
+      - name: Install dependencies
+        working-directory: ./usuarios
+        run: pipenv install --dev --deploy
+
+      - name: Run unit tests
+        working-directory: ./usuarios
+        run: pipenv run pytest --cov=. -v -s --cov-fail-under=70
+        env:
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_NAME: usuarios
+  
+  pruebas-integracion:
+    name: Pruebas Integracion (CI)
+    needs: pruebas-unitarias
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16.x'
+          registry-url: https://registry.npmjs.org/
+      
+      - name: Install newman
+        run: npm install -g newman
+
+      - name: Create evaluator folder
+        run: mkdir .evaluator
+
+      - name: Start containers
+        run: docker-compose -f up -d usuarios-api
+
+      - name: Check healthchecks
+        uses: jtalk/url-health-check-action@v3
+        with:
+          url: http://localhost:3011/health
+          follow-redirect: false
+          max-attempts: 5
+          retry-delay: 3s
+          retry-all: true
+          
+      - name: Run the API and Postman's tests
+        run: newman run ".collections/usuarios.json" --verbose
