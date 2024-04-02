@@ -7,6 +7,20 @@ volumes:
   postgres_data:
 
 services:
+
+  test-db:
+    container_name: 'test-db'
+    image: postgres
+    env_file:
+      - ./envs/.env.test
+    environment:
+      PGDATA: /data/postgres
+    volumes:
+       - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    restart: always
+  
   deportistas-db:
     container_name: 'deportistas-db'
     image: postgres
@@ -24,14 +38,12 @@ services:
   
   usuarios-api:
     container_name: usuarios-api
-    depends_on:
-      - deportistas-db
     build:
       context: ./
       dockerfile: usuarios.Dockerfile
     env_file:
       - ./envs/.env.db.local
-      - ./envs/.env.jwt.local
+      - ./envs/.env.autenticador.local
       - ./envs/.env.usuarios.local
     networks:
       - deportistas_net
@@ -48,7 +60,7 @@ services:
       dockerfile: perfiles.Dockerfile
     env_file:
       - ./envs/.env.db.local
-      - ./envs/.env.jwt.local
+      - ./envs/.env.autenticador.local
       - ./envs/.env.perfiles.local
     networks:
       - deportistas_net
@@ -74,16 +86,13 @@ services:
       - 3200:3200
     restart: always
 
-  jwt-api:
-    container_name: 'jwt-api'
-    depends_on:
-      - deportistas-db
+  autenticador-api:
+    container_name: 'autenticador-api'
     build:
       context: ./
-      dockerfile: jwt.Dockerfile
+      dockerfile: autenticador.Dockerfile
     env_file:
-      - ./envs/.env.db.local
-      - ./envs/.env.jwt.local
+      - ./envs/.env.autenticador.local
     networks:
       - deportistas_net
     ports:
