@@ -23,7 +23,7 @@ spec:
                 secretKeyRef:
                   name: authsecrets 
                   key: jwtsecretkey
-            - name: "JWt_BASE_URL"
+            - name: "AUTH_BASE_URL"
               value: http://autenticador-service/jwt
             - name: "FAIL_RATE"
               valueFrom:
