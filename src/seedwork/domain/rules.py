@@ -34,7 +34,7 @@ class CompoundBusinessRule(BusinessRule):
     def cause(self, cause):
         self.__cause = cause
 
-    def es_valido(self) -> bool:
+    def is_valid(self) -> bool:
         for regla in self.__rules:
             if not regla.is_valid():
                 self.cause = str(regla)
@@ -43,6 +43,7 @@ class CompoundBusinessRule(BusinessRule):
 
     def __str__(self):
         return f"{self.__class__.__name__} > {self.__cause}"
+
 
 class ImmutableEntityIdRule(BusinessRule):
 
@@ -58,3 +59,20 @@ class ImmutableEntityIdRule(BusinessRule):
                 return False
         except AttributeError as error:
             return True
+
+
+class ValidString(BusinessRule):
+    valor: str
+    min: int
+    max: int
+
+    def __init__(self, valor, min, max, message):
+        super().__init__(message)
+        self.valor = valor
+        self.min = min
+        self.max = max
+
+    def is_valid(self) -> bool:
+        min_valid = len(self.valor) >= self.min if self.min else True
+        max_valid = len(self.valor) <= self.max if self.max else True
+        return min_valid and max_valid

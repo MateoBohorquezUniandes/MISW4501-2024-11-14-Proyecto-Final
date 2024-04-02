@@ -18,3 +18,4 @@ class APIError(PresentationException):
 
     def __str__(self) -> str:
         return f"{self.status} {self.__message}"
+

@@ -8,7 +8,7 @@ class Query(ABC): ...
 
 @dataclass
 class QueryResult:
-    result: None
+    result: any
 
 
 class QueryHandler(ABC):

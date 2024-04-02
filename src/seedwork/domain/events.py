@@ -10,6 +10,8 @@ from .rules import ImmutableEntityIdRule
 class DomainEvent:
     id: uuid.UUID = field(hash=True)
     _id: uuid.UUID = field(init=False, repr=False, hash=True)
+
+    correlation_id: uuid.UUID = field(default_factory=uuid.uuid4)
     tiemstamp: datetime = field(default=datetime.now())
 
     @classmethod

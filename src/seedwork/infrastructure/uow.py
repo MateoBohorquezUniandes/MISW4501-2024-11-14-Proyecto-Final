@@ -70,7 +70,7 @@ class UnitOfWork(ABC):
 
     def _publish_events_post_commit(self):
         for event in self._fetch_events():
-            dispatcher.send(signal=f"{type(event).__name__}Integartion", event=event)
+            dispatcher.send(signal=f"{type(event).__name__}Integration", event=event)
 
 
 class UnitOfWorkFactory(ABC):
@@ -115,7 +115,7 @@ class UnitOfWorkPort:
 
     @staticmethod
     def register_batch(
-        uowf: UnitOfWorkFactory, operacion, *args, lock=Lock.PESIMISTA, **kwargs
+        uowf: UnitOfWorkFactory, operacion, *args, lock=Lock.PESIMIST, **kwargs
     ):
         uow = uowf.unit_of_work()
         uow.register_batch(operacion, *args, lock=lock, **kwargs)
