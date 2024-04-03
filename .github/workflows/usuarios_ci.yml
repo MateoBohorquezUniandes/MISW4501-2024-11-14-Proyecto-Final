@@ -8,6 +8,10 @@ on:
       - src/usuarios/**.py
 
   pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
     branches:
       - 'feat/usuario**'
       - 'fix/usuario**'

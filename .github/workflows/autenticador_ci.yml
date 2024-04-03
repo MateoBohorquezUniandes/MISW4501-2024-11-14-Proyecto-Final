@@ -8,6 +8,10 @@ on:
       - src/autenticador/**.py
 
   pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
     branches:
       - 'feat/autenticador**'
       - 'fix/autenticador**'
