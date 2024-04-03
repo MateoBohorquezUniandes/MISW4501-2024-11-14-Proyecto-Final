@@ -1,0 +1,81 @@
+name: Autenticador (Continuos Integration)
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+    paths:
+      - src/autenticador/**.py
+
+  pull_request:
+    branches:
+      - 'feat/autenticador**'
+      - 'fix/autenticador**'
+      - 'chore/autenticador**'
+      - 'release/autenticador**'
+    paths:
+      - src/autenticador/**.py
+
+jobs:
+  pruebas-unitarias:
+    name: Pruebas Unitarias (CI)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.9 ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python v${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install pipenv
+        working-directory: ./autenticador
+        run: pip install pipenv
+
+      - name: Install dependencies
+        working-directory: ./autenticador
+        run: pipenv install --dev --deploy
+
+      - name: Run unit tests
+        working-directory: ./autenticador
+        run: pipenv run pytest --cov=. -v -s --cov-fail-under=70
+  
+  pruebas-integracion:
+    name: Pruebas Integracion (CI)
+    needs: pruebas-unitarias
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16.x'
+          registry-url: https://registry.npmjs.org/
+      
+      - name: Install newman
+        run: npm install -g newman
+
+      - name: Create evaluator folder
+        run: mkdir .evaluator
+
+      - name: Start containers
+        run: docker-compose -f up -d autenticador-api
+
+      - name: Check healthchecks
+        uses: jtalk/url-health-check-action@v3
+        with:
+          url: http://localhost:3011/health
+          follow-redirect: false
+          max-attempts: 5
+          retry-delay: 3s
+          retry-all: true
+          
+      - name: Run the API and Postman's tests
+        run: newman run ".collections/autenticador.json" --verbose
