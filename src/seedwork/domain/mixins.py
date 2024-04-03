@@ -3,6 +3,6 @@ from .rules import BusinessRule
 
 
 class RuleValidationMixin:
-    def validate_rule(self, regla: BusinessRule):
-        if not regla.es_valido():
-            raise BusinessRuleException(regla)
+    def validate_rule(self, rule: BusinessRule):
+        if not rule.is_valid():
+            raise BusinessRuleException(rule)

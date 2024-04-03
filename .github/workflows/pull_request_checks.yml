@@ -33,7 +33,7 @@ jobs:
         with:
           commits: ${{ steps.get-pr-commits.outputs.commits }}
           pattern: '^(feat|fix|chore){1}(\([\w\-\.]+\))?(!)?: ([\w ])+([\s\S]*)|(Merge).*|(fixup!.*)'
-          error: 'El asunto no sigue el formato esperado. revisar .github/CONTRIBUTING'
+          error: 'El asunto no sigue el formato esperado. revisar .github/CONTRIBUTING.md'
           one_pass_all_pass: 'false'
 
       - name: Verificar Longitud Cuerpo
