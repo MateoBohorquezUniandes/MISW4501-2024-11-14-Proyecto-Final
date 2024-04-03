@@ -8,7 +8,7 @@ from seedwork.domain.repositories import Mapper as DomainMapper
 class AuthDTODictMapper(ApplicationMapper):
     def external_to_dto(self, external: dict) -> TokenRequestDTO:
         identity: IdentidadDTO = IdentidadDTO(
-            external.get("tipo"), external.get("valor")
+            external.get("tipo", ""), external.get("valor", "")
         )
         return TokenRequestDTO(identity)
 
