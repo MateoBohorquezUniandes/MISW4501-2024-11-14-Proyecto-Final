@@ -13,6 +13,7 @@ class IdentidadDTO(DTO):
 class TokenRequestDTO(DTO):
     identity: IdentidadDTO = field(default_factory=IdentidadDTO)
 
+
 @dataclass(frozen=True)
 class TokenResponseDTO(DTO):
     token: str = field(default_factory=str)

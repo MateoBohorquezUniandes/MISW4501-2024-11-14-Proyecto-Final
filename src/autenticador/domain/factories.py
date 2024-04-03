@@ -20,7 +20,7 @@ class _TokenRequestFactory(Factory):
 
         autenticacion: Autenticacion = mapper.dto_to_entity(obj)
         self.validate_rule(ValidTokenIdentity(autenticacion.identity))
-        
+
         autenticacion.token.valor = create_access_token(
             identity=autenticacion.identity.__dict__,
             expires_delta=autenticacion.token.expiration_delta,

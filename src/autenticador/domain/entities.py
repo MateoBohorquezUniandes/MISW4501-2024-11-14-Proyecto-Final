@@ -18,4 +18,3 @@ class Token(Entity):
 class Autenticacion(RootAggregation):
     identity: Identidad = field(default_factory=Identidad)
     token: Token = field(default_factory=Token)
-

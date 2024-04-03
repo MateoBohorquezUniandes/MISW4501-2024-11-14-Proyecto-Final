@@ -5,9 +5,7 @@ from autenticador.domain.value_objects import Identidad
 class ValidTokenIdentity(CompoundBusinessRule):
     identity: Identidad
 
-    def __init__(
-        self, identity: Identidad, message="solicitud de token invalido"
-    ):
+    def __init__(self, identity: Identidad, message="solicitud de token invalido"):
         self.identity = identity
 
         rules = [

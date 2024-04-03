@@ -2,10 +2,9 @@ from flask import Flask, Response, jsonify
 from flask_swagger import swagger
 
 
-
-
 def register_handlers():
     import autenticador.application
+
 
 def create_app(config={}):
     """
