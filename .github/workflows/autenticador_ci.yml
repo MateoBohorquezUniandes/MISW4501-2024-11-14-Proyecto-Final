@@ -1,6 +1,5 @@
 name: Autenticador (Continuos Integration)
 on:
-  workflow_dispatch:
   push:
     branches: 
       - main
@@ -13,12 +12,15 @@ on:
       - reopened
       - synchronize
     branches:
+      - 'main'
       - 'feat/autenticador**'
       - 'fix/autenticador**'
       - 'chore/autenticador**'
       - 'release/autenticador**'
     paths:
       - src/autenticador/**.py
+
+  workflow_dispatch:
 
 jobs:
   pruebas-unitarias:
@@ -38,15 +40,15 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install pipenv
-        working-directory: ./autenticador
+        working-directory: ./src/autenticador
         run: pip install pipenv
 
       - name: Install dependencies
-        working-directory: ./autenticador
+        working-directory: ./src/autenticador
         run: pipenv install --dev --deploy
 
       - name: Run unit tests
-        working-directory: ./autenticador
+        working-directory: ./src/autenticador
         run: pipenv run pytest --cov=. -v -s --cov-fail-under=70
   
   pruebas-integracion:
@@ -82,4 +84,4 @@ jobs:
           retry-all: true
           
       - name: Run the API and Postman's tests
-        run: newman run ".collections/autenticador.json" --verbose
+        run: newman run "./collections/autenticador.json" --verbose

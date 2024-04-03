@@ -1,6 +1,5 @@
 name: Usuarios (Continuos Integration)
 on:
-  workflow_dispatch:
   push:
     branches: 
       - main
@@ -13,12 +12,15 @@ on:
       - reopened
       - synchronize
     branches:
+      - 'main'
       - 'feat/usuario**'
       - 'fix/usuario**'
       - 'chore/usuario**'
       - 'release/usuario**'
     paths:
       - src/usuarios/**.py
+
+  workflow_dispatch:
 
 jobs:
   pruebas-unitarias:
@@ -55,15 +57,15 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install pipenv
-        working-directory: ./usuarios
+        working-directory: ./src/usuarios
         run: pip install pipenv
 
       - name: Install dependencies
-        working-directory: ./usuarios
+        working-directory: ./src/usuarios
         run: pipenv install --dev --deploy
 
       - name: Run unit tests
-        working-directory: ./usuarios
+        working-directory: ./src/usuarios
         run: pipenv run pytest --cov=. -v -s --cov-fail-under=70
         env:
           DB_USER: postgres
