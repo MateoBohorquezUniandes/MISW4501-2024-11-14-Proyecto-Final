@@ -15,9 +15,7 @@ from usuarios.application.mappers import (
     AuthResponseDTODictMapper,
     ContrasenaMapper,
     LoginDTOEntityMapper,
-    UsuarioDTOEntityMapper,
 )
-from usuarios.domain.entities import Usuario
 from usuarios.domain.exceptions import InvalidPasswordMatchError
 from usuarios.domain.repositories import UsuarioRepository
 from usuarios.domain.value_objects import LoginRequest
@@ -39,8 +37,9 @@ class LoginUsuarioHandler(UsuarioBaseHandler):
 
             # Get user from DB
             repository = self.repository_factory.create(UsuarioRepository.__class__)
-            usuario = repository.get(login.identificacion.tipo, login.identificacion.valor)
-
+            usuario = repository.get(
+                login.identificacion.tipo, login.identificacion.valor, login.rol
+            )
 
             # Validate credentiales
             contrasena = self.contrasena_factory.create(
@@ -55,7 +54,7 @@ class LoginUsuarioHandler(UsuarioBaseHandler):
                 login.identificacion.__dict__
             )
             login_response = auth_mapper.external_to_dto(auth_external, usuario.rol)
-            
+
             return CommandResult(result=login_response)
 
         except InvalidPasswordMatchError as ipme:

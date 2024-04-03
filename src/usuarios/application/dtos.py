@@ -44,6 +44,7 @@ class UsuarioDTO(DTO):
 class LoginRequestDTO(DTO):
     identificacion: IdentificacionDTO = field(default_factory=IdentificacionDTO)
     contrasena: str = field(default_factory=str)
+    rol: str = field(default_factory=str)
 
 
 @dataclass(frozen=True)

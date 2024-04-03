@@ -78,7 +78,7 @@ class LoginDTODictMapper(ApplicationMapper):
 
     def external_to_dto(self, external: any) -> LoginRequestDTO:
         identificacion = self._map_to_identificacion_dto(external.get("identificacion"))
-        return LoginRequestDTO(identificacion, external.get("contrasena"))
+        return LoginRequestDTO(identificacion, external.get("contrasena"), external.get("rol"))
 
     def dto_to_external(self, dto: LoginRequestDTO) -> any:
         return dto.__dict__
@@ -203,6 +203,6 @@ class LoginDTOEntityMapper(UnidirectionalDomainMapper):
             dto.identificacion.tipo, dto.identificacion.valor
         )
         contrasena = Contrasena(contrasena=dto.contrasena)
-        usuario = Usuario(identificacion=identificacion)
+        usuario = Usuario(identificacion=identificacion, rol=dto.rol)
         usuario.contrasena = contrasena
         return usuario

@@ -63,4 +63,4 @@ class Contrasena(ValueObject):
 class LoginRequest(ValueObject):
     identificacion: Identificacion = field(default_factory=Identificacion)
     contrasena: Contrasena = field(default_factory=Contrasena)
-
+    rol: str = field(default_factory=str)
