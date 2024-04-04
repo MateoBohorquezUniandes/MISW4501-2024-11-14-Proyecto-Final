@@ -20,6 +20,5 @@ def create():
     command = CreateToken(request=dto, correlation_id=correlation_id)
     response = execute_command(command)
     token_resp = mapper.dto_to_external(response.result)
-    print(token_resp)
 
     return jsonify(token_resp)
