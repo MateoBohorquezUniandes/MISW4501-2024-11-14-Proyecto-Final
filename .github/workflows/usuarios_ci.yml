@@ -110,4 +110,4 @@ jobs:
           retry-all: true
           
       - name: Run the API and Postman's tests
-        run: newman run "./collections/usuarios.json" --verbose
+        run: newman run "./collections/usuarios.json" --verbose --delay-request 10

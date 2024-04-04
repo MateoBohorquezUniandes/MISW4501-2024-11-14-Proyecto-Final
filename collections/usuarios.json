@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "registro",
+			"name": "registro success scenarios",
 			"item": [
 				{
 					"name": "registro deportista",
@@ -16,8 +16,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Response status code is 400', function () {",
-									"    pm.response.to.have.status(400);",
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
 									"});",
 									"",
 									"pm.test('Response has the required fields', function () {",
@@ -69,6 +69,293 @@
 					},
 					"response": []
 				},
+				{
+					"name": "registro organizador",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{organizador[identificacion][tipo]}}\",\n        \"valor\": \"{{organizador[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{organizador[rol]}}\",\n    \"contrasena\": \"{{organizador[contrasena]}}\",\n    \"organizacion\": \"{{organizador[organizacion]}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3011/usuarios",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3011",
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registro socio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\",\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"razon_social\": \"{{socio[razon_social]}}\",\n    \"correo\": \"{{socio[correo]}}\",\n    \"telefono\": \"{{socio[telefono]}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3011/usuarios",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3011",
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login success scenarios",
+			"item": [
+				{
+					"name": "login deportista",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.token).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.rol).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.rol).to.equals('DEPORTISTA');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contrasena\": \"{{deportista[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"{{deportista[identificacion][tipo]}}\",\n        \"valor\": \"{{deportista[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{deportista[rol]}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3011/usuarios/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3011",
+							"path": [
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login organizador",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.token).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.rol).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.rol).to.equals('ORGANIZADOR');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contrasena\": \"{{organizador[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"{{organizador[identificacion][tipo]}}\",\n        \"valor\": \"{{organizador[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{organizador[rol]}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3011/usuarios/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3011",
+							"path": [
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login socio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.token).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.rol).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.rol).to.equals('SOCIO');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3011/usuarios/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3011",
+							"path": [
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "registro fail scenarios",
+			"item": [
 				{
 					"name": "registro deportista duplicado",
 					"event": [
@@ -330,56 +617,6 @@
 					"response": []
 				},
 				{
-					"name": "registro organizador",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response status code is 202', function () {",
-									"    pm.response.to.have.status(202);",
-									"});",
-									"",
-									"pm.test('Response has the required fields', function () {",
-									"    const responseData = pm.response.json();",
-									"    pm.expect(responseData).to.be.an('object');",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{organizador[identificacion][tipo]}}\",\n        \"valor\": \"{{organizador[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{organizador[rol]}}\",\n    \"contrasena\": \"{{organizador[contrasena]}}\",\n    \"organizacion\": \"{{organizador[organizacion]}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "3011",
-							"path": [
-								"usuarios"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "registro organizador duplicado",
 					"event": [
 						{
@@ -490,13 +727,15 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Response status code is 202', function () {",
-									"    pm.response.to.have.status(202);",
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
 									"});",
 									"",
 									"pm.test('Response has the required fields', function () {",
 									"    const responseData = pm.response.json();",
 									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.code).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string');",
 									"});"
 								],
 								"type": "text/javascript",
@@ -540,13 +779,15 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Response status code is 202', function () {",
-									"    pm.response.to.have.status(202);",
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
 									"});",
 									"",
 									"pm.test('Response has the required fields', function () {",
 									"    const responseData = pm.response.json();",
 									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.code).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string');",
 									"});"
 								],
 								"type": "text/javascript",
@@ -560,56 +801,6 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{organizador[identificacion][tipo]}}\",\n        \"valor\": \"{{organizador[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{organizador[rol]}}\",\n    \"contrasena\": \"{{organizador[contrasena]}}\",\n    \"organizacion\": \"\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "3011",
-							"path": [
-								"usuarios"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "registro socio",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response status code is 202', function () {",
-									"    pm.response.to.have.status(202);",
-									"});",
-									"",
-									"pm.test('Response has the required fields', function () {",
-									"    const responseData = pm.response.json();",
-									"    pm.expect(responseData).to.be.an('object');",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\",\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"razon_social\": \"{{socio[razon_social]}}\",\n    \"correo\": \"{{socio[correo]}}\",\n    \"telefono\": \"{{socio[telefono]}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1000,185 +1191,8 @@
 			]
 		},
 		{
-			"name": "login",
+			"name": "login fail scenarios",
 			"item": [
-				{
-					"name": "login deportista",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response status code is 200', function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test('Response has the required fields', function () {",
-									"    const responseData = pm.response.json();",
-									"    pm.expect(responseData).to.be.an('object');",
-									"    pm.expect(responseData.token).to.exist.and.to.be.a('string');",
-									"    pm.expect(responseData.rol).to.exist.and.to.be.a('string');",
-									"    pm.expect(responseData.rol).to.equals('DEPORTISTA');",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"connection": true
-						}
-					},
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"contrasena\": \"{{deportista[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"{{deportista[identificacion][tipo]}}\",\n        \"valor\": \"{{deportista[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{deportista[rol]}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios/login",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "3011",
-							"path": [
-								"usuarios",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "login organizador",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response status code is 200', function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test('Response has the required fields', function () {",
-									"    const responseData = pm.response.json();",
-									"    pm.expect(responseData).to.be.an('object');",
-									"    pm.expect(responseData.token).to.exist.and.to.be.a('string');",
-									"    pm.expect(responseData.rol).to.exist.and.to.be.a('string');",
-									"    pm.expect(responseData.rol).to.equals('ORGANIZADOR');",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"connection": true
-						}
-					},
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"contrasena\": \"{{organizador[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"{{organizador[identificacion][tipo]}}\",\n        \"valor\": \"{{organizador[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{organizador[rol]}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios/login",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "3011",
-							"path": [
-								"usuarios",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "login socio",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response status code is 200', function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test('Response has the required fields', function () {",
-									"    const responseData = pm.response.json();",
-									"    pm.expect(responseData).to.be.an('object');",
-									"    pm.expect(responseData.token).to.exist.and.to.be.a('string');",
-									"    pm.expect(responseData.rol).to.exist.and.to.be.a('string');",
-									"    pm.expect(responseData.rol).to.equals('SOCIO');",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"connection": true
-						}
-					},
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios/login",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "3011",
-							"path": [
-								"usuarios",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "login sin contrasena",
 					"event": [
@@ -1354,7 +1368,7 @@
 					"response": []
 				},
 				{
-					"name": "login din identificacion",
+					"name": "login sin identificacion",
 					"event": [
 						{
 							"listen": "test",
