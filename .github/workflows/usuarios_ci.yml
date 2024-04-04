@@ -94,8 +94,11 @@ jobs:
       - name: Create evaluator folder
         run: mkdir .evaluator
 
-      - name: Start containers
-        run: docker-compose -f up -d usuarios-api
+      - name: Start required containers
+        run: docker compose up -d deportistas-db autenticador-api
+      
+      - name: Start container for testing
+        run: docker compose up -d usuarios-api
 
       - name: Check healthchecks
         uses: jtalk/url-health-check-action@v3

@@ -53,8 +53,6 @@ services:
   
   perfiles-api:
     container_name: 'perfiles-api'
-    depends_on:
-      - deportistas-db
     build:
       context: ./
       dockerfile: perfiles.Dockerfile
@@ -70,9 +68,6 @@ services:
     
   monitor-api:
     container_name: 'monitor-api'
-    depends_on:
-      - usuarios-api
-      - perfiles-api
     volumes:
       - ./src/monitor/outputs:/src/monitor/outputs
     build:
