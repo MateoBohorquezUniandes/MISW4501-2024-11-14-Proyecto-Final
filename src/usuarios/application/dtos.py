@@ -29,15 +29,29 @@ class UsuarioDTO(DTO):
     created_at: str = field(default_factory=str)
     updated_at: str = field(default_factory=str)
 
+    identificacion: IdentificacionDTO = field(default_factory=IdentificacionDTO)
+    contrasena: str = field(default_factory=str)
+    rol: str = field(default_factory=str)
+
+
+@dataclass(frozen=True)
+class DeportistaDTO(UsuarioDTO):
     nombre: str = field(default_factory=str)
     apellido: str = field(default_factory=str)
-
-    rol: str = field(default_factory=str)
-    contrasena: str = field(default_factory=str)
-    identificacion: IdentificacionDTO = field(default_factory=IdentificacionDTO)
-
     demografia: DemografiaDTO = field(default_factory=DemografiaDTO)
     deportes: list[str] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class OrganizadorDTO(UsuarioDTO):
+    organizacion: str = field(default_factory=str)
+
+
+@dataclass(frozen=True)
+class SocioDTO(UsuarioDTO):
+    razon_social: str = field(default_factory=str)
+    correo: str = field(default_factory=str)
+    telefono: str = field(default_factory=str)
 
 
 @dataclass(frozen=True)

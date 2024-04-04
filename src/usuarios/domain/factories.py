@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Union
 
 from seedwork.domain.entities import Entity
 from seedwork.domain.events import DomainEvent
@@ -11,8 +10,15 @@ from usuarios.domain.exceptions import (
     InvalidPasswordFactoryException,
     InvalidUsuarioFactoryException,
 )
-from usuarios.domain.rules import ValidContrasena, ValidIdentificacion, ValidUsuario
-from usuarios.domain.value_objects import Contrasena, LoginRequest
+from usuarios.domain.rules import (
+    ValidContrasena,
+    ValidIdentificacion,
+    ValidOrganizador,
+    ValidRol,
+    ValidDeportista,
+    ValidSocio,
+)
+from usuarios.domain.value_objects import ROL, Contrasena, LoginRequest
 
 
 @dataclass
@@ -22,16 +28,22 @@ class _UsuarioFactory(Factory):
             return mapper.entity_to_dto(obj)
 
         usuario: Usuario = mapper.dto_to_entity(obj)
-        self.validate_rule(ValidUsuario(usuario))
+        if usuario.rol == ROL.DEPORTISTA.value:
+            self.validate_rule(ValidDeportista(usuario))
+        elif usuario.rol == ROL.ORGANIZADOR.value:
+            self.validate_rule(ValidOrganizador(usuario))
+        elif usuario.rol == ROL.SOCIO.value:
+            self.validate_rule(ValidSocio(usuario))
+        
         return usuario
+
 
 @dataclass
 class UsuarioFactory(Factory):
     def create(self, obj: any, mapper: Mapper):
-        if mapper.type() == Usuario.__class__:
+        if mapper.type() == Usuario:
             usuario_factory = _UsuarioFactory()
             return usuario_factory.create(obj, mapper)
-
         else:
             raise InvalidUsuarioFactoryException()
 
@@ -41,19 +53,21 @@ class ContrasenaFactory(Factory):
     def create(
         self, contrasena: str, salt: str = None, mapper: UnidirectionalMapper = None
     ) -> Contrasena:
-        if mapper.type() == Contrasena.__class__:
+        if mapper.type() == Contrasena:
             self.validate_rule(ValidContrasena(contrasena))
             contrasena = mapper.map(contrasena, salt)
             return contrasena
         else:
             raise InvalidPasswordFactoryException()
 
+
 @dataclass
 class LoginFactory(Factory):
     def create(self, obj: any, mapper: Mapper):
-        if mapper.type() == LoginRequest.__class__:
+        if mapper.type() == LoginRequest:
             login_request: LoginRequest = mapper.map(obj)
             self.validate_rule(ValidIdentificacion(login_request.identificacion))
+            self.validate_rule(ValidRol(login_request.rol))
             return login_request
         else:
             raise InvalidLoginFactoryException()

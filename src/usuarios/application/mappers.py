@@ -9,18 +9,24 @@ from seedwork.domain.repositories import (
 )
 from usuarios.application.dtos import (
     DemografiaDTO,
+    DeportistaDTO,
     IdentificacionDTO,
     LoginRequestDTO,
     LoginResponseDTO,
+    OrganizadorDTO,
+    SocioDTO,
     UsuarioDTO,
 )
-from usuarios.domain.entities import Usuario
+from usuarios.application.exceptions import BadRequestError
+from usuarios.domain.entities import Deportista, Organizador, Socio, Usuario
+from usuarios.domain.exceptions import InvalidRolUsuarioError
 from usuarios.domain.value_objects import (
     Contrasena,
     Demografia,
     Deporte,
     Identificacion,
     LoginRequest,
+    ROL,
 )
 
 
@@ -37,51 +43,93 @@ class UsuarioDTODictMapper(ApplicationMapper):
 
     def _map_to_identificacion_dto(self, identificacion: dict) -> IdentificacionDTO:
         return IdentificacionDTO(
-            identificacion.get("tipo"), identificacion.get("valor")
+            identificacion.get("tipo", ""), identificacion.get("valor", "")
         )
 
     def _map_to_demografia_dto(self, demografia: dict) -> DemografiaDTO:
         return DemografiaDTO(
-            demografia.get("pais_nacimiento"),
-            demografia.get("ciudad_nacimiento"),
-            demografia.get("pais_residencia"),
-            demografia.get("ciudad_residencia"),
-            int(demografia.get("tiempo_residencia")),
-            demografia.get("genero"),
-            int(demografia.get("edad")),
-            float(demografia.get("peso")),
-            float(demografia.get("altura")),
+            demografia.get("pais_nacimiento", ""),
+            demografia.get("ciudad_nacimiento", ""),
+            demografia.get("pais_residencia", ""),
+            demografia.get("ciudad_residencia", ""),
+            int(demografia.get("tiempo_residencia", 0)),
+            demografia.get("genero", ""),
+            int(demografia.get("edad", 0)),
+            float(demografia.get("peso", 0.0)),
+            float(demografia.get("altura", 0.0)),
         )
 
-    def external_to_dto(self, external: dict) -> UsuarioDTO:
-        identificacion = self._map_to_identificacion_dto(external.get("identificacion"))
-        demografia = self._map_to_demografia_dto(external.get("demografia"))
+    def _map_deportista(
+        self, external: dict, identificacion: IdentificacionDTO
+    ) -> DeportistaDTO:
+        demografia = self._map_to_demografia_dto(external.get("demografia", {}))
         deportes = external.get("deportes")
 
-        usuario = UsuarioDTO(
-            nombre=external.get("nombre"),
-            apellido=external.get("apellido"),
-            rol=external.get("rol"),
-            contrasena=external.get("contrasena"),
+        return DeportistaDTO(
             identificacion=identificacion,
+            contrasena=external.get("contrasena", ""),
+            rol=ROL.DEPORTISTA.value,
+            nombre=external.get("nombre", ""),
+            apellido=external.get("apellido", ""),
             demografia=demografia,
             deportes=deportes,
         )
-        return usuario
+
+    def _map_organizador(
+        self, external: dict, identificacion: IdentificacionDTO
+    ) -> OrganizadorDTO:
+        return OrganizadorDTO(
+            identificacion=identificacion,
+            contrasena=external.get("contrasena", ""),
+            rol=ROL.ORGANIZADOR.value,
+            organizacion=external.get("organizacion", ""),
+        )
+
+    def _map_socio(self, external: dict, identificacion: IdentificacionDTO) -> SocioDTO:
+        return SocioDTO(
+            identificacion=identificacion,
+            contrasena=external.get("contrasena", ""),
+            rol=ROL.SOCIO.value,
+            razon_social=external.get("razon_social", ""),
+            correo=external.get("correo", ""),
+            telefono=external.get("telefono", ""),
+        )
+
+    def external_to_dto(self, external: dict) -> UsuarioDTO:
+        identificacion = self._map_to_identificacion_dto(
+            external.get("identificacion", {})
+        )
+        rol = external.get("rol", "")
+
+        if rol == ROL.DEPORTISTA.value:
+            return self._map_deportista(external, identificacion)
+        elif rol == ROL.ORGANIZADOR.value:
+            return self._map_organizador(external, identificacion)
+        elif rol == ROL.SOCIO.value:
+            return self._map_socio(external, identificacion)
+        else:
+            raise BadRequestError()
 
 
 class LoginDTODictMapper(ApplicationMapper):
     def _map_to_identificacion_dto(self, identificacion: dict) -> IdentificacionDTO:
         return IdentificacionDTO(
-            identificacion.get("tipo"), identificacion.get("valor")
+            identificacion.get("tipo", ""), identificacion.get("valor", "")
         )
 
     def external_to_dto(self, external: any) -> LoginRequestDTO:
-        identificacion = self._map_to_identificacion_dto(external.get("identificacion"))
-        return LoginRequestDTO(identificacion, external.get("contrasena"), external.get("rol"))
+        identificacion = self._map_to_identificacion_dto(
+            external.get("identificacion", {})
+        )
+        return LoginRequestDTO(
+            identificacion,
+            external.get("contrasena", ""),
+            external.get("rol", ROL.DEPORTISTA.value),
+        )
 
     def dto_to_external(self, dto: LoginRequestDTO) -> any:
         return dto.__dict__
+
 
 class AuthResponseDTODictMapper(ApplicationMapper):
     def external_to_dto(self, external: any, rol: str = "") -> LoginResponseDTO:
@@ -89,7 +137,6 @@ class AuthResponseDTODictMapper(ApplicationMapper):
 
     def dto_to_external(self, dto: LoginResponseDTO) -> any:
         return dto.__dict__
-
 
 
 # #####################################################################################
@@ -101,12 +148,11 @@ class UsuarioDTOEntityMapper(DomainMapper):
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
     def type(self) -> type:
-        return Usuario.__class__
+        return Usuario
 
-    def entity_to_dto(self, entity: Usuario) -> UsuarioDTO:
-        identificacion = IdentificacionDTO(
-            entity.identificacion.tipo, entity.identificacion.valor
-        )
+    def _entity_to_deportista_dto(
+        self, entity: Deportista, identificacion: IdentificacionDTO
+    ) -> DeportistaDTO:
         deportes = [d.nombre for d in entity.deportes]
         demografia = DemografiaDTO(
             entity.demografia.pais_nacimiento,
@@ -119,25 +165,61 @@ class UsuarioDTOEntityMapper(DomainMapper):
             entity.demografia.peso,
             entity.demografia.altura,
         )
-        created_at = entity.created_at.strftime(self.DATE_FORMAT)
-        updated_at = entity.updated_at.strftime(self.DATE_FORMAT)
-        usuario = UsuarioDTO(
-            created_at=created_at,
-            updated_at=updated_at,
+        return DeportistaDTO(
+            created_at=entity.created_at.strftime(self.DATE_FORMAT),
+            updated_at=entity.updated_at.strftime(self.DATE_FORMAT),
+            identificacion=identificacion,
+            contrasena=entity.contrasena.contrasena,
+            rol=entity.rol,
             nombre=entity.nombre,
             apellido=entity.apellido,
-            rol=entity.rol,
-            contrasena=entity.contrasena.contrasena,
-            identificacion=identificacion,
             demografia=demografia,
             deportes=deportes,
         )
-        return usuario
 
-    def dto_to_entity(self, dto: UsuarioDTO) -> Usuario:
-        identificacion = Identificacion(
-            dto.identificacion.tipo, dto.identificacion.valor
+    def _entity_to_organizador_dto(
+        self, entity: Organizador, identificacion: IdentificacionDTO
+    ) -> DeportistaDTO:
+        return OrganizadorDTO(
+            created_at=entity.created_at.strftime(self.DATE_FORMAT),
+            updated_at=entity.updated_at.strftime(self.DATE_FORMAT),
+            identificacion=identificacion,
+            contrasena=entity.contrasena.contrasena,
+            rol=entity.rol,
+            organizacion=entity.organizacion,
         )
+
+    def _entity_to_socio_dto(
+        self, entity: Socio, identificacion: IdentificacionDTO
+    ) -> SocioDTO:
+        return SocioDTO(
+            created_at=entity.created_at.strftime(self.DATE_FORMAT),
+            updated_at=entity.updated_at.strftime(self.DATE_FORMAT),
+            identificacion=identificacion,
+            contrasena=entity.contrasena.contrasena,
+            rol=entity.rol,
+            razon_social=entity.razon_social,
+            correo=entity.correo,
+            telefono=entity.telefono,
+        )
+
+    def entity_to_dto(self, entity: Usuario) -> UsuarioDTO:
+        identificacion = IdentificacionDTO(
+            entity.identificacion.tipo, entity.identificacion.valor
+        )
+
+        if entity.rol == ROL.DEPORTISTA.value:
+            return self._entity_to_deportista_dto(entity, identificacion)
+        elif entity.rol == ROL.ORGANIZADOR.value:
+            return self._entity_to_organizador_dto(entity, identificacion)
+        elif entity.rol == ROL.SOCIO.value:
+            return self._entity_to_socio_dto(entity, identificacion)
+        else:
+            raise InvalidRolUsuarioError()
+
+    def _dto_to_deportista_entity(
+        self, dto: DeportistaDTO, identificacion: Identificacion
+    ) -> Deportista:
         deportes = [Deporte(d) for d in dto.deportes]
         demografia = Demografia(
             dto.demografia.pais_nacimiento,
@@ -150,20 +232,52 @@ class UsuarioDTOEntityMapper(DomainMapper):
             dto.demografia.peso,
             dto.demografia.altura,
         )
-        usuario = Usuario(
+        return Deportista(
+            identificacion=identificacion,
+            rol=dto.rol,
             nombre=dto.nombre,
             apellido=dto.apellido,
-            rol=dto.rol,
-            identificacion=identificacion,
             demografia=demografia,
             deportes=deportes,
         )
-        return usuario
+
+    def _dto_to_organizador_entity(
+        self, dto: OrganizadorDTO, identificacion: Identificacion
+    ) -> Organizador:
+        return Organizador(
+            identificacion=identificacion,
+            rol=dto.rol,
+            organizacion=dto.organizacion,
+        )
+
+    def _dto_to_socio_entity(
+        self, dto: SocioDTO, identificacion: Identificacion
+    ) -> Socio:
+        return Socio(
+            identificacion=identificacion,
+            rol=dto.rol,
+            razon_social=dto.razon_social,
+            correo=dto.correo,
+            telefono=dto.telefono,
+        )
+
+    def dto_to_entity(self, dto: UsuarioDTO) -> Usuario:
+        identificacion = Identificacion(
+            dto.identificacion.tipo, dto.identificacion.valor
+        )
+        if dto.rol == ROL.DEPORTISTA.value:
+            return self._dto_to_deportista_entity(dto, identificacion)
+        elif dto.rol == ROL.ORGANIZADOR.value:
+            return self._dto_to_organizador_entity(dto, identificacion)
+        elif dto.rol == ROL.SOCIO.value:
+            return self._dto_to_socio_entity(dto, identificacion)
+        else:
+            raise InvalidRolUsuarioError()
 
 
 class ContrasenaMapper(UnidirectionalDomainMapper):
     def type(self) -> type:
-        return Contrasena.__class__
+        return Contrasena
 
     def map(self, password: str, salt: str = None) -> Contrasena:
         salt = salt or self._generate_salt()
@@ -196,7 +310,7 @@ class ContrasenaMapper(UnidirectionalDomainMapper):
 
 class LoginDTOEntityMapper(UnidirectionalDomainMapper):
     def type(self) -> type:
-        return LoginRequest.__class__
+        return LoginRequest
 
     def map(self, dto: LoginRequestDTO) -> Usuario:
         identificacion = Identificacion(

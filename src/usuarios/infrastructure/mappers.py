@@ -1,43 +1,47 @@
-from seedwork.domain.repositories import Mapper, UnidirectionalMapper
-from usuarios.domain.entities import Usuario
+from seedwork.domain.entities import Entity
+from seedwork.domain.repositories import Mapper
+from usuarios.domain.entities import Deportista, Organizador, Socio, Usuario
 from usuarios.domain.value_objects import (
     Contrasena,
     Demografia,
     Deporte,
     Identificacion,
 )
-from usuarios.infrastructure.dtos import Usuario as UsuarioDTO
+from usuarios.infrastructure.dtos import Deportista as DeportistaDTO
+from usuarios.infrastructure.dtos import Organizador as OrganizadorDTO
+from usuarios.infrastructure.dtos import Socio as SocioDTO
 
 
-class UsuarioMapper(Mapper):
+class DeportistaMapper(Mapper):
     def type(self) -> type:
-        return Usuario.__class__
+        return Usuario
 
-    def entity_to_dto(self, entity: Usuario) -> UsuarioDTO:
-        usuario_dto = UsuarioDTO()
-        usuario_dto.tipo_identificacion = entity.identificacion.tipo
-        usuario_dto.identificacion = entity.identificacion.valor
-        usuario_dto.rol = entity.rol
-        usuario_dto.contrasena = entity.contrasena.contrasena
-        usuario_dto.salt = entity.contrasena.salt
-        usuario_dto.nombre = entity.nombre
-        usuario_dto.apellido = entity.apellido
-        usuario_dto.genero = entity.demografia.genero
-        usuario_dto.edad = entity.demografia.edad
-        usuario_dto.peso = entity.demografia.peso
-        usuario_dto.altura = entity.demografia.altura
-        usuario_dto.pais_nacimiento = entity.demografia.pais_nacimiento
-        usuario_dto.ciudad_nacimiento = entity.demografia.ciudad_nacimiento
-        usuario_dto.pais_residencia = entity.demografia.pais_residencia
-        usuario_dto.ciudad_residencia = entity.demografia.ciudad_residencia
-        usuario_dto.tiempo_residencia = entity.demografia.tiempo_residencia
-        usuario_dto.deportes = "".join([d.nombre for d in entity.deportes])
+    def entity_to_dto(self, entity: Deportista) -> DeportistaDTO:
+        deportista_dto = DeportistaDTO()
+        deportista_dto.tipo_identificacion = entity.identificacion.tipo
+        deportista_dto.identificacion = entity.identificacion.valor
+        deportista_dto.rol = entity.rol
+        deportista_dto.contrasena = entity.contrasena.contrasena
+        deportista_dto.salt = entity.contrasena.salt
 
-        return usuario_dto
+        deportista_dto.nombre = entity.nombre
+        deportista_dto.apellido = entity.apellido
+        deportista_dto.genero = entity.demografia.genero
+        deportista_dto.edad = entity.demografia.edad
+        deportista_dto.peso = entity.demografia.peso
+        deportista_dto.altura = entity.demografia.altura
+        deportista_dto.pais_nacimiento = entity.demografia.pais_nacimiento
+        deportista_dto.ciudad_nacimiento = entity.demografia.ciudad_nacimiento
+        deportista_dto.pais_residencia = entity.demografia.pais_residencia
+        deportista_dto.ciudad_residencia = entity.demografia.ciudad_residencia
+        deportista_dto.tiempo_residencia = entity.demografia.tiempo_residencia
+        deportista_dto.deportes = "".join([d.nombre for d in entity.deportes])
 
-    def dto_to_entity(self, dto: UsuarioDTO) -> Usuario:
+        return deportista_dto
+
+    def dto_to_entity(self, dto: DeportistaDTO) -> Deportista:
         identificacion = Identificacion(dto.tipo_identificacion, dto.identificacion)
-        deportes = [Deporte(d) for d in dto.deportes.split(",")]
+        contrasena = Contrasena(dto.contrasena, dto.salt)
         demografia = Demografia(
             dto.pais_nacimiento,
             dto.ciudad_nacimiento,
@@ -49,14 +53,73 @@ class UsuarioMapper(Mapper):
             dto.peso,
             dto.altura,
         )
-        usuario = Usuario(
+        deportes = [Deporte(d) for d in dto.deportes.split(",")]
+
+        deportista = Deportista(
+            identificacion=identificacion,
+            rol=dto.rol,
             nombre=dto.nombre,
             apellido=dto.apellido,
-            rol=dto.rol,
-            identificacion=identificacion,
             demografia=demografia,
             deportes=deportes,
         )
+        deportista.contrasena = contrasena
+        return deportista
+
+
+class OrganizadorMapper(Mapper):
+    def type(self) -> type:
+        return Usuario
+
+    def entity_to_dto(self, entity: Organizador) -> OrganizadorDTO:
+        organizador_dto = OrganizadorDTO()
+        organizador_dto.tipo_identificacion = entity.identificacion.tipo
+        organizador_dto.identificacion = entity.identificacion.valor
+        organizador_dto.rol = entity.rol
+        organizador_dto.contrasena = entity.contrasena.contrasena
+        organizador_dto.salt = entity.contrasena.salt
+
+        organizador_dto.organizacion = entity.organizacion
+        return organizador_dto
+
+    def dto_to_entity(self, dto: OrganizadorDTO) -> Organizador:
+        identificacion = Identificacion(dto.tipo_identificacion, dto.identificacion)
         contrasena = Contrasena(dto.contrasena, dto.salt)
-        usuario.contrasena = contrasena
-        return usuario
+
+        organizador = Organizador(
+            identificacion=identificacion, rol=dto.rol, organizacion=dto.organizacion
+        )
+        organizador.contrasena = contrasena
+        return organizador
+
+
+class SocioMapper(Mapper):
+    def type(self) -> type:
+        return Usuario
+
+    def entity_to_dto(self, entity: Socio) -> SocioDTO:
+        socio_dto = SocioDTO()
+        socio_dto.tipo_identificacion = entity.identificacion.tipo
+        socio_dto.identificacion = entity.identificacion.valor
+        socio_dto.rol = entity.rol
+        socio_dto.contrasena = entity.contrasena.contrasena
+        socio_dto.salt = entity.contrasena.salt
+
+        socio_dto.razon_social = entity.razon_social
+        socio_dto.correo = entity.correo
+        socio_dto.telefono = entity.telefono
+        return socio_dto
+
+    def dto_to_entity(self, dto: SocioDTO) -> Socio:
+        identificacion = Identificacion(dto.tipo_identificacion, dto.identificacion)
+        contrasena = Contrasena(dto.contrasena, dto.salt)
+
+        socio = Socio(
+            identificacion=identificacion,
+            rol=dto.rol,
+            razon_social=dto.razon_social,
+            correo=dto.correo,
+            telefono=dto.telefono,
+        )
+        socio.contrasena = contrasena
+        return socio

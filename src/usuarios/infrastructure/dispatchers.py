@@ -9,7 +9,7 @@ from seedwork.infrastructure.schema.v1.messages import IntegrationMessage
 from usuarios.infrastructure.factories import IntegrationMessageFactory
 
 
-class UserIntegrationEventDispatcher(Dispatcher):
+class UsuarioIntegrationEventDispatcher(Dispatcher):
     def __init__(self, event):
         self._integration_factory = IntegrationMessageFactory()
         self._message: IntegrationMessage = self._integration_factory.create(event)

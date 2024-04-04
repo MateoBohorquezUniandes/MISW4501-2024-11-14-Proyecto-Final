@@ -2,6 +2,8 @@ import traceback
 import uuid
 from dataclasses import dataclass, field
 
+from sqlalchemy.exc import NoResultFound
+
 from seedwork.application.commands import Command, CommandResult, execute_command
 from seedwork.domain.exceptions import BusinessRuleException
 from seedwork.presentation.exceptions import APIError
@@ -10,15 +12,22 @@ from usuarios.application.dtos import LoginRequestDTO
 from usuarios.application.exceptions import (
     InvalidCredentialsError,
     UnprocessableEntityError,
+    UsuarioNotFoundError,
 )
 from usuarios.application.mappers import (
     AuthResponseDTODictMapper,
     ContrasenaMapper,
     LoginDTOEntityMapper,
 )
+from usuarios.domain.entities import Deportista, Organizador, Socio
 from usuarios.domain.exceptions import InvalidPasswordMatchError
-from usuarios.domain.repositories import UsuarioRepository
-from usuarios.domain.value_objects import LoginRequest
+from usuarios.domain.value_objects import ROL, LoginRequest
+
+usuario_map = {
+    ROL.DEPORTISTA.value: Deportista,
+    ROL.ORGANIZADOR.value: Organizador,
+    ROL.SOCIO.value: Socio,
+}
 
 
 @dataclass
@@ -36,7 +45,7 @@ class LoginUsuarioHandler(UsuarioBaseHandler):
             )
 
             # Get user from DB
-            repository = self.repository_factory.create(UsuarioRepository.__class__)
+            repository = self.repository_factory.create(usuario_map[login.rol]())
             usuario = repository.get(
                 login.identificacion.tipo, login.identificacion.valor, login.rol
             )
@@ -59,13 +68,16 @@ class LoginUsuarioHandler(UsuarioBaseHandler):
 
         except InvalidPasswordMatchError as ipme:
             traceback.print_exc()
-            raise InvalidCredentialsError(str(ipme))
-        except BusinessRuleException as be:
+            raise InvalidCredentialsError(str(ipme), ipme.code)
+        except BusinessRuleException as bre:
             traceback.print_exc()
-            raise UnprocessableEntityError(str(be))
+            raise UnprocessableEntityError(str(bre), bre.code)
+        except NoResultFound:
+            traceback.print_exc()
+            raise UsuarioNotFoundError()
         except Exception as e:
             traceback.print_exc()
-            raise APIError()
+            raise APIError(message=str(e), code="login.error.internal")
 
 
 @execute_command.register(LoginUsuario)

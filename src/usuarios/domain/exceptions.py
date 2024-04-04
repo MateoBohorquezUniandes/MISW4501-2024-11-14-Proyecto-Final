@@ -2,31 +2,24 @@ from seedwork.domain.exceptions import DomainException, FactoryException
 
 
 class InvalidUsuarioFactoryException(FactoryException):
-    def __init__(self, mensaje="invalid type for factory"):
-        self.__mensaje = mensaje
-
-    def __str__(self):
-        return str(self.__mensaje)
+    def __init__(self):
+        super().__init__(code="factory.usuario")
 
 
 class InvalidPasswordFactoryException(FactoryException):
-    def __init__(self, mensaje="invalid type for factory"):
-        self.__mensaje = mensaje
-
-    def __str__(self):
-        return str(self.__mensaje)
+    def __init__(self):
+        super().__init__(code="factory.contrasena")
 
 class InvalidLoginFactoryException(FactoryException):
-    def __init__(self, mensaje="invalid type for factory"):
-        self.__mensaje = mensaje
-
-    def __str__(self):
-        return str(self.__mensaje)
+    def __init__(self):
+        super().__init__(code="factory.login")
 
 
 class InvalidPasswordMatchError(DomainException):
-    def __init__(self, mensaje="invalid credentials"):
-        self.__mensaje = mensaje
+    def __init__(self, message="credenciales incorrectas"):
+        super().__init__(message, code="login.credentials")
+        self.__message = message
 
-    def __str__(self):
-        return str(self.__mensaje)
+class InvalidRolUsuarioError(DomainException):
+    def __init__(self, message="rol invalido"):
+        super().__init__(message, code="login.credentials")
