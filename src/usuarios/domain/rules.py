@@ -14,6 +14,10 @@ from usuarios.domain.value_objects import (
     TIPO_IDENTIFICACION,
     Demografia,
     Identificacion,
+    TIPO_IDENTIFICACION,
+    GENERO,
+    ROL,
+    PLAN_AFILIACION
 )
 
 
@@ -104,6 +108,17 @@ class ValidRol(BusinessRule):
 
     def is_valid(self) -> bool:
         return self.rol in ROL.list()
+
+#Regla Plan Afiliacion
+class ValidPlanAfiliacion(BusinessRule):
+    planAfiliacion: str
+
+    def __init__(self, planAfiliacion, message="El plan de afiliacion no es una opcion valida"):
+        super().__init__(message, "validation.planAfiliacion")
+        self.planAfiliacion = planAfiliacion
+
+    def is_valid(self) -> bool:
+        return self.planAfiliacion in PLAN_AFILIACION.list()
 
 
 class ValidEmail(BusinessRule):

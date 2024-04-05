@@ -47,6 +47,8 @@ class Deportista(Usuario):
     # Informacion exlusiva de deportistas
     nombre = db.Column(db.String(250), nullable=True)
     apellido = db.Column(db.String(250), nullable=True)
+    #Agregando atributo planAfiliacion
+    planAfiliacion = db.Column(db.String(50), primary_key=True)
 
     genero = db.Column(db.String(10), nullable=True)
     edad = db.Column(db.Integer, nullable=True)

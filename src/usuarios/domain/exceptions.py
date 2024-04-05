@@ -23,3 +23,8 @@ class InvalidPasswordMatchError(DomainException):
 class InvalidRolUsuarioError(DomainException):
     def __init__(self, message="rol invalido"):
         super().__init__(message, code="login.credentials")
+
+#Agregando Excepcion para Plan Afiliacion invalido
+class InvalidPlanAfiliacionError(DomainException):
+    def __init__(self, message="plan de afiliacion invalido"):
+        super().__init__(message, code="login.credentials")

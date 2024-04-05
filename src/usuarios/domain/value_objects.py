@@ -4,6 +4,11 @@ from uuid import UUID
 from seedwork.domain.value_objects import ExtendedEnum, ValueObject
 from usuarios.domain.exceptions import InvalidPasswordMatchError
 
+#Agregando Plan de Afiliacion
+class PLAN_AFILIACION(ExtendedEnum):
+    GRATUITO="GRATUITO"
+    INTERMEDIO="INTERMEDIO"
+    PREMIUM="PREMIUM"
 
 class ROL(ExtendedEnum):
     DEPORTISTA = "DEPORTISTA"

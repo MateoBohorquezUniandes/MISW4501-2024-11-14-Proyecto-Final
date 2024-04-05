@@ -38,6 +38,8 @@ class UsuarioDTO(DTO):
 class DeportistaDTO(UsuarioDTO):
     nombre: str = field(default_factory=str)
     apellido: str = field(default_factory=str)
+    #Agregando Plan Afiliacion
+    planAfiliacion: str = field(default_factory=str)
     demografia: DemografiaDTO = field(default_factory=DemografiaDTO)
     deportes: list[str] = field(default_factory=list)
 
