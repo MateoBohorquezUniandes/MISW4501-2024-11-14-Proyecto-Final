@@ -13,10 +13,10 @@ class UsuarioIntegrationEventDispatcher(Dispatcher):
     def __init__(self, event):
         self._integration_factory = IntegrationMessageFactory()
         self._message: IntegrationMessage = self._integration_factory.create(event)
+        self.__bypass = environ.get("TESTING", "") == "True"
 
     def publish(self, url):
-        testing = environ.get("TESTING", "") == "True"
-        if testing: return
+        if self.__bypass: return
 
         client = tasks_v2.CloudTasksClient()
 

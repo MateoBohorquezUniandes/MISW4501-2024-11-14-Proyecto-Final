@@ -1,4 +1,5 @@
 from re import fullmatch
+
 from seedwork.domain.rules import (
     BusinessRule,
     CompoundBusinessRule,
@@ -6,13 +7,13 @@ from seedwork.domain.rules import (
     ValidInteger,
     ValidString,
 )
+from seedwork.domain.value_objects import GENERO
 from usuarios.domain.entities import Deportista, Organizador, Socio
 from usuarios.domain.value_objects import (
+    ROL,
+    TIPO_IDENTIFICACION,
     Demografia,
     Identificacion,
-    TIPO_IDENTIFICACION,
-    GENERO,
-    ROL,
 )
 
 
@@ -107,7 +108,7 @@ class ValidRol(BusinessRule):
 
 class ValidEmail(BusinessRule):
     email: str
-    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+    regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
 
     def __init__(self, email, message="email invalido"):
         super().__init__(message, "validation.email")
@@ -115,6 +116,7 @@ class ValidEmail(BusinessRule):
 
     def is_valid(self) -> bool:
         return fullmatch(self.regex, self.email)
+
 
 class ValidDeportista(CompoundBusinessRule):
     usuario: Deportista
@@ -193,6 +195,7 @@ class ValidSocio(CompoundBusinessRule):
         ]
 
         super().__init__(message, rules, "validation.usuario")
+
 
 class ValidContrasena(CompoundBusinessRule):
     contrasena: str

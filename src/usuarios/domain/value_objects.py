@@ -18,12 +18,6 @@ class TIPO_IDENTIFICACION(ExtendedEnum):
     IDENTIFICACION_TRIBUTARIA = "NIT"
 
 
-class GENERO(ExtendedEnum):
-    MASCULINO = "M"
-    FEMENINO = "F"
-    OTRO = "O"
-
-
 @dataclass(frozen=True)
 class Identificacion(ValueObject):
     tipo: str = field(default_factory=str)
