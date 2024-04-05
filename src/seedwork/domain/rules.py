@@ -4,12 +4,22 @@ from abc import ABC, abstractmethod
 class BusinessRule(ABC):
 
     __message: str = "Invalid business rule"
+    __code: str
 
-    def __init__(self, message):
+    def __init__(self, message, code="business_rule"):
         self.__message = message
+        self.__code = code
 
     def error(self) -> str:
         return self.__message
+
+    @property
+    def code(self):
+        return self.__code
+    
+    @code.setter
+    def code(self, code):
+        self.__code = code
 
     @abstractmethod
     def is_valid(self) -> bool: ...
@@ -22,8 +32,8 @@ class CompoundBusinessRule(BusinessRule):
     __cause: str
     __rules: list[BusinessRule]
 
-    def __init__(self, message, rules):
-        super(CompoundBusinessRule, self).__init__(message)
+    def __init__(self, message, rules, code="rule.compound"):
+        super(CompoundBusinessRule, self).__init__(message, code)
         self.__rules = rules
 
     @property
@@ -38,6 +48,7 @@ class CompoundBusinessRule(BusinessRule):
         for regla in self.__rules:
             if not regla.is_valid():
                 self.cause = str(regla)
+                self.code = f"{self.code}.{regla.code}"
                 return False
         return True
 
@@ -50,7 +61,7 @@ class ImmutableEntityIdRule(BusinessRule):
     entity: object
 
     def __init__(self, entity, message="Entity identifier must be inmutable"):
-        super().__init__(message)
+        super().__init__(message, "entity.mutability")
         self.entity = entity
 
     def is_valid(self) -> bool:
@@ -66,8 +77,8 @@ class ValidString(BusinessRule):
     min: int
     max: int
 
-    def __init__(self, valor, min, max, message):
-        super().__init__(message)
+    def __init__(self, valor, min, max, message, code="valid_string"):
+        super().__init__(message, code)
         self.valor = valor
         self.min = min
         self.max = max
@@ -75,4 +86,40 @@ class ValidString(BusinessRule):
     def is_valid(self) -> bool:
         min_valid = len(self.valor) >= self.min if self.min else True
         max_valid = len(self.valor) <= self.max if self.max else True
+        return min_valid and max_valid
+
+class ValidFloat(BusinessRule):
+    valor: float
+    min: float
+    max: float
+
+    def __init__(
+        self, valor, min, max, message, code="valid_float"
+    ):
+        super().__init__(message, code)
+        self.valor = valor
+        self.min = min
+        self.max = max
+
+    def is_valid(self) -> bool:
+        min_valid = self.valor >= self.min if self.min else True
+        max_valid = self.valor <= self.max if self.max else True
+        return min_valid and max_valid
+
+class ValidInteger(BusinessRule):
+    valor: float
+    min: float
+    max: float
+
+    def __init__(
+        self, valor, min, max, message, code="valid_integer"
+    ):
+        super().__init__(message, code)
+        self.valor = valor
+        self.min = min
+        self.max = max
+
+    def is_valid(self) -> bool:
+        min_valid = self.valor >= self.min if self.min else True
+        max_valid = self.valor <= self.max if self.max else True
         return min_valid and max_valid

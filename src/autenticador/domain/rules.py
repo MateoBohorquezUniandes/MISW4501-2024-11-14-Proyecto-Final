@@ -23,4 +23,4 @@ class ValidTokenIdentity(CompoundBusinessRule):
             ),
         ]
 
-        super().__init__(message, rules)
+        super().__init__(message, rules, "validation.credenciales")

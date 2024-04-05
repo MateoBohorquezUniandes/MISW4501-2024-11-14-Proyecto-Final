@@ -1,10 +1,16 @@
-from flask import Flask, jsonify
+from flask import Flask, Response, jsonify
 from flask_swagger import swagger
-from flask_jwt_extended import JWTManager
 
-from usuarios.errors.errors import ApiError
+__author__ = "Santiago Cortés Fernández"
+__email__ = "s.cortes@uniandes.edu.co"
 
-import os
+
+def register_handlers():
+    import usuarios.application
+
+
+def import_alchemy_models():
+    import usuarios.infrastructure.dtos
 
 
 def create_app(config={}):
@@ -17,29 +23,39 @@ def create_app(config={}):
     app = Flask(__name__, instance_relative_config=True)
 
     from seedwork.infrastructure.db import generate_database_uri
+    from seedwork.infrastructure.jwt import retrieve_secret_key
 
     db_provider = config.get("database_provider", "postgresql")
     app.config["SQLALCHEMY_DATABASE_URI"] = generate_database_uri(db_provider)
-    app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["JWT_SECRET_KEY"] = retrieve_secret_key()
+
+    app.secret_key = "9d58f98f-3ae8-4149-a09f-3a8c2012e32c"
+    app.config["SESSION_TYPE"] = "filesystem"
+    app.config["TESTING"] = config.get("TESTING")
+
+    register_handlers()
 
     with app.app_context():
-        from usuarios.models.model import db
+        from usuarios.infrastructure.db import db
+
+        import_alchemy_models()
 
         db.init_app(app=app)
         db.create_all()
 
-    from usuarios.blueprints.usuarios import bp, bp_prefix
+        from usuarios.infrastructure.auth import jwt
+
+        jwt.init_app(app)
+
+    from usuarios.presentation.api import bp, bp_prefix
 
     app.register_blueprint(bp, url_prefix=bp_prefix)
 
-    def handle_exception(err):
-        response = {
-            "msg": err.description,
-            # "version": os.environ["VERSION"]
-        }
-        return jsonify(response), err.code
+    from seedwork.presentation.exceptions import APIError
+    from usuarios.presentation.handlers import api_custom_exception_handler
 
-    app.register_error_handler(ApiError, handle_exception)
+    app.register_error_handler(APIError, api_custom_exception_handler)
 
     @app.route("/spec")
     def spec():
@@ -50,8 +66,6 @@ def create_app(config={}):
 
     @app.route("/health")
     def health():
-        return {"status": "healthy"}
-
-    JWTManager(app)
+        return jsonify({"status": "healthy"})
 
     return app

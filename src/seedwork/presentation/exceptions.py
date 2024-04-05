@@ -10,12 +10,27 @@ class PresentationException(Exception): ...
 
 class APIError(PresentationException):
 
-    status: HTTPStatus.INTERNAL_SERVER_ERROR.value
+    __status: int
     __message: str
+    __code: str
 
-    def __init__(self, message=HTTPStatus.INTERNAL_SERVER_ERROR.phrase):
+    def __init__(
+        self,
+        status=HTTPStatus.INTERNAL_SERVER_ERROR.value,
+        message=HTTPStatus.INTERNAL_SERVER_ERROR.phrase,
+        code="",
+    ):
+        self.__status = status
         self.__message = message
+        self.__code = code
 
     def __str__(self) -> str:
-        return f"{self.status} {self.__message}"
+        return self.__message
 
+    @property
+    def status(self):
+        return self.__status
+
+    @property
+    def code(self):
+        return self.__code
