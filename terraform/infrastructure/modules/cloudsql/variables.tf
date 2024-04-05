@@ -6,7 +6,7 @@ variable "instance_suffix" {
   type = string
 }
 
-variable project_name {
+variable project {
   type    = string
 }
 

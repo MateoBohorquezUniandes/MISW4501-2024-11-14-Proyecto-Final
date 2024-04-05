@@ -1,16 +1,21 @@
+variable "project" {
+  type    = string
+  default = "proyecto-final-416123"
+}
+
 variable "location" {
-  type    = string
+  type = string
 }
 
-variable repository_id {
-  type    = string
+variable "repository_id" {
+  type = string
 }
 
-variable description {
-  type    = string
+variable "description" {
+  type = string
 }
 
-variable format {
+variable "format" {
   type    = string
   default = "DOCKER"
 }

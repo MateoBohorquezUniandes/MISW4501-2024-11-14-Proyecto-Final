@@ -1,5 +1,5 @@
 resource "google_compute_subnetwork" "subnet" {
-  project = var.project_name
+  project = var.project
   name   = var.vpn_subnet_name
   region = var.region
 

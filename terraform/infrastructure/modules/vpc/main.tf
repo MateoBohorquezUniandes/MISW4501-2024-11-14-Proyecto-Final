@@ -1,5 +1,5 @@
 resource "google_compute_network" "network" {
-  project = var.project_name
+  project = var.project
   name    = var.google_compute_network_name
 
   mtu                             = 1460
@@ -15,7 +15,7 @@ resource "google_compute_network" "network" {
 
 
 resource "google_compute_global_address" "global_private_ip_address" {
-  project = var.project_name
+  project = var.project
   network = google_compute_network.network.name
 
   name    = var.private_service_connection_name
@@ -35,7 +35,7 @@ resource "google_service_networking_connection" "private_service_connection" {
 }
 
 resource "google_compute_firewall" "allow_ingress_rule" {
-  project   = var.project_name
+  project   = var.project
   name      = "${google_compute_global_address.global_private_ip_address.name}-allow-ssh"
   network   = google_compute_network.network.name
   direction = "INGRESS"

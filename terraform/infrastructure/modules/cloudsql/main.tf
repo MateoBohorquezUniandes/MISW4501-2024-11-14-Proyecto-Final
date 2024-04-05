@@ -1,5 +1,5 @@
 resource "google_sql_database_instance" "database" {
-  project = var.project_name
+  project = var.project
   name                = "${var.instance_name}-${var.instance_suffix}-db"
   region              = var.region
   database_version    = var.database_version

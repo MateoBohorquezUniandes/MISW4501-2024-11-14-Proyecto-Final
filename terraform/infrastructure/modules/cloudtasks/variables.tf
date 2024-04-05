@@ -1,6 +1,8 @@
+variable "project" {
+  type = string
+}
 variable "region" {
-  type    = string
-  default = "us-central1"
+  type = string
 }
 
 variable "task_queue_name" {
@@ -8,7 +10,7 @@ variable "task_queue_name" {
 }
 
 variable "max_attempts" {
-  type = string
+  type = number
 }
 
 variable "min_backoff" {
@@ -19,6 +21,10 @@ variable "max_backoff" {
   type = string
 }
 
-variable "max_doublings" {
+variable "max_retry_duration" {
   type = string
+}
+
+variable "max_doublings" {
+  type = number
 }
