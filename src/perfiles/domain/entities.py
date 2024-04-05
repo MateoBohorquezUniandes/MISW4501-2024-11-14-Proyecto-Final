@@ -2,53 +2,57 @@ from dataclasses import dataclass, field
 import uuid
 from seedwork.domain.entities import Entity, RootAggregation
 import perfiles.domain.value_objects as vo
+from perfiles.domain.events import PerfilDemograficoCreated
 
 
 @dataclass
 class ReporteSanguineo(Entity):
-    resultados: vo.ResultadoElementoSanguineo = field(
+    resultado: vo.ResultadoElementoSanguineo = field(
         default_factory=vo.ResultadoElementoSanguineo
     )
 
 
 @dataclass
 class PerfilDemografico(RootAggregation):
-    id_usuario: uuid.UUID = field(hash=True, default=None)
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)
+
     clasificacion_riesgo: vo.ClasificacionRiesgo = field(
         default_factory=vo.ClasificacionRiesgo
     )
 
-    reporte_sanguineo: list[ReporteSanguineo] = field(
-        default_factory=list[ReporteSanguineo]
+    reportes_sanguineo: list[ReporteSanguineo] = field(
+        default_factory=list
     )
-    reporte_demografico: vo.InformacionDemografica = field(
-        default_factory= vo.InformacionDemografica
+    demografia: vo.InformacionDemografica = field(
+        default_factory=vo.InformacionDemografica
     )
     fisiologia: vo.InformacionFisiologica = field(
-        default_factory= vo.InformacionFisiologica
+        default_factory=vo.InformacionFisiologica
     )
-    
 
-
-@dataclass
-class HabitoDeportivo(Entity):
-    tipo: vo.TipoActividadDeportiva = field(default_factory=vo.TipoActividadDeportiva)
-    frecuencia: vo.FrecuenciaActividadDeportiva = field(
-        default_factory=vo.FrecuenciaActividadDeportiva
-    )
+    def create(self, correlation_id):
+        self.append_event(
+            PerfilDemograficoCreated(
+                correlation_id=correlation_id,
+                tipo_identificacion=self.tipo_identificacion,
+                identificacion=self.identificacion,
+                created_at=self.created_at,
+                clasificacion_riesgo=self.clasificacion_riesgo.__dict__,
+                demografia=self.demografia.__dict__,
+                fisiologia=self.fisiologia.__dict__,
+            )
+        )
 
 
 @dataclass
 class PerfilDeportivo(RootAggregation):
-    id_usuario: uuid.UUID = field(hash=True, default=None)
-    habitos: list[HabitoDeportivo] = field(default_factory=list[HabitoDeportivo])
-    # lesiones: list
-    # incapacidades: list
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)
 
 
 @dataclass
 class PerfilAlimenticio(RootAggregation):
-    id_usuario: uuid.UUID = field(hash=True, default=None)
-    tipo_alimentacion: vo.TipoAlimentacion = field(default_factory=vo.TipoAlimentacion)
-    # preferencias: list
-    # limitaciones: list
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)
+

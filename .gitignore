@@ -159,5 +159,5 @@ cython_debug/
 *.csv
 secrets.yaml
 
-# Otros
+# Mac
 .DS_Store

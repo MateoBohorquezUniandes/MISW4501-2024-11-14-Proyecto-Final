@@ -1,5 +1,7 @@
+from flask import Response, jsonify
+
 from seedwork.presentation.exceptions import APIError
-from flask import Response
+
 
 def api_custom_exception_handler(error: APIError) -> Response:
     """
@@ -11,4 +13,4 @@ def api_custom_exception_handler(error: APIError) -> Response:
     Returns:
         Response: HTTP response with corresponding API status code
     """
-    return Response(status=error.code)
+    return jsonify(dict(code=error.code, message=str(error))), error.status

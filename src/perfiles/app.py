@@ -1,15 +1,19 @@
-import os
 from hashlib import md5
 import json
-import random
 from flask import Flask, jsonify, Response
 from flask_swagger import swagger
 
-from perfiles.presentation.handlers import api_custom_exception_handler
-from seedwork.presentation.exceptions import APIError
 
 __author__ = "Santiago Cortés Fernández"
 __email__ = "s.cortes@uniandes.edu.co"
+
+
+def register_handlers():
+    import perfiles.application
+
+
+def import_alchemy_models():
+    import perfiles.infrastructure.dtos
 
 
 def create_app(config={}):
@@ -26,21 +30,33 @@ def create_app(config={}):
 
     db_provider = config.get("database_provider", "postgresql")
     app.config["SQLALCHEMY_DATABASE_URI"] = generate_database_uri(db_provider)
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["JWT_SECRET_KEY"] = retrieve_secret_key()
+
+    app.secret_key = "b81413a5-f8d3-405b-806a-219f804ce8e4"
+    app.config["SESSION_TYPE"] = "filesystem"
+    app.config["TESTING"] = config.get("TESTING")
+
+    register_handlers()
 
     with app.app_context():
         from perfiles.infrastructure.db import db
 
+        import_alchemy_models()
+
         db.init_app(app=app)
         db.create_all()
 
-        from perfiles.infrastructure.jwt import jwt
+        from perfiles.infrastructure.auth import jwt
 
         jwt.init_app(app)
 
     from perfiles.presentation.api import bp, bp_prefix
 
     app.register_blueprint(bp, url_prefix=bp_prefix)
+
+    from seedwork.presentation.exceptions import APIError
+    from perfiles.presentation.handlers import api_custom_exception_handler
 
     app.register_error_handler(APIError, api_custom_exception_handler)
 
@@ -54,21 +70,13 @@ def create_app(config={}):
     @app.route("/health")
     def health():
         return jsonify({"status": "healthy"})
-    
-    @app.route("/health-test")
-    def health_test():
-        return jsonify({"status": "healthy"})
 
     @app.after_request
     def after_request(response: Response):
-        fail_rate = float(os.environ["FAIL_RATE"])
-        r = random.random()
-        check_input = response.json if r <= fail_rate else {"data": "fake"}
-        
         data = dict(
             data=response.json,
             checksum=md5(
-                json.dumps(check_input, sort_keys=True).encode("utf-8")
+                json.dumps(response.json, sort_keys=True).encode("utf-8")
             ).hexdigest(),
         )
         response.set_data(json.dumps(data))
