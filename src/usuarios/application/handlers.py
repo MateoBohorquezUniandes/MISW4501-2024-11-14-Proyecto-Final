@@ -7,4 +7,4 @@ class UsuarioCreatedIntegrationMessageHandler(Handler):
     @staticmethod
     def handle(event):
         dispatcher = UsuarioIntegrationEventDispatcher(event)
-        # dispatcher.publish("usuarios-events")
+        dispatcher.publish("usuarios-events")

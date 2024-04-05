@@ -15,6 +15,9 @@ class UsuarioIntegrationEventDispatcher(Dispatcher):
         self._message: IntegrationMessage = self._integration_factory.create(event)
 
     def publish(self, url):
+        testing = environ.get("TESTING", "") == "True"
+        if testing: return
+
         client = tasks_v2.CloudTasksClient()
 
         task = tasks_v2.Task(

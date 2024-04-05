@@ -21,8 +21,10 @@ class DemografiaPayload(MessagePayload):
 
 @dataclass(frozen=True)
 class UsuarioCreatedPayload(MessagePayload):
-    id_usuario: str = field(default_factory=str)
     created_at: str = field(default_factory=str)
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)
+    rol: str = field(default_factory=str)
 
     demografia: DemografiaPayload = field(default_factory=DemografiaPayload)
     deportes: list[str] = field(default_factory=list)

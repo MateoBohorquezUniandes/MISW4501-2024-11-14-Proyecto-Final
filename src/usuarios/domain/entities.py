@@ -29,7 +29,9 @@ class Deportista(Usuario):
         self.append_event(
             UsuarioCreated(
                 correlation_id=correlation_id,
-                id_usuario=self.id,
+                tipo_identificacion=self.identificacion.tipo,
+                identificacion=self.identificacion.valor,
+                rol=self.rol,
                 created_at=self.created_at,
                 demografia=self.demografia.__dict__,
                 deportes=[d.nombre for d in self.deportes],

@@ -26,7 +26,9 @@ class UsuarioCreatedIntegrationEventMapper(IntegrationMapper):
         )
 
         payload: UsuarioCreatedPayload = UsuarioCreatedPayload(
-            id_usuario=str(external.id_usuario),
+            tipo_identificacion=str(external.tipo_identificacion),
+            identificacion=str(external.identificacion),
+            rol=str(external.rol),
             created_at=external.created_at.strftime(self.DATE_FORMAT),
             demografia=demografia,
             deportes=external.deportes,

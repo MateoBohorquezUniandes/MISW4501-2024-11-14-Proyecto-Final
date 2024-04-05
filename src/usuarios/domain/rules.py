@@ -37,7 +37,7 @@ class _ValidValoridentificacion(BusinessRule):
         self.valor = valor
 
     def is_valid(self) -> bool:
-        return len(self.valor) > 0 and len(self.valor) <= 50
+        return len(self.valor) > 0 and len(self.valor) <= 20
 
 
 class ValidIdentificacion(CompoundBusinessRule):

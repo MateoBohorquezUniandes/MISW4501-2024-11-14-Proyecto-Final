@@ -1,5 +1,4 @@
 import datetime
-import uuid
 from dataclasses import dataclass, field
 
 from seedwork.domain.events import DomainEvent
@@ -7,7 +6,9 @@ from seedwork.domain.events import DomainEvent
 
 @dataclass
 class UsuarioCreated(DomainEvent):
-    id_usuario: uuid.UUID = None
+    tipo_identificacion: str = None
+    identificacion: str = None
+    rol: str = None
     created_at: datetime = None
 
     demografia: dict = None
