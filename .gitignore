@@ -158,3 +158,6 @@ cython_debug/
 /outputs/*.csv
 *.csv
 secrets.yaml
+
+# Otros
+.DS_Store
