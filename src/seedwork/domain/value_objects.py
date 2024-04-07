@@ -11,3 +11,8 @@ class ExtendedEnum(Enum):
     @classmethod
     def list(cls):
         return list(map(lambda c: c.value, cls))
+
+class GENERO(ExtendedEnum):
+    MASCULINO = "M"
+    FEMENINO = "F"
+    OTRO = "O"

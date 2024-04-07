@@ -1,15 +1,14 @@
 import json
 from os import environ
 
-import requests
 from google.cloud import tasks_v2
 
 from seedwork.infrastructure.dispatchers import Dispatcher
 from seedwork.infrastructure.schema.v1.messages import IntegrationMessage
-from usuarios.infrastructure.factories import IntegrationMessageFactory
+from perfiles.infrastructure.factories import IntegrationMessageFactory
 
 
-class UsuarioIntegrationEventDispatcher(Dispatcher):
+class PerfilDemograficoIntegrationEventDispatcher(Dispatcher):
     def __init__(self, event):
         self._integration_factory = IntegrationMessageFactory()
         self._message: IntegrationMessage = self._integration_factory.create(event)

@@ -2,7 +2,7 @@ import base64
 from hashlib import sha256
 from os import urandom
 
-from seedwork.application.dtos import DTO, Mapper as ApplicationMapper
+from seedwork.application.dtos import  Mapper as ApplicationMapper
 from seedwork.domain.repositories import Mapper as DomainMapper
 from seedwork.domain.repositories import (
     UnidirectionalMapper as UnidirectionalDomainMapper,

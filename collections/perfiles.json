@@ -1,0 +1,369 @@
+{
+	"info": {
+		"_postman_id": "2cab9c8e-8589-4417-9665-92b5b760e400",
+		"name": "perfiles",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25979776"
+	},
+	"item": [
+		{
+			"name": "demografico success scenarios",
+			"item": [
+				{
+					"name": "perfilamiento inicial",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": \"{{correlation_id}}\",\n    \"type\": \"event\",\n    \"specversion\": \"v1\",\n    \"datacontenttype\": \"application/json\", \n    \"payload\": {\n        \"tipo_identificacion\": \"{{demografico[tipo_identificacion]}}\",\n        \"identificacion\": \"{{demografico[identificacion]}}\",\n        \"demografia\":{\n            \"pais_residencia\": \"{{demografico[demografia][pais]}}\",\n            \"ciudad_residencia\": \"{{demografico[demografia][ciudad]}}\"\n        },\n        \"fisiologia\": {\n            \"genero\": \"{{demografico[fisiologia][genero]}}\",\n            \"edad\": \"{{demografico[fisiologia][edad]}}\",\n            \"peso\": \"{{demografico[fisiologia][peso]}}\",\n            \"altura\": \"{{demografico[fisiologia][altura]}}\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/demografico/init",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"demografico",
+								"init"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "perfil demografico",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: pm.collectionVariables.get(\"auth_url\"),",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico[tipo_identificacion]\"),",
+									"            \"valor\": pm.collectionVariables.get(\"demografico[identificacion]\")",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json().data;",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.tipo_identificacion).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.identificacion).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.clasificacion_riesgo).to.be.an('object');",
+									"    pm.expect(responseData.reportes_sanguineo).to.be.an('array');",
+									"    pm.expect(responseData.demografia).to.be.an('object');",
+									"    pm.expect(responseData.fisiologia).to.be.an('object');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/demografico",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"demografico"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "perfil inicial fail scenarios",
+			"item": [
+				{
+					"name": "perfilamiento inicial duplicado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": \"{{correlation_id}}\",\n    \"type\": \"event\",\n    \"specversion\": \"v1\",\n    \"datacontenttype\": \"application/json\", \n    \"payload\": {\n        \"tipo_identificacion\": \"{{demografico[tipo_identificacion]}}\",\n        \"identificacion\": \"{{demografico[identificacion]}}\",\n        \"demografia\":{\n            \"pais_residencia\": \"{{demografico[demografia][pais]}}\",\n            \"ciudad_residencia\": \"{{demografico[demografia][ciudad]}}\"\n        },\n        \"fisiologia\": {\n            \"genero\": \"{{demografico[fisiologia][genero]}}\",\n            \"edad\": \"{{demografico[fisiologia][edad]}}\",\n            \"peso\": \"{{demografico[fisiologia][peso]}}\",\n            \"altura\": \"{{demografico[fisiologia][altura]}}\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3021/perfiles/domografico/init",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3021",
+							"path": [
+								"perfiles",
+								"domografico",
+								"init"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "perfil demografico sin token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 401', function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/demografico",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"demografico"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "perfil demografico inexistente",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: pm.collectionVariables.get(\"auth_url\"),",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico[tipo_identificacion]\"),",
+									"            \"valor\": \"fake token\"",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 404', function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/demografico",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"demografico"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "demografico[tipo_identificacion]",
+			"value": "CC",
+			"type": "string"
+		},
+		{
+			"key": "demografico[identificacion]",
+			"value": "123456789",
+			"type": "string"
+		},
+		{
+			"key": "demografico[demografia][pais]",
+			"value": "Colombia",
+			"type": "string"
+		},
+		{
+			"key": "demografico[demografia][ciudad]",
+			"value": "Bogota",
+			"type": "string"
+		},
+		{
+			"key": "demografico[fisiologia][genero]",
+			"value": "M",
+			"type": "string"
+		},
+		{
+			"key": "demografico[fisiologia][edad]",
+			"value": "30",
+			"type": "string"
+		},
+		{
+			"key": "demografico[fisiologia][altura]",
+			"value": "1.80",
+			"type": "string"
+		},
+		{
+			"key": "demografico[fisiologia][peso]",
+			"value": "70.5",
+			"type": "string"
+		},
+		{
+			"key": "correlation_id",
+			"value": "70f9a8c4-190f-49a2-9256-e0d4a4d2ab2a",
+			"type": "string"
+		},
+		{
+			"key": "auth_url",
+			"value": "http://127.0.0.1:3000/auth",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:3021/perfiles",
+			"type": "string"
+		}
+	]
+}

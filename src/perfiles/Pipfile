@@ -16,6 +16,8 @@ marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 colorama = "*"
 requests = "*"
+pydispatcher = "*"
+google-cloud-tasks = "*"
 
 [dev-packages]
 pytest = "~=7.2.0"

@@ -1,51 +1,38 @@
-from seedwork.application.queries import Query, QueryHandler, QueryResult
-from seedwork.application.queries import execute_query
+import traceback
 from dataclasses import dataclass, field
+
+from sqlalchemy.exc import NoResultFound
+
 import perfiles.domain.value_objects as vo
-import perfiles.domain.entities as ent
+from perfiles.application.exceptions import PerfilNotFoundError
+from perfiles.application.queries.base import PerfilQueryBaseHandler
+from perfiles.domain.entities import PerfilDemografico
+from seedwork.application.queries import Query, QueryResult, execute_query
+from seedwork.presentation.exceptions import APIError
 
 
 @dataclass(frozen=True)
 class ObtenerPerfilDemografico(Query):
-    id: str = field(default_factory=str)
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)
 
 
-class ObtenerPerfilDemograficoQueryHandler(QueryHandler):
+class ObtenerPerfilDemograficoQueryHandler(PerfilQueryBaseHandler):
 
     def handle(self, query: ObtenerPerfilDemografico) -> QueryResult:
-        from uuid import uuid4
-
-        id_usuario = uuid4()
-        clasificacion_riesgo = vo.ClasificacionRiesgo(50.0, vo.CategoriaRiesgo.MODERADA)
-
-        reporte_sanguineo = [
-            ent.ReporteSanguineo(
-                resultados=[
-                    vo.ResultadoElementoSanguineo(
-                        vo.ExamenSanguineo.GLUCOSA, 50.0, "ml/g"
-                    )
-                ]
-            ),
-            ent.ReporteSanguineo(
-                resultados=[
-                    vo.ResultadoElementoSanguineo(
-                        vo.ExamenSanguineo.COLESTEROL, 60.0, "ml/g"
-                    )
-                ]
-            ),
-        ]
-        reporte_demografico = vo.InformacionDemografica("Colombia")
-        fisiologia = vo.InformacionFisiologica(25, 180.0, 70.3)
-
-        return QueryResult(
-            result=ent.PerfilDemografico(
-                id_usuario=id_usuario,
-                clasificacion_riesgo=clasificacion_riesgo,
-                reporte_sanguineo=reporte_sanguineo,
-                reporte_demografico=reporte_demografico,
-                fisiologia=fisiologia
+        try:
+            repository = self.repository_factory.create(PerfilDemografico())
+            perfil = repository.get(
+                query.tipo_identificacion, query.identificacion
             )
-        )
+            return QueryResult(result=perfil)
+
+        except NoResultFound:
+            traceback.print_exc()
+            raise PerfilNotFoundError()
+        except Exception as e:
+            traceback.print_exc()
+            raise APIError(message=str(e), code="perfiles.get.error.internal")
 
 
 @execute_query.register(ObtenerPerfilDemografico)
