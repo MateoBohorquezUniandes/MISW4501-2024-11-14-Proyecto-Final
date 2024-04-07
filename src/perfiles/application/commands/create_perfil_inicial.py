@@ -4,11 +4,11 @@ from dataclasses import dataclass, field
 
 from sqlalchemy.exc import IntegrityError
 
+from perfiles.application.queries.base import PerfilQueryBaseHandler
 from seedwork.application.commands import Command, execute_command
 from seedwork.domain.exceptions import BusinessRuleException
 from seedwork.infrastructure.uow import UnitOfWorkPort
 from seedwork.presentation.exceptions import APIError
-from perfiles.application.commands.base import UsuarioBaseHandler
 from perfiles.application.dtos import PerfilDemograficoDTO
 from perfiles.application.exceptions import (
     UnprocessableEntityError,
@@ -33,7 +33,7 @@ class PerfilamientoInicial(Command):
     correlation_id: uuid.UUID = field(default_factory=uuid.uuid4)
 
 
-class CreatePerfilInicialHandler(PerfilCommandBaseHandler):
+class CreatePerfilInicialHandler(PerfilQueryBaseHandler):
 
     def handle(self, command: PerfilamientoInicial):
         uowf = None

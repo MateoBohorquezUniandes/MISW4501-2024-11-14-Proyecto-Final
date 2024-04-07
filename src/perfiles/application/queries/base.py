@@ -1,15 +1,17 @@
+from perfiles.domain.factories import PerfilFactory
+from perfiles.infrastructure.factories import RepositoryFactory
 from seedwork.application.queries import QueryHandler
 
 
-class ReservaQueryBaseHandler(QueryHandler):
+class PerfilQueryBaseHandler(QueryHandler):
     def __init__(self):
-        self.repository_factory: FabricaRepositorio = FabricaRepositorio()
-        self._fabrica_vuelos: FabricaVuelos = FabricaVuelos()
+        self._repository_factory: RepositoryFactory = RepositoryFactory()
+        self._perfiles_factory: PerfilFactory = PerfilFactory()
 
     @property
-    def fabrica_repositorio(self):
-        return self._fabrica_repositorio
-    
+    def repository_factory(self):
+        return self._repository_factory
+
     @property
-    def fabrica_vuelos(self):
-        return self._fabrica_vuelos    
+    def perfiles_factory(self):
+        return self._perfiles_factory
