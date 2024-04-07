@@ -56,7 +56,6 @@ class PerfilDemograficoMapper(Mapper):
     def dto_to_entity(self, dto: PerfilDemograficoDTO) -> PerfilDemografico:
         clasificacion_riesgo = ClasificacionRiesgo(
             imc=IndiceMasaCorporal(dto.imc_valor, dto.imc_cateroria),
-            riesgo=dto.clasificacion_riesgo,
         )
 
         reportes = list()

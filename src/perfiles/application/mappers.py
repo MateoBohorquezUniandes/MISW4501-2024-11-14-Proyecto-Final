@@ -117,7 +117,6 @@ class PerfilDemograficoDTOEntityMapper(DomainMapper):
             dto.fisiologia.peso,
         )
         clasificacion = ClasificacionRiesgo(fisiologia.calculate_imc())
-        print(clasificacion)
         reportes = self._dto_to_reportes_sanguineo(dto.reportes_sanguineo)
         return PerfilDemografico(
             tipo_identificacion=dto.tipo_identificacion,

@@ -34,8 +34,8 @@ def get_perfil_demografico(id=None):
     identificacion: dict = get_jwt_identity()
     query_result = execute_query(
         ObtenerPerfilDemografico(
-            identificacion.get("tipo_identificacion"),
-            identificacion.get("identificacion"),
+            tipo_identificacion=identificacion.get("tipo"),
+            identificacion=identificacion.get("valor"),
         )
     )
     mapper = PerfilDemograficoJsonDtoMapper()
