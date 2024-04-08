@@ -73,7 +73,7 @@ class UsuarioDTODictMapper(ApplicationMapper):
             identificacion=identificacion,
             contrasena=external.get("contrasena", ""),
             rol=ROL.DEPORTISTA.value,
-            plan_Afiliacion=PLAN_AFILIACION.GRATUITO.value,
+            plan_afiliacion=PLAN_AFILIACION.GRATUITO.value,
             nombre=external.get("nombre", ""),
             apellido=external.get("apellido", ""),
             demografia=demografia,
