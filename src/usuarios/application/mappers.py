@@ -242,7 +242,7 @@ class UsuarioDTOEntityMapper(DomainMapper):
         return Deportista(
             identificacion=identificacion,
             rol=dto.rol,
-            planAfiliacion=dto.plan_afiliacion,
+            plan_afiliacion=dto.plan_afiliacion,
             nombre=dto.nombre,
             apellido=dto.apellido,
             demografia=demografia,
