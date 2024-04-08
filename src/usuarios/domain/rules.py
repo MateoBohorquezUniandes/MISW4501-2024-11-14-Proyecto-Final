@@ -110,7 +110,7 @@ class ValidRol(BusinessRule):
         return self.rol in ROL.list()
 
 #Regla Plan Afiliacion
-class ValidPlanAfiliacion(BusinessRule):
+class _ValidPlanAfiliacion(BusinessRule):
     planAfiliacion: str
 
     def __init__(self, planAfiliacion, message="El plan de afiliacion no es una opcion valida"):
