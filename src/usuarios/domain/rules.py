@@ -14,9 +14,6 @@ from usuarios.domain.value_objects import (
     TIPO_IDENTIFICACION,
     Demografia,
     Identificacion,
-    TIPO_IDENTIFICACION,
-    GENERO,
-    ROL,
     PLAN_AFILIACION
 )
 
