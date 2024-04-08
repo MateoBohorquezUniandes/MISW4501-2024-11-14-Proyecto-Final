@@ -62,7 +62,6 @@ class CreateUsuarioHandler(UsuarioBaseHandler):
                 UnitOfWorkPort.rollback(uowf)
             raise APIError(message=str(e), code="register.error.internal")
 
-
 @execute_command.register(CreateUsuario)
 def command_crear_usuario(command: CreateUsuario):
     CreateUsuarioHandler().handle(command)
