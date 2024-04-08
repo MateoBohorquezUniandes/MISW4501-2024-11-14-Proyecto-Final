@@ -48,7 +48,7 @@ class Deportista(Usuario):
     nombre = db.Column(db.String(250), nullable=True)
     apellido = db.Column(db.String(250), nullable=True)
 
-    planAfiliacion = db.Column(db.String(50), nullable=True)
+    plan_afiliacion = db.Column(db.String(50), nullable=True)
 
     genero = db.Column(db.String(10), nullable=True)
     edad = db.Column(db.Integer, nullable=True)

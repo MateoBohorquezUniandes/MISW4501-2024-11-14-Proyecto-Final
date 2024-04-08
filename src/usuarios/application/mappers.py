@@ -20,8 +20,7 @@ from usuarios.application.dtos import (
 from usuarios.application.exceptions import BadRequestError
 from usuarios.domain.entities import Deportista, Organizador, Socio, Usuario
 from usuarios.domain.exceptions import (
-    InvalidRolUsuarioError,
-    InvalidPlanAfiliacionError,
+    InvalidRolUsuarioError
     )
 from usuarios.domain.value_objects import (
     Contrasena,
@@ -176,8 +175,7 @@ class UsuarioDTOEntityMapper(DomainMapper):
             identificacion=identificacion,
             contrasena=entity.contrasena.contrasena,
             rol=entity.rol,
-            #Agregando Plan Afiliacion
-            planAfiliacion=entity.planAfiliacion,
+            planAfiliacion=entity.plan_afiliacion,
             nombre=entity.nombre,
             apellido=entity.apellido,
             demografia=demografia,

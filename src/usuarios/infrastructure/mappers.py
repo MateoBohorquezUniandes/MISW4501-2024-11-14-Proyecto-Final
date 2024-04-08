@@ -26,7 +26,7 @@ class DeportistaMapper(Mapper):
 
         deportista_dto.nombre = entity.nombre
         deportista_dto.apellido = entity.apellido
-        deportista_dto.planAfiliacion = entity.planAfiliacion
+        deportista_dto.plan_afiliacion = entity.plan_afiliacion
         deportista_dto.genero = entity.demografia.genero
         deportista_dto.edad = entity.demografia.edad
         deportista_dto.peso = entity.demografia.peso
@@ -59,7 +59,7 @@ class DeportistaMapper(Mapper):
         deportista = Deportista(
             identificacion=identificacion,
             rol=dto.rol,
-            planAfiliacion=dto.planAfiliacion,
+            plan_afiliacion=dto.plan_afiliacion,
             nombre=dto.nombre,
             apellido=dto.apellido,
             demografia=demografia,

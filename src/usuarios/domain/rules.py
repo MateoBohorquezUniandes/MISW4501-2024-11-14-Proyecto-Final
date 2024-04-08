@@ -107,17 +107,6 @@ class ValidRol(BusinessRule):
         return self.rol in ROL.list()
 
 
-class _ValidPlanAfiliacion(BusinessRule):
-    planAfiliacion: str
-
-    def __init__(self, planAfiliacion, message="El plan de afiliacion no es una opcion valida"):
-        super().__init__(message, "validation.planAfiliacion")
-        self.planAfiliacion = planAfiliacion
-
-    def is_valid(self) -> bool:
-        return self.planAfiliacion in PLAN_AFILIACION.list()
-
-
 class ValidEmail(BusinessRule):
     email: str
     regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"

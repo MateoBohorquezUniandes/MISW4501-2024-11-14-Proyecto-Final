@@ -17,8 +17,7 @@ from usuarios.application.exceptions import (
 from usuarios.application.mappers import ContrasenaMapper, UsuarioDTOEntityMapper
 from usuarios.domain.entities import Usuario
 from usuarios.domain.exceptions import (
-    InvalidRolUsuarioError,
-    InvalidPlanAfiliacionError,
+    InvalidRolUsuarioError
 )
 from usuarios.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 
@@ -57,10 +56,6 @@ class CreateUsuarioHandler(UsuarioBaseHandler):
         except InvalidRolUsuarioError as iure:
             traceback.print_exc()
             raise BadRequestError(str(iure), "register.user.integrity.rol")
-        ##Agregando error Plan de Afiliacion
-        except InvalidPlanAfiliacionError as iure:
-            traceback.print_exc()
-            raise BadRequestError(str(iure), "register.user.integrity.planAfiliacion")
         except Exception as e:
             traceback.print_exc()
             if uowf:
