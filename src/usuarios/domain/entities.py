@@ -21,7 +21,6 @@ class Usuario(RootAggregation):
 class Deportista(Usuario):
     nombre: str = field(default_factory=str)
     apellido: str = field(default_factory=str)
-    #Agregando Atributo Plan de Afiliacion
     plan_afiliacion: str = field(default_factory=str)
 
     demografia: Demografia = field(default_factory=Demografia)

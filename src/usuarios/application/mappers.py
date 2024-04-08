@@ -73,7 +73,6 @@ class UsuarioDTODictMapper(ApplicationMapper):
             identificacion=identificacion,
             contrasena=external.get("contrasena", ""),
             rol=ROL.DEPORTISTA.value,
-            #agregando atributo Plan Afiliacion
             planAfiliacion=PLAN_AFILIACION.GRATUITO.value,
             nombre=external.get("nombre", ""),
             apellido=external.get("apellido", ""),
@@ -243,7 +242,6 @@ class UsuarioDTOEntityMapper(DomainMapper):
         return Deportista(
             identificacion=identificacion,
             rol=dto.rol,
-            #Agregando Plan Afiliacion
             planAfiliacion=dto.planAfiliacion,
             nombre=dto.nombre,
             apellido=dto.apellido,

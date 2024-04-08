@@ -45,8 +45,6 @@ class Deportista(Usuario):
     __tablename__ = "deportista"
         
     # Informacion exlusiva de deportistas
-    # Agregando atributo planAfiliacion
-    #usuario_id = db.Column(db.String(10), ForeignKey("usuario.identificacion"), primary_key=True)
     nombre = db.Column(db.String(250), nullable=True)
     apellido = db.Column(db.String(250), nullable=True)
 
@@ -68,14 +66,13 @@ class Deportista(Usuario):
 
     __mapper_args__ = {
         "polymorphic_identity": "deportista",
-       # "inherit_condition": (usuario_id == Usuario.identificacion),
     }
 
 
 class Organizador(Usuario):
     __tablename__ = "organizador"
 
-    # Informacion exlusiva de deportistas
+    # Informacion exlusiva de organizadores
     organizacion = db.Column(db.String(250), nullable=True, unique=True)
 
     __mapper_args__ = {
@@ -86,7 +83,7 @@ class Organizador(Usuario):
 class Socio(Usuario):
     __tablename__ = "socio"
 
-    # Informacion exlusiva de deportistas
+    # Informacion exlusiva de socios
     razon_social = db.Column(db.String(250), nullable=True, unique=True)
     correo = db.Column(db.String(250), nullable=True)
     telefono = db.Column(db.String(250), nullable=True)

@@ -109,7 +109,7 @@ class ValidRol(BusinessRule):
     def is_valid(self) -> bool:
         return self.rol in ROL.list()
 
-#Regla Plan Afiliacion
+
 class _ValidPlanAfiliacion(BusinessRule):
     planAfiliacion: str
 
