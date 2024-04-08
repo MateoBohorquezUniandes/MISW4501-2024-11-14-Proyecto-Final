@@ -162,3 +162,5 @@ secrets.yaml
 # Mac
 .DS_Store
 /.vs
+.vs
+.vs/
