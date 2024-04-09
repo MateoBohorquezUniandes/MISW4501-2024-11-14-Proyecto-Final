@@ -72,7 +72,6 @@ def create_app(config={}):
     def health():
         return jsonify({"status": "healthy"})
     
-    origins = os.environ.get("ORIGINS")
-    CORS(app, origins=[origins])
+    CORS(app)
 
     return app
