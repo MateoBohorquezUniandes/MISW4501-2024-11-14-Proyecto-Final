@@ -40,6 +40,7 @@ class TestOperations:
             "nombre": "Pepito",
             "apellido": "Perez",
             "rol": "DEPORTISTA",
+            "plan_afiliacion":"GRATUITO",
             "contrasena": "contrasena123456",
             "identificacion": {"tipo": "DNI", "valor": "12345678901"},
             "demografia": {

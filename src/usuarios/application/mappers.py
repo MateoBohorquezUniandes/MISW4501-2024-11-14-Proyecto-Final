@@ -19,7 +19,9 @@ from usuarios.application.dtos import (
 )
 from usuarios.application.exceptions import BadRequestError
 from usuarios.domain.entities import Deportista, Organizador, Socio, Usuario
-from usuarios.domain.exceptions import InvalidRolUsuarioError
+from usuarios.domain.exceptions import (
+    InvalidRolUsuarioError
+    )
 from usuarios.domain.value_objects import (
     Contrasena,
     Demografia,
@@ -27,6 +29,7 @@ from usuarios.domain.value_objects import (
     Identificacion,
     LoginRequest,
     ROL,
+    PLAN_AFILIACION
 )
 
 
@@ -69,6 +72,7 @@ class UsuarioDTODictMapper(ApplicationMapper):
             identificacion=identificacion,
             contrasena=external.get("contrasena", ""),
             rol=ROL.DEPORTISTA.value,
+            plan_afiliacion=PLAN_AFILIACION.GRATUITO.value,
             nombre=external.get("nombre", ""),
             apellido=external.get("apellido", ""),
             demografia=demografia,
@@ -171,6 +175,7 @@ class UsuarioDTOEntityMapper(DomainMapper):
             identificacion=identificacion,
             contrasena=entity.contrasena.contrasena,
             rol=entity.rol,
+            planAfiliacion=entity.plan_afiliacion,
             nombre=entity.nombre,
             apellido=entity.apellido,
             demografia=demografia,
@@ -235,6 +240,7 @@ class UsuarioDTOEntityMapper(DomainMapper):
         return Deportista(
             identificacion=identificacion,
             rol=dto.rol,
+            plan_afiliacion=dto.plan_afiliacion,
             nombre=dto.nombre,
             apellido=dto.apellido,
             demografia=demografia,

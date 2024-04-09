@@ -43,10 +43,12 @@ class Usuario(db.Model):
 
 class Deportista(Usuario):
     __tablename__ = "deportista"
-
+        
     # Informacion exlusiva de deportistas
     nombre = db.Column(db.String(250), nullable=True)
     apellido = db.Column(db.String(250), nullable=True)
+
+    plan_afiliacion = db.Column(db.String(50), nullable=True)
 
     genero = db.Column(db.String(10), nullable=True)
     edad = db.Column(db.Integer, nullable=True)
@@ -70,7 +72,7 @@ class Deportista(Usuario):
 class Organizador(Usuario):
     __tablename__ = "organizador"
 
-    # Informacion exlusiva de deportistas
+    # Informacion exlusiva de organizadores
     organizacion = db.Column(db.String(250), nullable=True, unique=True)
 
     __mapper_args__ = {
@@ -81,7 +83,7 @@ class Organizador(Usuario):
 class Socio(Usuario):
     __tablename__ = "socio"
 
-    # Informacion exlusiva de deportistas
+    # Informacion exlusiva de socios
     razon_social = db.Column(db.String(250), nullable=True, unique=True)
     correo = db.Column(db.String(250), nullable=True)
     telefono = db.Column(db.String(250), nullable=True)

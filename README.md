@@ -32,6 +32,13 @@ git clone https://github.com/MateoBohorquezUniandes/MISW4501-2024-11-14-Proyecto
 
 ### Ejecución de Pruebas
 
+####Ejecucion de Pruebas en ambiente local
+Para ejecutar las pruebas en el ambiente local valide que todos los requerimientos incluidos en el archivo Pipifile del 
+Microservicio estan instalados en el ambiente de ejecucion de las pruebas.
+
+Ubicandose en la carpeta del Microservicio a probar (ex: usuarios) correr el siguiente comando:
+
+
 
 ### Despliegue Local
 Para correr la aplicación se debe ejecutar alguno de los siguientes comandos:
