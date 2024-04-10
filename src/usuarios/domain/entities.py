@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 
 from seedwork.domain.entities import RootAggregation
 from usuarios.domain.events import UsuarioCreated
@@ -33,7 +33,7 @@ class Deportista(Usuario):
                 identificacion=self.identificacion.valor,
                 rol=self.rol,
                 created_at=self.created_at,
-                demografia=self.demografia.__dict__,
+                demografia=asdict(self.demografia),
                 deportes=[d.nombre for d in self.deportes],
             )
         )

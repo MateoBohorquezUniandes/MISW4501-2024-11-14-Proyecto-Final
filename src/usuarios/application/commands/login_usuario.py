@@ -32,8 +32,7 @@ usuario_map = {
 
 @dataclass
 class LoginUsuario(Command):
-    login_request: LoginRequestDTO
-    correlation_id: uuid.UUID = field(default_factory=uuid.uuid4)
+    login_request: LoginRequestDTO = field(default_factory=LoginRequestDTO)
 
 
 class LoginUsuarioHandler(UsuarioBaseHandler):

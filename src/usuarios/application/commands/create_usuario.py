@@ -22,8 +22,7 @@ from usuarios.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 
 @dataclass
 class CreateUsuario(Command):
-    usuario_dto: UsuarioDTO
-    correlation_id: uuid.UUID = field(default_factory=uuid.uuid4)
+    usuario_dto: UsuarioDTO = field(default_factory=UsuarioDTO)
 
 
 class CreateUsuarioHandler(UsuarioBaseHandler):
