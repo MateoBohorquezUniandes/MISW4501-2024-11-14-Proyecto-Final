@@ -1,10 +1,17 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import singledispatch
 from typing import Optional
+import uuid
 
 
-class Command: ...
+@dataclass
+class Command:
+    correlation_id: uuid.UUID = field(default_factory=uuid.uuid4)
+
+    def __post_init__(self):
+        if not self.correlation_id:
+            self.correlation_id = uuid.uuid4()
 
 
 @dataclass

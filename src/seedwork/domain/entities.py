@@ -7,16 +7,16 @@ from .exceptions import MutableEntityIdException
 from .mixins import RuleValidationMixin
 from .rules import ImmutableEntityIdRule
 
+
 @dataclass
 class Entity:
-    id: uuid.UUID = field(hash=True)
-    _id: uuid.UUID = field(init=False, repr=False, hash=True)
+    _id: uuid.UUID = field(default_factory=uuid.uuid4, repr=False, hash=True)
     created_at: datetime = field(default=datetime.now())
     updated_at: datetime = field(default=datetime.now())
 
-    @classmethod
-    def next_id(self) -> uuid.UUID:
-        return uuid.uuid4()
+    def __post_init__(self):
+        if not self.id:
+            self._id = uuid.uuid4()
 
     @property
     def id(self):
@@ -26,7 +26,7 @@ class Entity:
     def id(self, id: uuid.UUID) -> None:
         if not ImmutableEntityIdRule(self).is_valid():
             raise MutableEntityIdException()
-        self._id = self.next_id()
+        self._id = id
 
 
 @dataclass
