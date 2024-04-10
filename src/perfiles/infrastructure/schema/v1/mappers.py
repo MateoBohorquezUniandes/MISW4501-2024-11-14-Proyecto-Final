@@ -16,9 +16,10 @@ class DemografiaCreatedIntegrationEventMapper(IntegrationMapper):
     def external_to_message(
         self, external: PerfilDemograficoCreated
     ) -> DemograficaCreatedIntegrationEvent:
+        print(external.clasificacion_riesgo)
         imc = external.clasificacion_riesgo.get("imc", {})
         clasificacion = ClasificacionRiesgoPayload(
-            imc=IndiceMasaCorporalPayload(imc.getr("valor"), imc.getr("categoria")),
+            imc=IndiceMasaCorporalPayload(imc.get("valor"), imc.get("categoria")),
             riesgo=external.clasificacion_riesgo.get("riesgo"),
         )
 
@@ -41,6 +42,7 @@ class DemografiaCreatedIntegrationEventMapper(IntegrationMapper):
             clasificacion_riesgo=clasificacion,
             demografia=demografia,
             fisiologia=fisiologia,
+            deportes=external.deportes,
         )
         return DemograficaCreatedIntegrationEvent(
             correlation_id=str(external.correlation_id),

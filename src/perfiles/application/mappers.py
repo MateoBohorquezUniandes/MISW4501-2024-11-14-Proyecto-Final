@@ -69,12 +69,14 @@ class PerfilDemograficoJsonDtoMapper(ApplicationMapper):
         reportes = self._external_to_reportes_sanguineo_dto(
             external.get("reportes_sanguineo", [])
         )
+        deportes = external.get("deportes", [])
         return PerfilDemograficoDTO(
             tipo_identificacion=external.get("tipo_identificacion"),
             identificacion=external.get("identificacion"),
             reportes_sanguineo=reportes,
             demografia=demografia,
             fisiologia=fisiologia,
+            deportes=deportes,
         )
 
     def dto_to_external(self, dto: PerfilDemograficoDTO) -> any:

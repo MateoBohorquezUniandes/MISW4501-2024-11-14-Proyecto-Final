@@ -13,8 +13,7 @@ from seedwork.presentation.exceptions import APIError
 
 @dataclass
 class CreateToken(Command):
-    request: TokenRequestDTO
-    correlation_id: uuid.UUID = field(default_factory=uuid.uuid4)
+    request: TokenRequestDTO = field(default_factory=TokenRequestDTO)
 
 
 class CreateTokenHandler(CommandBaseHandler):

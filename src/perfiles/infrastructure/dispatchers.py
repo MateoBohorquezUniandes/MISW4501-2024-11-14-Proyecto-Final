@@ -1,11 +1,12 @@
 import json
+from dataclasses import asdict
 from os import environ
 
 from google.cloud import tasks_v2
 
+from perfiles.infrastructure.factories import IntegrationMessageFactory
 from seedwork.infrastructure.dispatchers import Dispatcher
 from seedwork.infrastructure.schema.v1.messages import IntegrationMessage
-from perfiles.infrastructure.factories import IntegrationMessageFactory
 
 
 class PerfilDemograficoIntegrationEventDispatcher(Dispatcher):
@@ -15,7 +16,9 @@ class PerfilDemograficoIntegrationEventDispatcher(Dispatcher):
         self.__bypass = environ.get("TESTING", "") == "True"
 
     def publish(self, url):
-        if self.__bypass: return
+        print(asdict(self._message))
+        if self.__bypass:
+            return
 
         client = tasks_v2.CloudTasksClient()
 
@@ -24,7 +27,7 @@ class PerfilDemograficoIntegrationEventDispatcher(Dispatcher):
                 http_method=tasks_v2.HttpMethod.POST,
                 url=url,
                 headers={"Content-type": self._message.datacontenttype},
-                body=json.dumps(self._message).encode(),
+                body=json.dumps(asdict(self._message)).encode(),
             )
         )
 

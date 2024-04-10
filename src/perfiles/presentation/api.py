@@ -20,8 +20,8 @@ def create():
     pefil_demografico_dto = mapper.external_to_dto(data.get("payload"))
 
     command = PerfilamientoInicial(
-        perfiles_demografico_dto=pefil_demografico_dto,
         correlation_id=UUID(data.get("correlation_id")),
+        perfiles_demografico_dto=pefil_demografico_dto,
     )
     execute_command(command)
 

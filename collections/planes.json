@@ -1,0 +1,1023 @@
+{
+	"info": {
+		"_postman_id": "fad31bf4-f9be-4f7d-81f1-79841bcbe20d",
+		"name": "planes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25979776"
+	},
+	"item": [
+		{
+			"name": "plan sucess scenarios",
+			"item": [
+				{
+					"name": "crear plan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": {{plan.nombre}},\n    \"categoria\": {{plan.categoria}},\n    \"descripcion\": {{plan.descripcion}},\n    \"objetivo\": {\n        \"exigencia\": {{plan.objetivo.exigencia}},\n        \"deporte\": {{plan.objetivo.deporte}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obtener planes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json()[0];",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.id).to.be.an('string');",
+									"    pm.expect(responseData.nombre).to.be.an('string');",
+									"    pm.expect(responseData.descripcion).to.be.an('string');",
+									"    pm.expect(responseData.categoria).to.be.an('string');",
+									"    pm.expect(responseData.objetivo).to.be.an('object');",
+									"    pm.expect(responseData.objetivo.deporte).to.be.an('string');",
+									"    pm.expect(responseData.objetivo.exigencia).to.be.an('string');",
+									"    pm.expect(responseData.entrenamientos).to.be.an('array');",
+									"",
+									"    pm.collectionVariables.set(\"plan.id\", `\"${responseData.id}\"`)",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/planes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "entrenamiento success scenarios",
+			"item": [
+				{
+					"name": "crear entrenamiento",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"nombre\": {{entrenamiento.nombre}},\n    \"descripcion\": {{entrenamiento.descripcion}},\n    \"grupo_muscular\": {{entrenamiento.grupo}},\n    \"imagen\": {{entrenamiento.imagen}},\n    \"duracion\": {\n        \"valor\": {{entrenamiento.duracion.valor}},\n        \"unidad\": {{entrenamiento.duracion.unidad}},\n        \"series\": {{entrenamiento.duracion.series}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes/entrenamientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"entrenamientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obtener entrenamientos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json()[0];",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.id).to.be.an('string');",
+									"    pm.expect(responseData.nombre).to.be.an('string');",
+									"    pm.expect(responseData.descripcion).to.be.an('string');",
+									"    pm.expect(responseData.grupo_muscular).to.be.an('string');",
+									"    pm.expect(responseData.duracion).to.be.an('object');",
+									"    pm.expect(responseData.duracion.unidad).to.be.an('string');",
+									"    pm.expect(responseData.duracion.valor).to.be.an('number');",
+									"    pm.expect(responseData.duracion.series).to.be.an('number');",
+									"    pm.expect(responseData.imagen).to.be.an('string');",
+									"",
+									"    pm.collectionVariables.set(\"entrenamiento.id\", `\"${responseData.id}\"`)",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/planes/entrenamientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"entrenamientos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "asociar entrenamientos success scenarios",
+			"item": [
+				{
+					"name": "asociar entrenamientos con plan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{plan.id}},\n    \"entrenamientos\": [\n        {\n            \"id\": {{entrenamiento.id}}\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "recomendar success scenarios",
+			"item": [
+				{
+					"name": "asociar plan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"specversion\": \"v1\",\n    \"type\": \"event\",\n    \"datacontenttype\": \"application/json\",\n    \"payload\": {\n        \"created_at\": \"2024-04-10T02:02:01Z\",\n        \"tipo_identificacion\": {{usuario.tipo_identificacion}},\n        \"identificacion\": {{usuario.identificacion}},\n        \"clasificacion_riesgo\": {\n            \"imc\": {\n                \"valor\": {{clasificacion_riesgo.imc.valor}},\n                \"categoria\": {{clasificacion_riesgo.imc.categoria}}\n            },\n            \"riesgo\": {{clasificacion_riesgo.riesgo}}\n        },\n        \"demografia\": {\n            \"pais\": {{demografico.demografia.pais}},\n            \"ciudad\": {{demografico.demografia.ciudad}}\n        },\n        \"fisiologia\": {\n            \"genero\": {{fisiologia.genero}},\n            \"edad\": {{fisiologia.edad}},\n            \"altura\": {{fisiologia.altura}},\n            \"peso\": {{fisiologia.peso}}\n        },\n        \"deportes\": {{usuario.deportes}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes/asociar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"asociar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/planes/usuarios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "plan fail scenarios",
+			"item": [
+				{
+					"name": "crear plan duplicado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 400', function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": {{plan.nombre}},\n    \"categoria\": {{plan.categoria}},\n    \"descripcion\": {{plan.descripcion}},\n    \"objetivo\": {\n        \"exigencia\": {{plan.objetivo.exigencia}},\n        \"deporte\": {{plan.objetivo.deporte}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear plan sin nombre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"categoria\": {{plan.categoria}},\n    \"descripcion\": {{plan.descripcion}},\n    \"objetivo\": {\n        \"exigencia\": {{plan.objetivo.exigencia}},\n        \"deporte\": {{plan.objetivo.deporte}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear plan sin descripcion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": {{plan.nombre}},\n    \"categoria\": {{plan.categoria}},\n\n    \"objetivo\": {\n        \"exigencia\": {{plan.objetivo.exigencia}},\n        \"deporte\": {{plan.objetivo.deporte}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear plan sin categoria",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": {{plan.nombre}},\n\n    \"descripcion\": {{plan.descripcion}},\n    \"objetivo\": {\n        \"exigencia\": {{plan.objetivo.exigencia}},\n        \"deporte\": {{plan.objetivo.deporte}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "entrenamiento fail scenarios",
+			"item": [
+				{
+					"name": "crear entrenamiento duplicado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 400', function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"nombre\": {{entrenamiento.nombre}},\n    \"descripcion\": {{entrenamiento.descripcion}},\n    \"grupo_muscular\": {{entrenamiento.grupo}},\n    \"imagen\": {{entrenamiento.imagen}},\n    \"duracion\": {\n        \"valor\": {{entrenamiento.duracion.valor}},\n        \"unidad\": {{entrenamiento.duracion.unidad}},\n        \"series\": {{entrenamiento.duracion.series}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes/entrenamientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"entrenamientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear entrenamiento sin nombre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n\n    \"descripcion\": {{entrenamiento.descripcion}},\n    \"grupo_muscular\": {{entrenamiento.grupo}},\n    \"imagen\": {{entrenamiento.imagen}},\n    \"duracion\": {\n        \"valor\": {{entrenamiento.duracion.valor}},\n        \"unidad\": {{entrenamiento.duracion.unidad}},\n        \"series\": {{entrenamiento.duracion.series}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes/entrenamientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"entrenamientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear entrenamiento sin descripcion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"nombre\": {{entrenamiento.nombre}},\n\n    \"grupo_muscular\": {{entrenamiento.grupo}},\n    \"imagen\": {{entrenamiento.imagen}},\n    \"duracion\": {\n        \"valor\": {{entrenamiento.duracion.valor}},\n        \"unidad\": {{entrenamiento.duracion.unidad}},\n        \"series\": {{entrenamiento.duracion.series}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes/entrenamientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"entrenamientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear entrenamiento sin grupo muscular",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"nombre\": {{entrenamiento.nombre}},\n    \"descripcion\": {{entrenamiento.descripcion}},\n\n    \"imagen\": {{entrenamiento.imagen}},\n    \"duracion\": {\n        \"valor\": {{entrenamiento.duracion.valor}},\n        \"unidad\": {{entrenamiento.duracion.unidad}},\n        \"series\": {{entrenamiento.duracion.series}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes/entrenamientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"entrenamientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear entrenamiento sin repeticiones",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"nombre\": {{entrenamiento.nombre}},\n    \"descripcion\": {{entrenamiento.descripcion}},\n    \"grupo_muscular\": {{entrenamiento.grupo}},\n    \"imagen\": {{entrenamiento.imagen}},\n    \"duracion\": {\n\n        \"unidad\": {{entrenamiento.duracion.unidad}},\n        \"series\": {{entrenamiento.duracion.series}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes/entrenamientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"entrenamientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear entrenamiento sin series",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"nombre\": {{entrenamiento.nombre}},\n    \"descripcion\": {{entrenamiento.descripcion}},\n    \"grupo_muscular\": {{entrenamiento.grupo}},\n    \"imagen\": {{entrenamiento.imagen}},\n    \"duracion\": {\n        \"valor\": {{entrenamiento.duracion.valor}},\n        \"unidad\": {{entrenamiento.duracion.unidad}}\n        \n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes/entrenamientos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"entrenamientos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "asociar entrenamientos fail scenarios",
+			"item": [
+				{
+					"name": "asociar duplicado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 400', function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{plan.id}},\n    \"entrenamientos\": [\n        {\n            \"id\": {{entrenamiento.id}}\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "recomendar fail scenarios",
+			"item": [
+				{
+					"name": "asociar plan duplicado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 400', function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"specversion\": \"v1\",\n    \"type\": \"event\",\n    \"datacontenttype\": \"application/json\",\n    \"payload\": {\n        \"created_at\": \"2024-04-10T02:02:01Z\",\n        \"tipo_identificacion\": {{usuario.tipo_identificacion}},\n        \"identificacion\": {{usuario.identificacion}},\n        \"clasificacion_riesgo\": {\n            \"imc\": {\n                \"valor\": {{clasificacion_riesgo.imc.valor}},\n                \"categoria\": {{clasificacion_riesgo.imc.categoria}}\n            },\n            \"riesgo\": {{clasificacion_riesgo.riesgo}}\n        },\n        \"demografia\": {\n            \"pais\": {{demografico.demografia.pais}},\n            \"ciudad\": {{demografico.demografia.ciudad}}\n        },\n        \"fisiologia\": {\n            \"genero\": {{fisiologia.genero}},\n            \"edad\": {{fisiologia.edad}},\n            \"altura\": {{fisiologia.altura}},\n            \"peso\": {{fisiologia.peso}}\n        },\n        \"deportes\": {{usuario.deportes}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes/asociar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"asociar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "plan.nombre",
+			"value": "\"Fortalecimiento Espalda\"",
+			"type": "string"
+		},
+		{
+			"key": "plan.categoria",
+			"value": "\"Fortalecimiento\"",
+			"type": "string"
+		},
+		{
+			"key": "plan.descripcion",
+			"value": "\"Fortalece los musculos de tu espalda con este plan de entrenamiento\"",
+			"type": "string"
+		},
+		{
+			"key": "plan.objetivo.deporte",
+			"value": "\"Ciclismo\"",
+			"type": "string"
+		},
+		{
+			"key": "plan.objetivo.exigencia",
+			"value": "\"Principiante\"",
+			"type": "string"
+		},
+		{
+			"key": "correlation_id",
+			"value": "\"dfebc03f-c6be-48b2-bb5f-4e49bddec908\"",
+			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:3030",
+			"type": "string"
+		},
+		{
+			"key": "auth_url",
+			"value": "http://127.0.0.1:3000/auth",
+			"type": "string"
+		},
+		{
+			"key": "usuario.tipo_identificacion",
+			"value": "\"CC\"",
+			"type": "string"
+		},
+		{
+			"key": "usuario.identificacion",
+			"value": "\"23456789\"",
+			"type": "string"
+		},
+		{
+			"key": "usuario.deportes",
+			"value": "[\"Ciclismo\"]",
+			"type": "string"
+		},
+		{
+			"key": "clasificacion_riesgo.imc.valor",
+			"value": "21.76",
+			"type": "string"
+		},
+		{
+			"key": "clasificacion_riesgo.imc.categoria",
+			"value": "\"Peso Normal\"",
+			"type": "string"
+		},
+		{
+			"key": "clasificacion_riesgo.riesgo",
+			"value": "\"Bajo\"",
+			"type": "string"
+		},
+		{
+			"key": "demografico.demografia.pais",
+			"value": "\"Colombia\"",
+			"type": "string"
+		},
+		{
+			"key": "demografico.demografia.ciudad",
+			"value": "\"Bogota\"",
+			"type": "string"
+		},
+		{
+			"key": "fisiologia.genero",
+			"value": "\"M\"",
+			"type": "string"
+		},
+		{
+			"key": "fisiologia.edad",
+			"value": "30",
+			"type": "string"
+		},
+		{
+			"key": "fisiologia.peso",
+			"value": "70.5",
+			"type": "string"
+		},
+		{
+			"key": "fisiologia.altura",
+			"value": "7.8",
+			"type": "string"
+		},
+		{
+			"key": "entrenamiento.id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "entrenamiento.nombre",
+			"value": "\"Leg Press\"",
+			"type": "string"
+		},
+		{
+			"key": "entrenamiento.descripcion",
+			"value": "\"Entrenamiento de gluteos con maquina\"",
+			"type": "string"
+		},
+		{
+			"key": "entrenamiento.grupo",
+			"value": "\"gluteos\"",
+			"type": "string"
+		},
+		{
+			"key": "entrenamiento.imagen",
+			"value": "\"https://imagenes.com/gluteos.png\"",
+			"type": "string"
+		},
+		{
+			"key": "entrenamiento.duracion.valor",
+			"value": "10",
+			"type": "string"
+		},
+		{
+			"key": "entrenamiento.duracion.unidad",
+			"value": "\"reps\"",
+			"type": "string"
+		},
+		{
+			"key": "entrenamiento.duracion.series",
+			"value": "4",
+			"type": "string"
+		},
+		{
+			"key": "plan.id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

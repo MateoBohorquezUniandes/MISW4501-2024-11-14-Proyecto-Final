@@ -17,7 +17,7 @@ def create():
     dto = mapper.external_to_dto(request.json)
     correlation_id = request.headers.get("correlation_id", None)
 
-    command = CreateToken(request=dto, correlation_id=correlation_id)
+    command = CreateToken(correlation_id=correlation_id, request=dto)
     response = execute_command(command)
     token_resp = mapper.dto_to_external(response.result)
 

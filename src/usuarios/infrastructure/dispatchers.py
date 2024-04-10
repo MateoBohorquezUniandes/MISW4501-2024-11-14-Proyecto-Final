@@ -1,4 +1,5 @@
 import json
+from dataclasses import asdict
 from os import environ
 
 import requests
@@ -16,7 +17,8 @@ class UsuarioIntegrationEventDispatcher(Dispatcher):
         self.__bypass = environ.get("TESTING", "") == "True"
 
     def publish(self, url):
-        if self.__bypass: return
+        if self.__bypass:
+            return
 
         client = tasks_v2.CloudTasksClient()
 
@@ -25,7 +27,7 @@ class UsuarioIntegrationEventDispatcher(Dispatcher):
                 http_method=tasks_v2.HttpMethod.POST,
                 url=url,
                 headers={"Content-type": self._message.datacontenttype},
-                body=json.dumps(self._message).encode(),
+                body=json.dumps(asdict(self._message)).encode(),
             )
         )
 
