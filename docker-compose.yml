@@ -20,7 +20,7 @@ services:
     ports:
       - 5432:5432
     restart: always
-  
+
   deportistas-db:
     container_name: 'deportistas-db'
     image: postgres
@@ -35,7 +35,7 @@ services:
     ports:
       - 5432:5432
     restart: always
-  
+
   usuarios-api:
     container_name: usuarios-api
     build:
@@ -50,7 +50,7 @@ services:
     ports:
       - 3011:3011
     restart: always
-  
+
   perfiles-api:
     container_name: 'perfiles-api'
     build:
@@ -65,7 +65,22 @@ services:
     ports:
       - 3021:3021
     restart: always
-    
+
+  planes-api:
+    container_name: 'planes-api'
+    build:
+      context: ./
+      dockerfile: planes.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      - ./envs/.env.autenticador.local
+      - ./envs/.env.planes.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3030:3030
+    restart: always
+
   monitor-api:
     container_name: 'monitor-api'
     volumes:
