@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 import uuid
 from seedwork.domain.entities import Entity, RootAggregation
 import perfiles.domain.value_objects as vo
@@ -31,16 +31,17 @@ class PerfilDemografico(RootAggregation):
         default_factory=vo.InformacionFisiologica
     )
 
-    def create(self, correlation_id):
+    def create(self, correlation_id: uuid.UUID, deportes: list[str] = []):
         self.append_event(
             PerfilDemograficoCreated(
                 correlation_id=correlation_id,
                 tipo_identificacion=self.tipo_identificacion,
                 identificacion=self.identificacion,
                 created_at=self.created_at,
-                clasificacion_riesgo=self.clasificacion_riesgo.__dict__,
-                demografia=self.demografia.__dict__,
-                fisiologia=self.fisiologia.__dict__,
+                clasificacion_riesgo=asdict(self.clasificacion_riesgo),
+                demografia=asdict(self.demografia),
+                fisiologia=asdict(self.fisiologia),
+                deportes=deportes,
             )
         )
 

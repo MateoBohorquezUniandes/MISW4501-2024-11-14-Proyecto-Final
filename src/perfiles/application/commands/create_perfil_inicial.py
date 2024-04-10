@@ -29,8 +29,9 @@ from perfiles.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 
 @dataclass
 class PerfilamientoInicial(Command):
-    perfiles_demografico_dto: PerfilDemograficoDTO
-    correlation_id: uuid.UUID = field(default_factory=uuid.uuid4)
+    perfiles_demografico_dto: PerfilDemograficoDTO = field(
+        default_factory=PerfilDemograficoDTO
+    )
 
 
 class CreatePerfilInicialHandler(PerfilQueryBaseHandler):

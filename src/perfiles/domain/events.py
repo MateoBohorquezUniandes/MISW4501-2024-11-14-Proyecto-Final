@@ -13,3 +13,4 @@ class PerfilDemograficoCreated(DomainEvent):
     clasificacion_riesgo: dict = None
     demografia: dict = None
     fisiologia: dict = None
+    deportes: list[str] = None

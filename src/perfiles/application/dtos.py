@@ -60,6 +60,7 @@ class PerfilDemograficoDTO(DTO):
     fisiologia: InformacionFisiologicaDTO = field(
         default_factory=InformacionFisiologicaDTO
     )
+    deportes: list[str] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
