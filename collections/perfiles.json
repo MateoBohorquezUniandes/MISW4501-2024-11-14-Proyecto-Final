@@ -167,18 +167,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3021/perfiles/domografico/init",
-							"protocol": "http",
+							"raw": "{{base_url}}/demografico/init",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3021",
 							"path": [
-								"perfiles",
-								"domografico",
+								"demografico",
 								"init"
 							]
 						}

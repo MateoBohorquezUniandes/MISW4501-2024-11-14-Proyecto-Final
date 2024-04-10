@@ -82,7 +82,7 @@ class TestOperations:
             },
         }
 
-        response = test_client.post("/planes/entrenamientos", json=payload)
+        response = test_client.post("/planes/asociar", json=payload)
         assert response.status_code == HTTPStatus.ACCEPTED.value
 
     def test_health(self, test_client):
