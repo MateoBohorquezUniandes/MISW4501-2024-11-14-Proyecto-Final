@@ -3,8 +3,9 @@ from flask import Blueprint, Response, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from perfiles.application.commands.create_perfil_inicial import PerfilamientoInicial
+from perfiles.application.commands.crear_habito_deportivo import CrearHabitoDeportivo
 import seedwork.presentation.api as api
-from perfiles.application.mappers import PerfilDemograficoJsonDtoMapper
+from perfiles.application.mappers import PerfilDemograficoJsonDtoMapper, HabitoDTODictMapper
 from perfiles.application.queries.get_perfil_demografico import ObtenerPerfilDemografico
 from seedwork.application.queries import execute_query
 from seedwork.application.commands import execute_command
@@ -41,3 +42,16 @@ def get_perfil_demografico(id=None):
     mapper = PerfilDemograficoJsonDtoMapper()
 
     return jsonify(mapper.dto_to_external(query_result.result))
+
+@bp.route("/habito", methods=("POST",))
+def crear_habito_deportivo():
+    mapper = HabitoDTODictMapper()
+    data = request.json
+    habito_dto = mapper.external_to_dto(data.get("payload"))
+
+    command = CrearHabitoDeportivo(
+        habito_dto=habito_dto
+    )
+
+    execute_command(command)
+    return {}, 200

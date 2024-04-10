@@ -3,6 +3,7 @@ from perfiles.domain.entities import (
     PerfilDemografico,
     PerfilDeportivo,
     ReporteSanguineo,
+    HabitoDeportivo
 )
 from perfiles.domain.value_objects import (
     ClasificacionRiesgo,
@@ -15,6 +16,7 @@ from perfiles.infrastructure.dtos import PerfilDemografico as PerfilDemograficoD
 from perfiles.infrastructure.dtos import ReporteSanguineo as ReporteSanguineoDTO
 from perfiles.infrastructure.dtos import PerfilDeportivo as PerfilDeportivoDTO
 from perfiles.infrastructure.dtos import PerfilAlimenticio as PerfilAlimenticioDTO
+from perfiles.infrastructure.dtos import HabitoDeportivo as HabitoDeportivoDTO
 from seedwork.domain.entities import Entity
 from seedwork.domain.repositories import Mapper
 
@@ -114,3 +116,25 @@ class PerfilAlimenticioMapper(Mapper):
             tipo_identificacion=dto.tipo_identificacion,
             identificacion=dto.identificacion,
         )
+
+class HabitoDeportivoMapper(Mapper):
+    def type(self) -> type:
+        return HabitoDeportivo
+
+    def dto_to_entity(self, dto: HabitoDeportivoDTO) -> HabitoDeportivo:
+        return HabitoDeportivo(
+            tipo_identificacion=dto.tipo_identificacion,
+            identificacion=dto.identificacion,
+            descripcion=dto.descripcion,
+            frecuencia=dto.frecuencia,
+            titulo=dto.titulo
+        )
+    def entity_to_dto(self, entity: HabitoDeportivo) -> HabitoDeportivoDTO:
+        habito_dto = HabitoDeportivoDTO()
+        habito_dto.frecuencia = entity.frecuencia
+        habito_dto.descripcion = entity.descripcion
+        habito_dto.titulo = entity.titulo
+        habito_dto.tipo_identificacion = entity.tipo_identificacion
+        habito_dto.identificacion = entity.identificacion 
+
+        return habito_dto

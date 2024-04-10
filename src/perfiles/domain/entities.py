@@ -57,3 +57,12 @@ class PerfilAlimenticio(RootAggregation):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
 
+@dataclass
+class HabitoDeportivo(RootAggregation):
+    titulo: str = field(default_factory=str)
+    descripcion: str = field(default_factory=str)
+    frecuencia: vo.HabitoDeportivoFrecuencia = field(
+        default_factory=vo.HabitoDeportivoFrecuencia
+    )
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)
