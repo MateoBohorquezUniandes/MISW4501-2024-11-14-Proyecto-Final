@@ -25,12 +25,7 @@ class GetPlanesAsociadosUsuarioQueryHandler(PlanQueryBaseHandler):
             usuario_planes_asociados = repository.get(
                 query.tipo_identificacion, query.identificacion
             )
-            # mapper = UsuarioPlanDTOEntityMapper()
-            # usuario_planes_asociados_dto =[
-            #     self.planes_factory.create(usuario_planes_asociados, mapper)
-            # ]
-            
-           # return QueryResult(result=usuario_planes_asociados_dto)
+
             return QueryResult(result=usuario_planes_asociados)
 
         except NoResultFound:

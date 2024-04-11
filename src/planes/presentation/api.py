@@ -123,7 +123,6 @@ def get_usuarios_plan():
 @jwt_required()
 def get_usuario_plan():
     identificacion: dict = get_jwt_identity()
-    #return jsonify({'Tipo Identificacion': identificacion.get("tipo"),'identificacion':identificacion.get("valor")}),200
     mapper = UsuarioPlanDTODictMapper()
     query_result = execute_query(
          GetPlanesAsociadosUsuario(
@@ -131,8 +130,5 @@ def get_usuario_plan():
              identificacion=identificacion.get("valor"),
          )
      )
-    print('********')
-    print(query_result)
     
     return jsonify(mapper.dto_to_external(query_result.result))
-   # return jsonify([mapper.dto_to_external(e) for e in query_result.result])
