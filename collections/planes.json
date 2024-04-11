@@ -1065,12 +1065,12 @@
 		},
 		{
 			"key": "usuario.tipo_identificacion",
-			"value": "\"CC\"",
+			"value": "CC",
 			"type": "string"
 		},
 		{
 			"key": "usuario.identificacion",
-			"value": "\"123456789\"",
+			"value": "123456789",
 			"type": "string"
 		},
 		{
