@@ -867,8 +867,8 @@
 									"    body: {\r",
 									"        mode: 'raw',\r",
 									"        raw: JSON.stringify({\r",
-									"            \"tipo\": pm.collectionVariables.get(\"usuario.tipo_identificacion\"),\r",
-									"            \"valor\": pm.collectionVariables.get(\"usuario.identificacion\")\r",
+									"            \"tipo\": pm.collectionVariables.get(\"deportista.tipo_identificacion\"),\r",
+									"            \"valor\": pm.collectionVariables.get(\"deportista.identificacion\")\r",
 									"        })\r",
 									"    }\r",
 									"},\r",
@@ -1065,12 +1065,12 @@
 		},
 		{
 			"key": "usuario.tipo_identificacion",
-			"value": "CC",
+			"value": "\"CC\"",
 			"type": "string"
 		},
 		{
 			"key": "usuario.identificacion",
-			"value": "123456789",
+			"value": "\"123456789\"",
 			"type": "string"
 		},
 		{
@@ -1181,6 +1181,16 @@
 		{
 			"key": "unexistinguser.identificacion",
 			"value": "111111111",
+			"type": "string"
+		},
+		{
+			"key": "deportista.tipo_identificacion",
+			"value": "CC",
+			"type": "string"
+		},
+		{
+			"key": "deportista.identificacion",
+			"value": "123456789",
 			"type": "string"
 		}
 	]
