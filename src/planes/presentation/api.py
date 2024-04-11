@@ -1,9 +1,11 @@
 from uuid import UUID
 
 from flask import Blueprint, Response, jsonify, request
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from planes.application.commands.asociar_entrenamiento import AsociarEntrenamientos
 from planes.application.queries.get_usuarios import GetUsuarioPlanes
+from planes.application.queries.get_planes_asociados_usuario import GetPlanesAsociadosUsuario
 import seedwork.presentation.api as api
 from planes.application.commands.asociar_plan_entrenamiento import CreateRecomendacionPlan
 from planes.application.commands.create_entrenamiento import CreateEntrenamiento
@@ -114,4 +116,23 @@ def get_usuarios_plan():
     mapper = UsuarioPlanDTODictMapper()
     query_result = execute_query(GetUsuarioPlanes())
 
+    return jsonify([mapper.dto_to_external(e) for e in query_result.result])
+
+
+@bp.route("/usuario", methods=("GET",))
+@jwt_required()
+def get_usuario_plan():
+    identificacion: dict = get_jwt_identity()
+    #return jsonify({'Tipo Identificacion': identificacion.get("tipo"),'identificacion':identificacion.get("valor")}),200
+    mapper = UsuarioPlanDTODictMapper()
+    query_result = execute_query(
+         GetPlanesAsociadosUsuario(
+             tipo_identificacion=identificacion.get("tipo"),
+             identificacion=identificacion.get("valor"),
+         )
+     )
+    print('********')
+    print(query_result)
+    
+    #return jsonify(mapper.dto_to_external(query_result.result))
     return jsonify([mapper.dto_to_external(e) for e in query_result.result])
