@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "fad31bf4-f9be-4f7d-81f1-79841bcbe20d",
+		"_postman_id": "082d9e8a-8975-4074-9854-42f1100fe71c",
 		"name": "planes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25979776"
+		"_exporter_id": "23877360"
 	},
 	"item": [
 		{
@@ -849,6 +849,155 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "consultar planes asociados success",
+			"item": [
+				{
+					"name": "get planes asociados",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: pm.collectionVariables.get(\"auth_url\"),\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"usuario.tipo_identificacion\"),\r",
+									"            \"valor\": pm.collectionVariables.get(\"usuario.identificacion\")\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json().data;\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.tipo_identificacion).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.identificacion).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.planes_entrenamiento).to.be.an('array');\r",
+									"    pm.expect(responseData.events).to.be.an('array');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/planes/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "consultar planes fail scenarios",
+			"item": [
+				{
+					"name": "unexisting user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: pm.collectionVariables.get(\"auth_url\"),\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"unexistinguser.tipo_identificacion\"),\r",
+									"            \"valor\": pm.collectionVariables.get(\"unexistinguser.identificacion\")\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 404', function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/planes/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -921,7 +1070,7 @@
 		},
 		{
 			"key": "usuario.identificacion",
-			"value": "\"23456789\"",
+			"value": "\"123456789\"",
 			"type": "string"
 		},
 		{
@@ -1017,6 +1166,21 @@
 		{
 			"key": "plan.id",
 			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "unexistinguser.tipo_identificacion",
+			"value": "CC",
+			"type": "string"
+		},
+		{
+			"key": "unexistinguser.identificacion",
+			"value": "111111111",
 			"type": "string"
 		}
 	]
