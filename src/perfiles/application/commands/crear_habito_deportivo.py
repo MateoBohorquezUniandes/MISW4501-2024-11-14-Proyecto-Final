@@ -17,7 +17,9 @@ from perfiles.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 
 @dataclass
 class CrearHabitoDeportivo(Command):
-    habito_dto: HabitoDeportivoDTO
+    habito_dto: HabitoDeportivoDTO = field(
+        default_factory=HabitoDeportivoDTO
+    )
 
 class CrearHabitoDeportivoHandler(PerfilCommandBaseHandler):
     def handle(self, command: Command):

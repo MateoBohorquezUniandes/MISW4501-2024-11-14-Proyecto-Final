@@ -44,14 +44,19 @@ def get_perfil_demografico(id=None):
     return jsonify(mapper.dto_to_external(query_result.result))
 
 @bp.route("/habito", methods=("POST",))
+@jwt_required()
 def crear_habito_deportivo():
     mapper = HabitoDTODictMapper()
     data = request.json
-    habito_dto = mapper.external_to_dto(data.get("payload"))
+    identificacion: dict = get_jwt_identity()
+    payload = data.get("payload")
+    payload["identificacion"] = identificacion.get("valor")
+    payload["tipo_identificacion"] = identificacion.get("tipo")
+    habito_dto = mapper.external_to_dto(payload)
 
     command = CrearHabitoDeportivo(
         habito_dto=habito_dto
     )
 
     execute_command(command)
-    return {}, 200
+    return mapper.dto_to_external(habito_dto), 200
