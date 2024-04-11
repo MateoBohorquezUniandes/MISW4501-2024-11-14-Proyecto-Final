@@ -134,5 +134,5 @@ def get_usuario_plan():
     print('********')
     print(query_result)
     
-    #return jsonify(mapper.dto_to_external(query_result.result))
-    return jsonify([mapper.dto_to_external(e) for e in query_result.result])
+    return jsonify(mapper.dto_to_external(query_result.result))
+   # return jsonify([mapper.dto_to_external(e) for e in query_result.result])
