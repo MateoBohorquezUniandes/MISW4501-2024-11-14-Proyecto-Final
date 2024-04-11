@@ -11,6 +11,7 @@ from seedwork.presentation.exceptions import APIError
 from planes.application.exceptions import UserNotFoundError, UserNotAsociatedError
 
 
+
 @dataclass(frozen=True)
 class GetPlanesAsociadosUsuario(Query):
     tipo_identificacion: str = field(default_factory=str)
