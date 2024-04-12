@@ -26,8 +26,6 @@ class GetPlanesAsociadosUsuarioQueryHandler(PlanQueryBaseHandler):
             usuario_planes_asociados = repository.get(
                 query.tipo_identificacion, query.identificacion
             )
-            print('******consulta planes de usuario**********')
-            print(usuario_planes_asociados)
 
             mapper = UsuarioPlanDTOEntityMapper()
 
