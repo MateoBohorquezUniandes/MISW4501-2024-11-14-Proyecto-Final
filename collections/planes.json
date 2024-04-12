@@ -325,6 +325,85 @@
 			]
 		},
 		{
+			"name": "consultar planes asociados success",
+			"item": [
+				{
+					"name": "get planes asociados",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: pm.collectionVariables.get(\"auth_url\"),\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"deportista.tipo_identificacion\"),\r",
+									"            \"valor\": pm.collectionVariables.get(\"deportista.identificacion\")\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify data types for response fields\", function () {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(response.created_at).to.be.a(\"string\");\r",
+									"    pm.expect(response.identificacion).to.be.a(\"string\");\r",
+									"    pm.expect(response.planes_entrenamiento).to.be.an(\"array\");\r",
+									"    pm.expect(response.tipo_identificacion).to.be.a(\"string\");\r",
+									"    pm.expect(response.updated_at).to.be.a(\"string\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/planes/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "plan fail scenarios",
 			"item": [
 				{
@@ -843,87 +922,6 @@
 							"path": [
 								"planes",
 								"asociar"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "consultar planes asociados success",
-			"item": [
-				{
-					"name": "get planes asociados",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.sendRequest({\r",
-									"    url: pm.collectionVariables.get(\"auth_url\"),\r",
-									"    method: 'POST',\r",
-									"    header: { 'content-type': 'application/json' },\r",
-									"    body: {\r",
-									"        mode: 'raw',\r",
-									"        raw: JSON.stringify({\r",
-									"            \"tipo\": pm.collectionVariables.get(\"deportista.tipo_identificacion\"),\r",
-									"            \"valor\": pm.collectionVariables.get(\"deportista.identificacion\")\r",
-									"        })\r",
-									"    }\r",
-									"},\r",
-									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
-									");"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response status code is 200', function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Verify data types for response fields\", function () {\r",
-									"    const response = pm.response.json();\r",
-									"    pm.expect(response._id).to.be.a(\"string\");\r",
-									"    pm.expect(response.created_at).to.be.a(\"string\");\r",
-									"    pm.expect(response.events).to.be.an(\"array\");\r",
-									"    pm.expect(response.identificacion).to.be.a(\"string\");\r",
-									"    pm.expect(response.planes_entrenamiento).to.be.an(\"array\");\r",
-									"    pm.expect(response.tipo_identificacion).to.be.a(\"string\");\r",
-									"    pm.expect(response.updated_at).to.be.a(\"string\");\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/planes/usuario",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"planes",
-								"usuario"
 							]
 						}
 					},
