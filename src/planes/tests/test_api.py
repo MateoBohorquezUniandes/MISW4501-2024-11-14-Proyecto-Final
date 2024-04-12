@@ -85,6 +85,10 @@ class TestOperations:
         response = test_client.post("/planes/asociar", json=payload)
         assert response.status_code == HTTPStatus.ACCEPTED.value
 
+    def test_get_usuario_plan(self, test_client):
+        response = test_client.get('/usuario')
+        assert response.status_code == HTTPStatus.OK.value
+
     def test_health(self, test_client):
         """Tests health check endpoint"""
         response = test_client.get("/health")
