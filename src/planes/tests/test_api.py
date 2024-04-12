@@ -43,8 +43,8 @@ class TestOperations:
                         id="test_id",
                         tipo_identificacion="CC",
                         identificacion="123456789",
-                        createdAt=datetime.utcnow(),
-                        updateAt=datetime.utcnow(),            
+                        createdAt="2024-04-10T02:02:01Z",
+                        updateAt="2024-04-10T02:02:01Z",            
                                    )  
         db.session.add(usuario_plan)
         db.session.commit()
