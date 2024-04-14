@@ -1,6 +1,7 @@
 import traceback
 from dataclasses import dataclass, field
 
+from perfiles.application.mappers import PerfilDemograficoDTOEntityMapper
 from sqlalchemy.exc import NoResultFound
 
 import perfiles.domain.value_objects as vo
@@ -22,10 +23,13 @@ class ObtenerPerfilDemograficoQueryHandler(PerfilQueryBaseHandler):
     def handle(self, query: ObtenerPerfilDemografico) -> QueryResult:
         try:
             repository = self.repository_factory.create(PerfilDemografico())
-            perfil = repository.get(
-                query.tipo_identificacion, query.identificacion
+            perfil = repository.get(query.tipo_identificacion, query.identificacion)
+
+            return QueryResult(
+                result=self.perfiles_factory.create(
+                    perfil, PerfilDemograficoDTOEntityMapper()
+                )
             )
-            return QueryResult(result=perfil)
 
         except NoResultFound:
             traceback.print_exc()
