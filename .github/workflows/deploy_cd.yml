@@ -57,6 +57,7 @@ jobs:
           docker push "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/${{ matrix.images}}-api:$IMAGE_TAG"
 
   setup-deploy:
+    if: contains('ref/release', github.ref)
     name: Setup Deploy
     runs-on: ubuntu-latest
     environment: production
@@ -87,7 +88,6 @@ jobs:
 
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
-        if: contains('ref/release', github.ref)
         run: |-
           kubectl apply -f ./deployment
           kubectl get pods
