@@ -48,6 +48,7 @@ jobs:
     - name: Build
       run: |-
         docker build \
+          --f "../../autenticador.Dockerfile" \
           --tag "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$IMAGE_TAG" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
@@ -60,5 +61,5 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        kubectl apply -f ../deployment/deployment-autenticador.yaml
+        kubectl apply -f ../../deployment/deployment-autenticador.yaml
         kubectl get pods
