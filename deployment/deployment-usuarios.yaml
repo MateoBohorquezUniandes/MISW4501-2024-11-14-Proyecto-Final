@@ -26,10 +26,7 @@ spec:
             - name: "AUTH_BASE_URL"
               value: http://autenticador-service/jwt
             - name: "INTEGRATION_EVENT_URL"
-              valueFrom:
-                secretKeyRef:
-                  name: deportistasecrets
-                  key: integrationeventurl
+              value: http://perfiles-service/demografico/init
             - name: "LOCATION_ID"
               valueFrom:
                 secretKeyRef:

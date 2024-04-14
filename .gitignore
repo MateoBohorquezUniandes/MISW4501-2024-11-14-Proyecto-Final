@@ -158,6 +158,7 @@ cython_debug/
 /outputs/*.csv
 *.csv
 secrets.yaml
+key.json
 
 # Mac
 .DS_Store
