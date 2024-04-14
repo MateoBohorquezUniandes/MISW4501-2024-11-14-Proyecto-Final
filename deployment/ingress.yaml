@@ -23,16 +23,16 @@ spec:
             port: 
               number: 80
       - pathType: Prefix
-        path: /jwt
+        path: /auth
         backend:
           service:
             name: autenticador-service
             port: 
               number: 80
       - pathType: Prefix
-        path: /monitor
+        path: /planes
         backend:
           service:
-            name: monitor-service
+            name: planes-service
             port: 
               number: 80
