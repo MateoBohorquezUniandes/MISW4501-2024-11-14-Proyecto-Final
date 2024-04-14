@@ -17,10 +17,10 @@ env:
   GAR_REPO: ${{ secrets.GAR_REPO }} # artifact registry repository
 
 jobs:
-  strategy:
-    matrix:
-      images: [autenticador, perfiles, usuarios, planes]
   setup-build-publish:
+    strategy:
+      matrix:
+        images: [autenticador, perfiles, usuarios, planes]
     name: Setup, Build and Publish
     runs-on: ubuntu-latest
     environment: production
