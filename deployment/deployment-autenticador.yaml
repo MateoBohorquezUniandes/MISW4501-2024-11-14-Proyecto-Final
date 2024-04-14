@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: autenticador
-          image: us-central1-docker.pkg.dev/proyecto-final-416123/proyecto-final/jwt-api:1.0.0
+          image: us-central1-docker.pkg.dev/proyecto-final-416123/deploy-proyecto-final/autenticador-api:test
           env:
             - name: "JWT_SECRET_KEY"
               valueFrom:
