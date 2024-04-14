@@ -3,6 +3,7 @@ name: Build and Deploy to GKE
 on:
   push:
     branches:
+      - feat/worlflow-deploy
       - release/**
       - main
 
