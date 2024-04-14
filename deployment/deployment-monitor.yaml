@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: monitor
-          image: us-central1-docker.pkg.dev/proyecto-final-416123/proyecto-final/monitor-api:1.0.0
+          image: us-central1-docker.pkg.dev/proyecto-final-416123/misw450x-registry/monitor-api:latest
           env:
             - name: "SERVICE_BASE_URL"
               valueFrom:

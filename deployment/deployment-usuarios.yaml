@@ -16,51 +16,67 @@ spec:
     spec:
       containers:
         - name: usuarios
-          image: us-central1-docker.pkg.dev/proyecto-final-416123/proyecto-final/usuarios-api:1.0.0
+          image: us-central1-docker.pkg.dev/proyecto-final-416123/misw450x-registry/usuarios-api:latest
           env:
             - name: "JWT_SECRET_KEY"
               valueFrom:
                 secretKeyRef:
-                  name: authsecrets 
+                  name: authsecrets
                   key: jwtsecretkey
             - name: "AUTH_BASE_URL"
               value: http://autenticador-service/jwt
-            - name: "FAIL_RATE"
+            - name: "INTEGRATION_EVENT_URL"
               valueFrom:
                 secretKeyRef:
-                  name: experimentsecrets 
-                  key: failrate
+                  name: deportistasecrets
+                  key: integrationeventurl
+            - name: "LOCATION_ID"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: locationid
+            - name: "PROJECT_ID"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: projectid
+            - name: "QUEUE_ID"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: queueusuariosid
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
             - name: "DB_USER"
               valueFrom:
                 secretKeyRef:
-                  name: deportistasecrets 
+                  name: deportistasecrets
                   key: pgsqluser
             - name: "DB_PASSWORD"
               valueFrom:
                 secretKeyRef:
-                  name: deportistasecrets 
+                  name: deportistasecrets
                   key: pgsqlpassword
             - name: "DB_HOST"
               valueFrom:
                 secretKeyRef:
-                  name: deportistasecrets 
+                  name: deportistasecrets
                   key: pgsqlhost
             - name: "DB_PORT"
               valueFrom:
                 secretKeyRef:
-                  name: deportistasecrets 
+                  name: deportistasecrets
                   key: pgsqlport
             - name: "DB_NAME"
               valueFrom:
                 secretKeyRef:
-                  name: deportistasecrets 
+                  name: deportistasecrets
                   key: pgsqlname
 
           ports:
             - containerPort: 3011
           imagePullPolicy: Always
 ---
-
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -73,15 +89,14 @@ spec:
   minReplicas: 1
   maxReplicas: 4
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 50
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
 
 ---
-
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
@@ -93,7 +108,6 @@ spec:
     type: HTTP
     requestPath: /health
 ---
-
 apiVersion: v1
 kind: Service
 metadata:

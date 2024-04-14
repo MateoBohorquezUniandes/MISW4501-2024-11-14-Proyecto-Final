@@ -1,50 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: perfiles
+  name: planes
   labels:
-    app: perfiles
+    app: planes
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: perfiles
+      app: planes
   template:
     metadata:
       labels:
-        app: perfiles
+        app: planes
     spec:
       containers:
-        - name: perfiles
-          image: us-central1-docker.pkg.dev/proyecto-final-416123/misw450x-registry/perfiles-api:latest
+        - name: planes
+          image: us-central1-docker.pkg.dev/proyecto-final-416123/misw450x-registry/planes-api:latest
           env:
             - name: "JWT_SECRET_KEY"
               valueFrom:
                 secretKeyRef:
                   name: authsecrets
                   key: jwtsecretkey
-            - name: "INTEGRATION_EVENT_URL"
-              valueFrom:
-                secretKeyRef:
-                  name: deportistasecrets
-                  key: integrationeventurl
-            - name: "LOCATION_ID"
-              valueFrom:
-                secretKeyRef:
-                  name: deportistasecrets
-                  key: locationid
-            - name: "PROJECT_ID"
-              valueFrom:
-                secretKeyRef:
-                  name: deportistasecrets
-                  key: projectid
-            - name: "QUEUE_ID"
-              valueFrom:
-                secretKeyRef:
-                  name: deportistasecrets
-                  key: queueperfilesid
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /var/secrets/google/key.json
             - name: "DB_USER"
               valueFrom:
                 secretKeyRef:
@@ -71,32 +49,32 @@ spec:
                   name: deportistasecrets
                   key: pgsqlname
           ports:
-            - containerPort: 3021
+            - containerPort: 3030
           imagePullPolicy: Always
 ---
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
-  name: perfiles-backend-config
+  name: planes-backend-config
 spec:
   healthCheck:
     checkIntervalSec: 30
-    port: 3021
+    port: 3030
     type: HTTP
     requestPath: /health
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: perfiles-service
+  name: planes-service
   annotations:
-    cloud.google.com/backend-config: '{"default": "perfiles-backend-config"}'
+    cloud.google.com/backend-config: '{"default": "planes-backend-config"}'
 spec:
   type: NodePort
   selector:
-    app: perfiles
+    app: planes
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3021
-      nodePort: 30021
+      targetPort: 3030
+      nodePort: 30030
