@@ -21,6 +21,9 @@ spec:
       containers:
         - name: perfiles
           image: us-central1-docker.pkg.dev/proyecto-final-416123/misw450x-registry/perfiles-api:latest
+          volumeMounts:
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
           env:
             - name: "JWT_SECRET_KEY"
               valueFrom:
