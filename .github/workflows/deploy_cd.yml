@@ -57,7 +57,7 @@ jobs:
           docker push "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/${{ matrix.images}}-api:$IMAGE_TAG"
 
   setup-deploy:
-    if: contains('ref/release', github.ref)
+    if: contains(github.ref, 'release')
     name: Setup Deploy
     runs-on: ubuntu-latest
     environment: production
