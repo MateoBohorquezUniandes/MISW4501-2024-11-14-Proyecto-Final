@@ -14,6 +14,10 @@ spec:
       labels:
         app: perfiles
     spec:
+      volumes:
+        - name: google-cloud-key
+          secret:
+            secretName: tasks-key
       containers:
         - name: perfiles
           image: us-central1-docker.pkg.dev/proyecto-final-416123/misw450x-registry/perfiles-api:latest
