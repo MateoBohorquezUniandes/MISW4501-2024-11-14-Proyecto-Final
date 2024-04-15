@@ -31,7 +31,7 @@ spec:
                   name: authsecrets
                   key: jwtsecretkey
             - name: "AUTH_BASE_URL"
-              value: http://autenticador-service/jwt
+              value: http://autenticador-service/auth
             - name: "INTEGRATION_EVENT_URL"
               value: http://perfiles-service/demografico/init
             - name: "LOCATION_ID"
