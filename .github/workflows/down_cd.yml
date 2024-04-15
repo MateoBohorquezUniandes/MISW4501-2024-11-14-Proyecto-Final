@@ -6,6 +6,7 @@ on:
 env:
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }} # Add your cluster name here.
   GKE_ZONE: ${{ secrets.GKE_ZONE }} # Add your cluster zone here.
+  GAR_ZONE: ${{ secrets.GAR_ZONE }} # artifact registry zone
 
 jobs:
   setup-destroy:
