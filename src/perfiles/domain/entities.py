@@ -1,8 +1,9 @@
-from dataclasses import dataclass, field, asdict
 import uuid
-from seedwork.domain.entities import Entity, RootAggregation
+from dataclasses import asdict, dataclass, field
+
 import perfiles.domain.value_objects as vo
 from perfiles.domain.events import PerfilDemograficoCreated
+from seedwork.domain.entities import Entity, RootAggregation
 
 
 @dataclass
@@ -21,9 +22,7 @@ class PerfilDemografico(RootAggregation):
         default_factory=vo.ClasificacionRiesgo
     )
 
-    reportes_sanguineo: list[ReporteSanguineo] = field(
-        default_factory=list
-    )
+    reportes_sanguineo: list[ReporteSanguineo] = field(default_factory=list)
     demografia: vo.InformacionDemografica = field(
         default_factory=vo.InformacionDemografica
     )
@@ -61,9 +60,8 @@ class HabitoDeportivo(RootAggregation):
 class PerfilDeportivo(RootAggregation):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
-    habitos_deportivos: list[HabitoDeportivo] = field(
-        default_factory=list
-    )
+    habitos_deportivos: list[HabitoDeportivo] = field(default_factory=list)
+
 
 @dataclass
 class PerfilAlimenticio(RootAggregation):

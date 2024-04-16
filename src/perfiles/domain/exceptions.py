@@ -1,4 +1,4 @@
-from seedwork.domain.exceptions import DomainException, FactoryException
+from seedwork.domain.exceptions import FactoryException
 
 
 class InvalidPerfilDemograficoFactoryException(FactoryException):

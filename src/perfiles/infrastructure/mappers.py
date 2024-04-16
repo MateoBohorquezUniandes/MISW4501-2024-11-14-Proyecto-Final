@@ -1,24 +1,23 @@
 from perfiles.domain.entities import (
+    HabitoDeportivo,
     PerfilAlimenticio,
     PerfilDemografico,
     PerfilDeportivo,
     ReporteSanguineo,
-    HabitoDeportivo,
 )
 from perfiles.domain.value_objects import (
     ClasificacionRiesgo,
+    HabitoDeportivoFrecuencia,
     IndiceMasaCorporal,
     InformacionDemografica,
     InformacionFisiologica,
     ResultadoElementoSanguineo,
-    HabitoDeportivoFrecuencia,
 )
-from perfiles.infrastructure.dtos import PerfilDemografico as PerfilDemograficoDTO
-from perfiles.infrastructure.dtos import ReporteSanguineo as ReporteSanguineoDTO
-from perfiles.infrastructure.dtos import PerfilDeportivo as PerfilDeportivoDTO
-from perfiles.infrastructure.dtos import PerfilAlimenticio as PerfilAlimenticioDTO
 from perfiles.infrastructure.dtos import HabitoDeportivo as HabitoDeportivoDTO
-from seedwork.domain.entities import Entity
+from perfiles.infrastructure.dtos import PerfilAlimenticio as PerfilAlimenticioDTO
+from perfiles.infrastructure.dtos import PerfilDemografico as PerfilDemograficoDTO
+from perfiles.infrastructure.dtos import PerfilDeportivo as PerfilDeportivoDTO
+from perfiles.infrastructure.dtos import ReporteSanguineo as ReporteSanguineoDTO
 from seedwork.domain.repositories import Mapper
 
 

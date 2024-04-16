@@ -1,25 +1,25 @@
 from perfiles.domain.entities import (
+    HabitoDeportivo,
     PerfilAlimenticio,
     PerfilDemografico,
     PerfilDeportivo,
-    HabitoDeportivo
 )
 from perfiles.domain.factories import PerfilFactory
 from perfiles.domain.repositories import (
+    HabitoDeportivoRepository,
     PerfilAlimenticioRepository,
     PerfilDemograficoRepository,
     PerfilDeportivoRepository,
-    HabitoDeportivoRepository
 )
 from perfiles.infrastructure.db import db
 from perfiles.infrastructure.dtos import PerfilAlimenticio as PerfilAlimenticioDTO
 from perfiles.infrastructure.dtos import PerfilDemografico as PerfilDemograficoDTO
 from perfiles.infrastructure.dtos import PerfilDeportivo as PerfilDeportivoDTO
 from perfiles.infrastructure.mappers import (
+    HabitoDeportivoMapper,
     PerfilAlimenticioMapper,
     PerfilDemograficoMapper,
     PerfilDeportivoMapper,
-    HabitoDeportivoMapper
 )
 
 
@@ -154,6 +154,7 @@ class PerfilAlimenticioRepositoryPostgreSQL(PerfilAlimenticioRepository):
     def update(self):
         pass
 
+
 class HabitoDeportivoRepositoryPostgreSQL(HabitoDeportivoRepository):
     def __init__(self):
         self._habito_deportivo_factory: PerfilFactory = PerfilFactory()
@@ -167,7 +168,6 @@ class HabitoDeportivoRepositoryPostgreSQL(HabitoDeportivoRepository):
 
     def get(self, tipo_identificacion: str, identificacion: str) -> HabitoDeportivo:
         pass
-
 
     def append(self, habito: HabitoDeportivo):
         habito_dto = self._habito_deportivo_factory.create(

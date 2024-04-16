@@ -1,11 +1,11 @@
 import traceback
 from dataclasses import dataclass, field
 
-from perfiles.application.mappers import PerfilDemograficoDTOEntityMapper
 from sqlalchemy.exc import NoResultFound
 
 import perfiles.domain.value_objects as vo
 from perfiles.application.exceptions import PerfilNotFoundError
+from perfiles.application.mappers import PerfilDemograficoDTOEntityMapper
 from perfiles.application.queries.base import PerfilQueryBaseHandler
 from perfiles.domain.entities import PerfilDemografico
 from seedwork.application.queries import Query, QueryResult, execute_query

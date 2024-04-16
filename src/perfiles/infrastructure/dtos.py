@@ -1,10 +1,9 @@
 import uuid
-
 from datetime import datetime
 
 from sqlalchemy import Column, ForeignKey, Integer, Table
-from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import declarative_base, relationship
 
 from perfiles.infrastructure.db import db
 
@@ -58,13 +57,22 @@ class PerfilDeportivo(db.Model):
 
     tipo_identificacion = db.Column(db.String(10), primary_key=True)
     identificacion = db.Column(db.String(20), primary_key=True)
-    
-    habitos_deportivos = relationship("HabitoDeportivo", back_populates="perfil_deportivo")
+
+    habitos_deportivos = relationship(
+        "HabitoDeportivo", back_populates="perfil_deportivo"
+    )
+
 
 class HabitoDeportivo(db.Model):
     __tablename__ = "habito_deportivo"
 
-    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
+    id = db.Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+        unique=True,
+        nullable=False,
+    )
     titulo = db.Column(db.String(50), nullable=False)
     frecuencia = db.Column(db.String(), nullable=False)
     descripcion = db.Column(db.String(400), nullable=False)
@@ -73,7 +81,9 @@ class HabitoDeportivo(db.Model):
     tipo_identificacion = db.Column(db.String(10), nullable=False)
     identificacion = db.Column(db.String(20), nullable=False)
 
-    perfil_deportivo = relationship("PerfilDeportivo", back_populates="habitos_deportivos")
+    perfil_deportivo = relationship(
+        "PerfilDeportivo", back_populates="habitos_deportivos"
+    )
     __table_args__ = (
         db.ForeignKeyConstraint(
             [tipo_identificacion, identificacion],
@@ -83,6 +93,7 @@ class HabitoDeportivo(db.Model):
             ],
         ),
     )
+
 
 class PerfilAlimenticio(db.Model):
     __tablename__ = "perfil_alimenticio"

@@ -1,18 +1,18 @@
 from dataclasses import dataclass
 
 from perfiles.domain.entities import (
+    HabitoDeportivo,
     PerfilAlimenticio,
     PerfilDemografico,
     PerfilDeportivo,
-    HabitoDeportivo
 )
 from perfiles.domain.events import PerfilDemograficoCreated
 from perfiles.infrastructure.exceptions import InvalidRepositoryFactoryException
 from perfiles.infrastructure.repositories import (
+    HabitoDeportivoRepositoryPostgreSQL,
     PerfilAlimenticioRepositoryPostgreSQL,
     PerfilDemograficoRepositoryPostgreSQL,
     PerfilDeportivoRepositoryPostgreSQL,
-    HabitoDeportivoRepositoryPostgreSQL
 )
 from perfiles.infrastructure.schema.v1.mappers import (
     DemografiaCreatedIntegrationEventMapper,
