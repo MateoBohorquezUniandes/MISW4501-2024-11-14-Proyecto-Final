@@ -15,6 +15,7 @@ from perfiles.domain.exceptions import (
 )
 from perfiles.domain.rules import (
     ValidPerfilDemografico,
+    ValidHabitoDeportivo
 )
 
 
@@ -63,7 +64,7 @@ class _HabitoDeportivoFactory(Factory):
         if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
             return mapper.entity_to_dto(obj)
         habito: HabitoDeportivo = mapper.dto_to_entity(obj)
-        # self.validate_rule(ValidPerfilAlimenticio(perfil))
+        self.validate_rule(ValidHabitoDeportivo(habito))
 
         return habito
 

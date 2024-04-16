@@ -11,6 +11,7 @@ from perfiles.domain.value_objects import (
     InformacionDemografica,
     InformacionFisiologica,
     ResultadoElementoSanguineo,
+    HabitoDeportivoFrecuencia,
 )
 from perfiles.infrastructure.dtos import PerfilDemografico as PerfilDemograficoDTO
 from perfiles.infrastructure.dtos import ReporteSanguineo as ReporteSanguineoDTO
@@ -126,7 +127,7 @@ class HabitoDeportivoMapper(Mapper):
             tipo_identificacion=dto.tipo_identificacion,
             identificacion=dto.identificacion,
             descripcion=dto.descripcion,
-            frecuencia=dto.frecuencia,
+            frecuencia=HabitoDeportivoFrecuencia(dto.frecuencia),
             titulo=dto.titulo
         )
     def entity_to_dto(self, entity: HabitoDeportivo) -> HabitoDeportivoDTO:
@@ -138,3 +139,4 @@ class HabitoDeportivoMapper(Mapper):
         habito_dto.identificacion = entity.identificacion 
 
         return habito_dto
+    

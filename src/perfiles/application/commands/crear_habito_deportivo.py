@@ -8,6 +8,10 @@ from perfiles.application.dtos import HabitoDeportivoDTO
 from perfiles.domain.entities import HabitoDeportivo
 from seedwork.application.commands import Command, execute_command
 from seedwork.domain.exceptions import BusinessRuleException
+from perfiles.application.exceptions import (
+    UnprocessableEntityError,
+    BadRequestError,
+)
 from seedwork.infrastructure.uow import UnitOfWorkPort
 from seedwork.presentation.exceptions import APIError
 
@@ -33,6 +37,12 @@ class CrearHabitoDeportivoHandler(PerfilCommandBaseHandler):
             uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
             UnitOfWorkPort.register_batch(uowf, repository_habitos.append, habito)
             UnitOfWorkPort.commit(uowf)
+        except BusinessRuleException as bre:
+            traceback.print_exc()
+            raise UnprocessableEntityError(str(bre), bre.code)
+        except IntegrityError:
+            traceback.print_exc()
+            raise BadRequestError(code="perfiles.init.integrity")
         except Exception as e:
             traceback.print_exc()
             if uowf:

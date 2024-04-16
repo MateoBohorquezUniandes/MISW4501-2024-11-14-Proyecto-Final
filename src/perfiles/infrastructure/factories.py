@@ -25,7 +25,7 @@ class RepositoryFactory(Factory):
     def create(self, obj):
         if isinstance(obj, PerfilDemografico):
             return PerfilDemograficoRepositoryPostgreSQL()
-        elif isinstance(obj, PerfilDeportivo):
+        elif isinstance(obj, PerfilDeportivo) or obj == PerfilDeportivo:
             return PerfilDeportivoRepositoryPostgreSQL()
         elif isinstance(obj, PerfilAlimenticio):
             return PerfilAlimenticioRepositoryPostgreSQL()

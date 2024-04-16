@@ -7,6 +7,7 @@ from perfiles.application.dtos import (
     ReporteSanguineoDTO,
     ResultadoElementoSanguineoDTO,
     HabitoDeportivoDTO,
+    PerfilDeportivoDTO,
 )
 from perfiles.domain.entities import (
     PerfilAlimenticio,
@@ -95,7 +96,7 @@ class HabitoDTODictMapper(ApplicationMapper):
             descripcion=external.get("descripcion")
         )
 
-    def dto_to_external(self, dto: HabitoDeportivoDTO) -> any:
+    def dto_to_external(self, dto: HabitoDeportivoDTO) -> dict:
         return dto.__dict__
 
 
@@ -229,4 +230,19 @@ class HabitoDTOEntityMapper(DomainMapper):
         )
     
     def entity_to_dto(self, entity: HabitoDeportivo) -> HabitoDeportivoDTO:
+        return entity.__dict__
+    
+class PerfilDeportivoDTOEntityMapper(DomainMapper):
+    def type(self) -> type:
+        return PerfilDeportivo
+
+    def dto_to_entity(self, dto: PerfilDeportivoDTO) -> PerfilDeportivo:
+
+          return PerfilDeportivo(
+            tipo_identificacion=dto.tipo_identificacion,
+            identificacion=dto.identificacion,
+            habitos_deportivos= dto.habitos
+        )
+    
+    def entity_to_dto(self, entity: PerfilDeportivo) -> PerfilDeportivoDTO:
         return entity.__dict__

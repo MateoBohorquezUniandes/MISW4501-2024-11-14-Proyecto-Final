@@ -111,9 +111,10 @@ class TipoActividadDeportiva(str, Enum):
 class TipoAlimentacion(str, Enum): ...
 
 class HabitoFrecuencia(ExtendedEnum):
-    CADA_DIA = "Cada Dia"
-    CADA_SEMANA = "Cada Semana"
-    CADA_MES = "Cada Mes"
+    DIARIO = "Diario"
+    SEMANAL = "Semanal"
+    MENSUAL = "Mensual"
+    ANUAL = "Anual"
 
 @dataclass(frozen=True)
 class HabitoDeportivoFrecuencia(ValueObject):

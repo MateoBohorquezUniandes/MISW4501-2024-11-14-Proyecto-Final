@@ -7,6 +7,7 @@ from perfiles.application.commands.crear_habito_deportivo import CrearHabitoDepo
 import seedwork.presentation.api as api
 from perfiles.application.mappers import PerfilDemograficoJsonDtoMapper, HabitoDTODictMapper
 from perfiles.application.queries.get_perfil_demografico import ObtenerPerfilDemografico
+from perfiles.application.queries.get_perfiles import GetPerfilesDeportivos
 from seedwork.application.queries import execute_query
 from seedwork.application.commands import execute_command
 
@@ -43,7 +44,7 @@ def get_perfil_demografico(id=None):
 
     return jsonify(mapper.dto_to_external(query_result.result))
 
-@bp.route("/habito", methods=("POST",))
+@bp.route("/deportivo/habitos", methods=("POST",))
 @jwt_required()
 def crear_habito_deportivo():
     mapper = HabitoDTODictMapper()
@@ -59,4 +60,12 @@ def crear_habito_deportivo():
     )
 
     execute_command(command)
-    return mapper.dto_to_external(habito_dto), 200
+    return {}, 202
+
+@bp.route("/deportivos", methods=("GET",))
+def get_perfiles_deportivos():
+
+    mapper = HabitoDTODictMapper()
+    query_result = execute_query(GetPerfilesDeportivos())
+
+    return jsonify([mapper.dto_to_external(e) for e in query_result.result])
