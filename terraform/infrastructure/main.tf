@@ -25,6 +25,22 @@ module "misw450x-subnet" {
   vpn_subnet_name = "misw450x-subnet-k8s"
   vpc_network_id  = module.misw450x_vpn.network_id
   ip_cidr_range   = "192.168.32.0/19"
+  secondary_ip_range = [
+    {
+      ip_cidr_range = "192.168.64.0/21"
+      range_name    = "gke-misw450x-k8s-cluster-pods-ea8688ef"
+    },
+    {
+      ip_cidr_range = "192.168.72.0/21"
+      range_name    = "gke-misw450x-k8s-cluster-services-ea8688ef"
+    },
+  ]
+}
+
+module "misw450x-gke-static-ip" {
+  source  = "./modules/static_ip"
+  project = var.project
+  name    = "misw450x-k8s-ip"
 }
 
 module "misw450x-deportistas-db" {
@@ -90,6 +106,6 @@ module "cloud_task_service_account" {
   project = var.project
 
   account_id   = "misw450x-cloud-task-enqueuer"
-  display_name = "misw450x CLoud Task Enqueuer"
+  display_name = "misw450x Cloud Task Enqueuer"
   roles        = local.cloudtask_iam_roles
 }
