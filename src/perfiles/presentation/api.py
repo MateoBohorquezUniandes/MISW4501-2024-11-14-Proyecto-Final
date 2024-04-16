@@ -5,7 +5,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from perfiles.application.commands.create_perfil_inicial import PerfilamientoInicial
 from perfiles.application.commands.crear_habito_deportivo import CrearHabitoDeportivo
 import seedwork.presentation.api as api
-from perfiles.application.mappers import PerfilDemograficoJsonDtoMapper, HabitoDTODictMapper
+from perfiles.application.mappers import PerfilDemograficoJsonDtoMapper, HabitoDTODictMapper,PerfilDeportivoDTODictMapper
 from perfiles.application.queries.get_perfil_demografico import ObtenerPerfilDemografico
 from perfiles.application.queries.get_perfiles import GetPerfilesDeportivos
 from seedwork.application.queries import execute_query
@@ -65,7 +65,8 @@ def crear_habito_deportivo():
 @bp.route("/deportivos", methods=("GET",))
 def get_perfiles_deportivos():
 
-    mapper = HabitoDTODictMapper()
+    mapper = PerfilDeportivoDTODictMapper()
     query_result = execute_query(GetPerfilesDeportivos())
-
+    print(query_result)
+    print(query_result["habitos_deportivos"][0])
     return jsonify([mapper.dto_to_external(e) for e in query_result.result])

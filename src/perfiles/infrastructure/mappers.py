@@ -93,12 +93,14 @@ class PerfilDeportivoMapper(Mapper):
         perfil = PerfilDeportivoDTO()
         perfil.tipo_identificacion = entity.tipo_identificacion
         perfil.identificacion = entity.identificacion
+        perfil.habitos_deportivos = entity.habitos_deportivos
         return perfil
 
     def dto_to_entity(self, dto: PerfilDeportivoDTO) -> PerfilDeportivo:
         return PerfilDeportivo(
             tipo_identificacion=dto.tipo_identificacion,
             identificacion=dto.identificacion,
+            habitos_deportivos= dto.habitos_deportivos
         )
 
 

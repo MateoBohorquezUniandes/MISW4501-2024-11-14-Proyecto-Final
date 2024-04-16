@@ -58,8 +58,8 @@ class PerfilDeportivo(db.Model):
 
     tipo_identificacion = db.Column(db.String(10), primary_key=True)
     identificacion = db.Column(db.String(20), primary_key=True)
-
-    habitos_deportivos = relationship("HabitoDeportivo", backref="perfil_deportivo")
+    
+    habitos_deportivos = relationship("HabitoDeportivo", back_populates="perfil_deportivo")
 
 class HabitoDeportivo(db.Model):
     __tablename__ = "habito_deportivo"
@@ -73,6 +73,7 @@ class HabitoDeportivo(db.Model):
     tipo_identificacion = db.Column(db.String(10), nullable=False)
     identificacion = db.Column(db.String(20), nullable=False)
 
+    perfil_deportivo = relationship("PerfilDeportivo", back_populates="habitos_deportivos")
     __table_args__ = (
         db.ForeignKeyConstraint(
             [tipo_identificacion, identificacion],

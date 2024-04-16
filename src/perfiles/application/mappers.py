@@ -100,6 +100,35 @@ class HabitoDTODictMapper(ApplicationMapper):
         return dto.__dict__
 
 
+class PerfilDeportivoDTODictMapper(ApplicationMapper):
+    def external_to_habitos_dto(self, external: list[dict]) -> HabitoDeportivoDTO:
+        habitos = list[HabitoDeportivoDTO] = []
+        for habito in external:
+            habitos.append(
+                HabitoDeportivoDTO(
+                    titulo=habito.get("titulo"),
+                    frecuencia=habito.get("frecuencia"),
+                    descripcion=habito.get("descripcion"),
+                    tipo_identificacion=habito.get("tipo_identificacion"),
+                    identificacion=habito.get("identificacion")                    
+                )
+            )
+        
+        return habitos
+
+    def external_to_dto(self, external: dict) -> PerfilDeportivoDTO:
+
+        return PerfilDeportivoDTO(
+            tipo_identificacion=external.get("tipo_identificacion", ""),
+            identificacion=external.get("identificacion", ""),
+            habitos=self.external_to_habitos_dto(
+                external.get("habitos_deportivos", [])
+            )
+        )
+
+    def dto_to_external(self, dto: PerfilDeportivoDTO) -> dict:
+        return dto.__dict__
+
 
 # #####################################################################################
 # Domain Mappers
