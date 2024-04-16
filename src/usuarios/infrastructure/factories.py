@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from seedwork.domain.factories import Factory
 from usuarios.domain.entities import Deportista, Organizador, Socio
 from usuarios.domain.events import UsuarioCreated
-from usuarios.domain.repositories import DeportistaRepository
 from usuarios.infrastructure.exceptions import InvalidRepositoryFactoryException
 from usuarios.infrastructure.repositories import (
     DeportistaRepositoryPostgreSQL,

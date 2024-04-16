@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass, field
 
 from seedwork.infrastructure.schema.v1.events import IntegrationEvent

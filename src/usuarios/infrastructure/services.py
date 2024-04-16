@@ -1,7 +1,8 @@
 import os
-from seedwork.infrastructure.services import HTTPService
+
 import requests
 
+from seedwork.infrastructure.services import HTTPService
 from usuarios.domain.factories import UsuarioFactory
 
 

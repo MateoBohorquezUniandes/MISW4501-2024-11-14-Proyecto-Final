@@ -1,4 +1,5 @@
 from os import environ
+
 from seedwork.application.handlers import Handler
 from usuarios.infrastructure.dispatchers import UsuarioIntegrationEventDispatcher
 
