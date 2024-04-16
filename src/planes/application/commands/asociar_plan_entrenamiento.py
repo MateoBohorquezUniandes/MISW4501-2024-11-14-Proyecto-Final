@@ -1,5 +1,4 @@
 import traceback
-import uuid
 from dataclasses import dataclass, field
 
 from sqlalchemy.exc import IntegrityError
@@ -8,7 +7,7 @@ from planes.application.commands.base import PlanCommandBaseHandler
 from planes.application.dtos import UsuarioPlanDTO
 from planes.application.exceptions import BadRequestError, UnprocessableEntityError
 from planes.application.mappers import UsuarioPlanDTOEntityMapper
-from planes.domain.entities import PlanEntrenamiento, UsuarioPlan
+from planes.domain.entities import UsuarioPlan
 from planes.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 from seedwork.application.commands import Command, execute_command
 from seedwork.domain.exceptions import BusinessRuleException

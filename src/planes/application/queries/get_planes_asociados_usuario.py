@@ -3,19 +3,18 @@ from dataclasses import dataclass, field
 
 from sqlalchemy.exc import NoResultFound
 
+from planes.application.exceptions import UserNotFoundError
 from planes.application.mappers import UsuarioPlanDTOEntityMapper
 from planes.application.queries.base import PlanQueryBaseHandler
 from planes.domain.entities import UsuarioPlan
 from seedwork.application.queries import Query, QueryResult, execute_query
 from seedwork.presentation.exceptions import APIError
-from planes.application.exceptions import UserNotFoundError, UserNotAsociatedError
-
 
 
 @dataclass(frozen=True)
 class GetPlanesAsociadosUsuario(Query):
     tipo_identificacion: str = field(default_factory=str)
-    identificacion: str = field(default_factory=str)    
+    identificacion: str = field(default_factory=str)
 
 
 class GetPlanesAsociadosUsuarioQueryHandler(PlanQueryBaseHandler):
@@ -29,17 +28,21 @@ class GetPlanesAsociadosUsuarioQueryHandler(PlanQueryBaseHandler):
 
             mapper = UsuarioPlanDTOEntityMapper()
 
-            usuario_planes_asociados_dto = self.planes_factory.create(usuario_planes_asociados, mapper)
+            usuario_planes_asociados_dto = self.planes_factory.create(
+                usuario_planes_asociados, mapper
+            )
 
             return QueryResult(result=usuario_planes_asociados_dto)
 
         except NoResultFound:
             traceback.print_exc()
-            raise UserNotFoundError()       
+            raise UserNotFoundError()
 
         except Exception as e:
             traceback.print_exc()
-            raise APIError(message=str(e), code="usuario_plan_asociado.get.error.internal")
+            raise APIError(
+                message=str(e), code="usuario_plan_asociado.get.error.internal"
+            )
 
 
 @execute_query.register(GetPlanesAsociadosUsuario)

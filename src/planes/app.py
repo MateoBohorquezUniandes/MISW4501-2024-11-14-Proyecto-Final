@@ -48,12 +48,16 @@ def create_app(config={}):
 
         jwt.init_app(app)
 
-    from planes.presentation.api import bp, bp_prefix
+    from planes.presentation.commands import bp as bpc
+    from planes.presentation.commands import bp_prefix as bpc_prefix
+    from planes.presentation.queries import bp as bpq
+    from planes.presentation.queries import bp_prefix as bpq_prefix
 
-    app.register_blueprint(bp, url_prefix=bp_prefix)
+    app.register_blueprint(bpc, url_prefix=bpc_prefix)
+    app.register_blueprint(bpq, url_prefix=bpq_prefix)
 
-    from seedwork.presentation.exceptions import APIError
     from planes.presentation.handlers import api_custom_exception_handler
+    from seedwork.presentation.exceptions import APIError
 
     app.register_error_handler(APIError, api_custom_exception_handler)
 

@@ -1,12 +1,12 @@
-from dataclasses import dataclass, field
 import uuid
+from dataclasses import dataclass, field
 
+import planes.domain.value_objects as vo
 from planes.domain.events import (
     EntrenamientoCreated,
     PlanEntrenamientoCreated,
     UsuarioPlanCreated,
 )
-import planes.domain.value_objects as vo
 from seedwork.domain.entities import Entity, RootAggregation
 
 

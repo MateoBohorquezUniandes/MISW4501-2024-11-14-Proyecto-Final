@@ -1,4 +1,5 @@
 from uuid import UUID
+
 from planes.application.dtos import (
     DuracionDTO,
     EntrenamientoDTO,
@@ -9,7 +10,6 @@ from planes.application.dtos import (
 from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
 from planes.domain.value_objects import Duracion, Imagen, ObjetivoEntrenamiento
 from seedwork.application.dtos import Mapper as ApplicationMapper
-from seedwork.domain.entities import Entity
 from seedwork.domain.repositories import Mapper as DomainMapper
 
 # #####################################################################################
@@ -106,7 +106,6 @@ class EntrenamientoDTOEntityMapper(DomainMapper):
             duracion=duracion,
         )
         return entrenamiento
-
 
     def entity_to_dto(self, entity: Entrenamiento) -> EntrenamientoDTO:
         duracion_dto = DuracionDTO(

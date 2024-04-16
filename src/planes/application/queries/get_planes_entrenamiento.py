@@ -1,5 +1,5 @@
 import traceback
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from planes.application.mappers import PlanEntrenamientoDTOEntityMapper
 from planes.application.queries.base import PlanQueryBaseHandler
@@ -20,9 +20,7 @@ class GetPlanesEnternamientoQueryHandler(PlanQueryBaseHandler):
             entrenamientos: list[PlanEntrenamiento] = repository.get_all()
 
             mapper = PlanEntrenamientoDTOEntityMapper()
-            planes_dto = [
-                self.planes_factory.create(e, mapper) for e in entrenamientos
-            ]
+            planes_dto = [self.planes_factory.create(e, mapper) for e in entrenamientos]
             return QueryResult(result=planes_dto)
 
         except Exception as e:

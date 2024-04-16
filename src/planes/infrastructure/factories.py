@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
-
 from planes.infrastructure.exceptions import InvalidRepositoryFactoryException
 from planes.infrastructure.repositories import (
     EntrenamientoRepositoryPostgreSQL,

@@ -1,5 +1,5 @@
 import traceback
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from planes.application.mappers import UsuarioPlanDTOEntityMapper
 from planes.application.queries.base import PlanQueryBaseHandler

@@ -1,26 +1,18 @@
-import uuid
 import traceback
 from dataclasses import dataclass, field
 
 from sqlalchemy.exc import IntegrityError
 
 from planes.application.commands.base import PlanCommandBaseHandler
+from planes.application.dtos import PlanEntrenamientoDTO
+from planes.application.exceptions import BadRequestError, UnprocessableEntityError
+from planes.application.mappers import PlanEntrenamientoDTOEntityMapper
+from planes.domain.entities import PlanEntrenamiento
+from planes.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 from seedwork.application.commands import Command, execute_command
 from seedwork.domain.exceptions import BusinessRuleException
 from seedwork.infrastructure.uow import UnitOfWorkPort
 from seedwork.presentation.exceptions import APIError
-from planes.application.dtos import PlanEntrenamientoDTO
-from planes.application.exceptions import (
-    UnprocessableEntityError,
-    BadRequestError,
-)
-from planes.application.mappers import (
-    PlanEntrenamientoDTOEntityMapper,
-)
-from planes.domain.entities import (
-    PlanEntrenamiento,
-)
-from planes.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 
 
 @dataclass
@@ -41,7 +33,7 @@ class CreatePlanEntrenamientoHandler(PlanCommandBaseHandler):
             )
             plan_entrenamiento.create(command.correlation_id)
             repository_p = self.repository_factory.create(plan_entrenamiento)
-            
+
             UnitOfWorkPort.register_batch(uowf, repository_p.append, plan_entrenamiento)
             UnitOfWorkPort.commit(uowf)
 
@@ -57,7 +49,6 @@ class CreatePlanEntrenamientoHandler(PlanCommandBaseHandler):
                     uowf, repository_p.update, plan_entrenamiento, entrenamientos_dto
                 )
                 UnitOfWorkPort.commit(uowf)
-
 
         except BusinessRuleException as bre:
             traceback.print_exc()

@@ -1,13 +1,13 @@
 import json
+import uuid
 from http import HTTPStatus
 
 import pytest
+from flask_jwt_extended import create_access_token
 
 from planes.app import create_app
 from planes.infrastructure.db import db
 from planes.infrastructure.dtos import Entrenamiento, PlanEntrenamiento, UsuarioPlan
-#from flask_jwt_extended import create_access_token
-from datetime import datetime
 
 
 class TestOperations:
@@ -36,19 +36,24 @@ class TestOperations:
         db.session.query(PlanEntrenamiento).delete()
         db.session.query(UsuarioPlan).delete()
         db.session.commit()
-    
-    # @pytest.fixture
-    # def test_usuario_plan():
-    #     usuario_plan = UsuarioPlan(
-    #                     id="test_id",
-    #                     tipo_identificacion="CC",
-    #                     identificacion="123456789",
-    #                     createdAt=datetime.utcnow(),
-    #                     updateAt=datetime.utcnow(),            
-    #                                )  
-    #     db.session.add(usuario_plan)
-    #     db.session.commit()
-    #     return usuario_plan
+
+    @pytest.fixture(scope="function")
+    def test_db_user(self):
+        """
+        Function fixture for creating an initial user
+        as a precondition for some test cases
+        """
+        user = UsuarioPlan()
+        user.id = str(uuid.uuid4())
+        user.tipo_identificacion = "CC"
+        user.identificacion = "111111111"
+        db.session.add(user)
+        db.session.commit()
+
+        yield user
+
+        db.session.query(UsuarioPlan).delete()
+        db.session.commit()
 
     def test_create_plan_success(self, test_client):
         """Creacion exitosa de un usuario deportista"""
@@ -59,7 +64,7 @@ class TestOperations:
             "objetivo": {"exigencia": "Principiante", "deporte": "Ciclismo"},
         }
 
-        response = test_client.post("/planes/", json=payload)
+        response = test_client.post("/planes/commands/", json=payload)
         assert response.status_code == HTTPStatus.ACCEPTED.value
 
     def test_create_entrenamiento_success(self, test_client):
@@ -73,7 +78,7 @@ class TestOperations:
             "duracion": {"valor": 10, "unidad": "reps", "series": 4},
         }
 
-        response = test_client.post("/planes/entrenamientos", json=payload)
+        response = test_client.post("/planes/commands/entrenamientos", json=payload)
         assert response.status_code == HTTPStatus.ACCEPTED.value
 
     def test_create_usuario_success(self, test_client):
@@ -97,14 +102,20 @@ class TestOperations:
             },
         }
 
-        response = test_client.post("/planes/asociar", json=payload)
+        response = test_client.post("/planes/commands/asociar", json=payload)
         assert response.status_code == HTTPStatus.ACCEPTED.value
 
-    # def test_get_usuario_plan(test_client, test_usuario_plan):
-    #     test_user = {"tipo": "CC", "valor": "123456789"}
-    #     test_token = create_access_token(identity=test_user)
-    #     response = test_client.get('/usuario', headers={"Authorization": test_token})
-    #     assert response.status_code == HTTPStatus.OK.value
+    def test_get_usuario_plan(self, test_client, test_db_user):
+        test_user = {
+            "tipo": test_db_user.tipo_identificacion,
+            "valor": test_db_user.identificacion,
+        }
+        test_token = create_access_token(identity=test_user)
+        response = test_client.get(
+            "/planes/queries/usuarios",
+            headers={"Authorization": f"Bearer {test_token}"},
+        )
+        assert response.status_code == HTTPStatus.OK.value
 
     def test_health(self, test_client):
         """Tests health check endpoint"""
