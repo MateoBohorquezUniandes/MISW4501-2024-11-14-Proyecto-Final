@@ -274,4 +274,9 @@ class PerfilDeportivoDTOEntityMapper(DomainMapper):
         )
     
     def entity_to_dto(self, entity: PerfilDeportivo) -> PerfilDeportivoDTO:
-        return entity.__dict__
+         habitos = [HabitoDTOEntityMapper().entity_to_dto(h) for h in entity.habitos_deportivos]
+         return PerfilDeportivoDTO(
+            tipo_identificacion= entity.tipo_identificacion,
+            identificacion=entity.identificacion,
+            habitos=habitos
+         )

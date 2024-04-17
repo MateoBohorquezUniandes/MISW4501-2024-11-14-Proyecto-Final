@@ -47,8 +47,8 @@ class CrearHabitoDeportivoHandler(PerfilCommandBaseHandler):
             traceback.print_exc()
             if uowf:
                 UnitOfWorkPort.rollback(uowf)
-            raise APIError(message=str(e), code="habtio.error.internal")
-        
+            raise APIError(message=str(e), code="habito.error.internal")
+
 @execute_command.register(CrearHabitoDeportivo)
 def command_crear_habito_deportivo(command: CrearHabitoDeportivo):
     CrearHabitoDeportivoHandler().handle(command)

@@ -196,8 +196,8 @@ class ValidHabitoDeportivo(CompoundBusinessRule):
         self.habito: HabitoDeportivo = habito
 
         rules = [
-            ValidString(self.habito.titulo, 2, 30, "titulo invalido"),
-            ValidString(self.habito.descripcion, 2, 140, "descipcion invalida"),
+            ValidString(self.habito.titulo, 2, 50, "titulo invalido"),
+            ValidString(self.habito.descripcion, 2, 400, "descipcion invalida"),
             _ValidHabitoFrecuencia(self.habito.frecuencia)
         ]
 

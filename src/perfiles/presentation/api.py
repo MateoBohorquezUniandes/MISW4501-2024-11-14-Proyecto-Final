@@ -67,6 +67,4 @@ def get_perfiles_deportivos():
 
     mapper = PerfilDeportivoDTODictMapper()
     query_result = execute_query(GetPerfilesDeportivos())
-    print(query_result)
-    print(query_result["habitos_deportivos"][0])
     return jsonify([mapper.dto_to_external(e) for e in query_result.result])

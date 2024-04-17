@@ -3,7 +3,7 @@ from perfiles.domain.entities import (
     PerfilDemografico,
     PerfilDeportivo,
     ReporteSanguineo,
-    HabitoDeportivo
+    HabitoDeportivo,
 )
 from perfiles.domain.value_objects import (
     ClasificacionRiesgo,
@@ -85,22 +85,52 @@ class PerfilDemograficoMapper(Mapper):
         )
 
 
+class HabitoDeportivoMapper(Mapper):
+    def type(self) -> type:
+        return HabitoDeportivo
+
+    def dto_to_entity(self, dto: HabitoDeportivoDTO) -> HabitoDeportivo:
+        return HabitoDeportivo(
+            tipo_identificacion=dto.tipo_identificacion,
+            identificacion=dto.identificacion,
+            descripcion=dto.descripcion,
+            frecuencia=HabitoDeportivoFrecuencia(dto.frecuencia),
+            titulo=dto.titulo,
+        )
+
+    def entity_to_dto(self, entity: HabitoDeportivo) -> HabitoDeportivoDTO:
+        habito_dto = HabitoDeportivoDTO()
+        habito_dto.frecuencia = entity.frecuencia
+        habito_dto.descripcion = entity.descripcion
+        habito_dto.titulo = entity.titulo
+        habito_dto.tipo_identificacion = entity.tipo_identificacion
+        habito_dto.identificacion = entity.identificacion
+
+        return habito_dto
+
+
 class PerfilDeportivoMapper(Mapper):
     def type(self) -> type:
         return PerfilDeportivo
 
     def entity_to_dto(self, entity: PerfilDeportivo) -> PerfilDeportivoDTO:
+        mapper = HabitoDeportivoMapper()
+        habitos_deportivos = [
+            mapper.entity_to_dto(h) for h in entity.habitos_deportivos
+        ]
         perfil = PerfilDeportivoDTO()
         perfil.tipo_identificacion = entity.tipo_identificacion
         perfil.identificacion = entity.identificacion
-        perfil.habitos_deportivos = entity.habitos_deportivos
+        perfil.habitos_deportivos = habitos_deportivos
         return perfil
 
     def dto_to_entity(self, dto: PerfilDeportivoDTO) -> PerfilDeportivo:
+        mapper = HabitoDeportivoMapper()
+        habitos_deportivos = [mapper.dto_to_entity(h) for h in dto.habitos_deportivos]
         return PerfilDeportivo(
             tipo_identificacion=dto.tipo_identificacion,
             identificacion=dto.identificacion,
-            habitos_deportivos= dto.habitos_deportivos
+            habitos_deportivos=habitos_deportivos,
         )
 
 
@@ -119,26 +149,3 @@ class PerfilAlimenticioMapper(Mapper):
             tipo_identificacion=dto.tipo_identificacion,
             identificacion=dto.identificacion,
         )
-
-class HabitoDeportivoMapper(Mapper):
-    def type(self) -> type:
-        return HabitoDeportivo
-
-    def dto_to_entity(self, dto: HabitoDeportivoDTO) -> HabitoDeportivo:
-        return HabitoDeportivo(
-            tipo_identificacion=dto.tipo_identificacion,
-            identificacion=dto.identificacion,
-            descripcion=dto.descripcion,
-            frecuencia=HabitoDeportivoFrecuencia(dto.frecuencia),
-            titulo=dto.titulo
-        )
-    def entity_to_dto(self, entity: HabitoDeportivo) -> HabitoDeportivoDTO:
-        habito_dto = HabitoDeportivoDTO()
-        habito_dto.frecuencia = entity.frecuencia
-        habito_dto.descripcion = entity.descripcion
-        habito_dto.titulo = entity.titulo
-        habito_dto.tipo_identificacion = entity.tipo_identificacion
-        habito_dto.identificacion = entity.identificacion 
-
-        return habito_dto
-    
