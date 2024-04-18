@@ -108,3 +108,18 @@ services:
     ports:
       - 3000:3000
     restart: always
+
+  sesiones-api:
+    container_name: 'sesiones-api'
+    build:
+      context: ./
+      dockerfile: sesiones.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      - ./envs/.env.autenticador.local
+      - ./envs/.env.sesiones.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3070:3070
+    restart: always

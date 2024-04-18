@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sesiones
+  labels:
+    app: sesiones
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sesiones
+  template:
+    metadata:
+      labels:
+        app: sesiones
+    spec:
+      containers:
+        - name: sesiones
+          image: us-central1-docker.pkg.dev/proyecto-final-416123/misw450x-registry/sesiones-api:latest
+          env:
+            - name: "JWT_SECRET_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: authsecrets
+                  key: jwtsecretkey
+            - name: "AUTH_BASE_URL"
+              value: http://autenticador-service/auth
+            - name: "DB_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: pgsqluser
+            - name: "DB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: pgsqlpassword
+            - name: "DB_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: pgsqlhost
+            - name: "DB_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: pgsqlport
+            - name: "DB_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: pgsqlname
+          ports:
+            - containerPort: 3070
+          imagePullPolicy: Always
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: sesiones-backend-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3070
+    type: HTTP
+    requestPath: /health
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sesiones-service
+  annotations:
+    cloud.google.com/backend-config: '{"default": "sesiones-backend-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: sesiones
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3070
+      nodePort: 30070
