@@ -134,6 +134,145 @@
 			]
 		},
 		{
+			"name": "perfil deportivo",
+			"item": [
+				{
+					"name": "añadir habito satisfactorio",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: pm.collectionVariables.get(\"auth_url\"),\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico[tipo_identificacion]\"),\r",
+									"            \"valor\": pm.collectionVariables.get(\"demografico[identificacion]\")\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {\r",
+									"    pm.response.to.have.status(202);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": {\r\n        \"titulo\":\"{{deportivo[habito][titulo]}}\",\r\n        \"frecuencia\":\"{{deportivo[habito][frecuencia]}}\",\r\n        \"descripcion\":\"{{deportivo[habito][descripcion]}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/deportivo/habitos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"deportivo",
+								"habitos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "añadir habito sin token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 401', function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": {\r\n        \"titulo\":\"{{deportivo[habito][titulo]}}\",\r\n        \"frecuencia\":\"{{deportivo[habito][frecuencia]}}\",\r\n        \"descripcion\":\"{{deportivo[habito][descripcion]}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/deportivo/habitos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"deportivo",
+								"habitos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "perfil inicial fail scenarios",
 			"item": [
 				{
@@ -284,145 +423,6 @@
 							],
 							"path": [
 								"demografico"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "perfil deportivo",
-			"item": [
-				{
-					"name": "añadir habito satisfactorio",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.sendRequest({\r",
-									"    url: pm.collectionVariables.get(\"auth_url\"),\r",
-									"    method: 'POST',\r",
-									"    header: { 'content-type': 'application/json' },\r",
-									"    body: {\r",
-									"        mode: 'raw',\r",
-									"        raw: JSON.stringify({\r",
-									"            \"tipo\": pm.collectionVariables.get(\"demografico[tipo_identificacion]\"),\r",
-									"            \"valor\": pm.collectionVariables.get(\"demografico[identificacion]\")\r",
-									"        })\r",
-									"    }\r",
-									"},\r",
-									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
-									");"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response status code is 202', function () {\r",
-									"    pm.response.to.have.status(202);\r",
-									"});\r",
-									"\r",
-									"pm.test('Response has the required fields', function () {\r",
-									"    const responseData = pm.response.json();\r",
-									"    pm.expect(responseData).to.be.an('object');\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"payload\": {\r\n        \"titulo\":\"{{deportivo[habito][titulo]}}\",\r\n        \"frecuencia\":\"{{deportivo[habito][frecuencia]}}\",\r\n        \"descripcion\":\"{{deportivo[habito][descripcion]}}\"\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/deportivo/habitos",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"deportivo",
-								"habitos"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "añadir habito sin token",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response status code is 401', function () {\r",
-									"    pm.response.to.have.status(401);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"payload\": {\r\n        \"titulo\":\"{{deportivo[habito][titulo]}}\",\r\n        \"frecuencia\":\"{{deportivo[habito][frecuencia]}}\",\r\n        \"descripcion\":\"{{deportivo[habito][descripcion]}}\"\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/deportivo/habitos",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"deportivo",
-								"habitos"
 							]
 						}
 					},
