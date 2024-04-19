@@ -2,6 +2,7 @@ from hashlib import md5
 import json
 from flask import Flask, jsonify, Response
 from flask_swagger import swagger
+from flask_cors import CORS
 
 
 __author__ = "Santiago Cortés Fernández"
@@ -84,5 +85,7 @@ def create_app(config={}):
         )
         response.set_data(json.dumps(data))
         return response
+
+    CORS(app)
 
     return app
