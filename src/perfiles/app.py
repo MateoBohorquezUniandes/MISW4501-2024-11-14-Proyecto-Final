@@ -28,6 +28,7 @@ def create_app(config={}):
     from seedwork.infrastructure.db import generate_database_uri
     from seedwork.infrastructure.jwt import retrieve_secret_key
 
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True} 
     db_provider = config.get("database_provider", "postgresql")
     app.config["SQLALCHEMY_DATABASE_URI"] = generate_database_uri(db_provider)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

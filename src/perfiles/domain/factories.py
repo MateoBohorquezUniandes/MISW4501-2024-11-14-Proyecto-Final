@@ -8,12 +8,14 @@ from perfiles.domain.entities import (
     PerfilAlimenticio,
     PerfilDemografico,
     PerfilDeportivo,
+    HabitoDeportivo
 )
 from perfiles.domain.exceptions import (
     InvalidPerfilDemograficoFactoryException,
 )
 from perfiles.domain.rules import (
     ValidPerfilDemografico,
+    ValidHabitoDeportivo
 )
 
 
@@ -55,6 +57,16 @@ class _PerfilAlimenticioFactory(Factory):
         # self.validate_rule(ValidPerfilAlimenticio(perfil))
 
         return perfil
+    
+@dataclass
+class _HabitoDeportivoFactory(Factory):
+    def create(self, obj: any, mapper: Mapper = None) -> HabitoDeportivo:
+        if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
+            return mapper.entity_to_dto(obj)
+        habito: HabitoDeportivo = mapper.dto_to_entity(obj)
+        self.validate_rule(ValidHabitoDeportivo(habito))
+
+        return habito
 
 
 @dataclass
@@ -68,6 +80,9 @@ class PerfilFactory(Factory):
             return perfil_factory.create(obj, mapper)
         elif mapper.type() == PerfilAlimenticio:
             perfil_factory = _PerfilAlimenticioFactory()
+            return perfil_factory.create(obj, mapper)
+        elif mapper.type() == HabitoDeportivo:
+            perfil_factory = _HabitoDeportivoFactory()
             return perfil_factory.create(obj, mapper)
         else:
             raise InvalidPerfilDemograficoFactoryException()

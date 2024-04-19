@@ -6,12 +6,15 @@ from perfiles.application.dtos import (
     PerfilDemograficoDTO,
     ReporteSanguineoDTO,
     ResultadoElementoSanguineoDTO,
+    HabitoDeportivoDTO,
+    PerfilDeportivoDTO,
 )
 from perfiles.domain.entities import (
     PerfilAlimenticio,
     PerfilDemografico,
     PerfilDeportivo,
     ReporteSanguineo,
+    HabitoDeportivo
 )
 from perfiles.domain.value_objects import (
     ClasificacionRiesgo,
@@ -80,6 +83,50 @@ class PerfilDemograficoJsonDtoMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: PerfilDemograficoDTO) -> any:
+        return dto.__dict__
+    
+class HabitoDTODictMapper(ApplicationMapper):
+    def external_to_dto(self, external: dict) -> HabitoDeportivoDTO:
+
+        return HabitoDeportivoDTO(
+            tipo_identificacion=external.get("tipo_identificacion", ""),
+            identificacion=external.get("identificacion", ""),
+            titulo=external.get("titulo", ""),
+            frecuencia=external.get("frecuencia",""),
+            descripcion=external.get("descripcion")
+        )
+
+    def dto_to_external(self, dto: HabitoDeportivoDTO) -> dict:
+        return dto.__dict__
+
+
+class PerfilDeportivoDTODictMapper(ApplicationMapper):
+    def external_to_habitos_dto(self, external: list[dict]) -> HabitoDeportivoDTO:
+        habitos = list[HabitoDeportivoDTO] = []
+        for habito in external:
+            habitos.append(
+                HabitoDeportivoDTO(
+                    titulo=habito.get("titulo"),
+                    frecuencia=habito.get("frecuencia"),
+                    descripcion=habito.get("descripcion"),
+                    tipo_identificacion=habito.get("tipo_identificacion"),
+                    identificacion=habito.get("identificacion")                    
+                )
+            )
+        
+        return habitos
+
+    def external_to_dto(self, external: dict) -> PerfilDeportivoDTO:
+
+        return PerfilDeportivoDTO(
+            tipo_identificacion=external.get("tipo_identificacion", ""),
+            identificacion=external.get("identificacion", ""),
+            habitos=self.external_to_habitos_dto(
+                external.get("habitos_deportivos", [])
+            )
+        )
+
+    def dto_to_external(self, dto: PerfilDeportivoDTO) -> dict:
         return dto.__dict__
 
 
@@ -195,3 +242,41 @@ class PerfilAlimenticioInitialEntityMapper(UnidirectionalDomainMapper):
             tipo_identificacion=dto.tipo_identificacion,
             identificacion=dto.identificacion,
         )
+    
+class HabitoDTOEntityMapper(DomainMapper):
+    def type(self) -> type:
+        return HabitoDeportivo
+
+
+    def dto_to_entity(self, dto: HabitoDeportivoDTO) -> HabitoDeportivo:
+
+        return HabitoDeportivo(
+            tipo_identificacion=dto.tipo_identificacion,
+            identificacion=dto.identificacion,
+            titulo=dto.titulo,
+            descripcion=dto.descripcion,
+            frecuencia=dto.frecuencia
+        )
+    
+    def entity_to_dto(self, entity: HabitoDeportivo) -> HabitoDeportivoDTO:
+        return entity.__dict__
+    
+class PerfilDeportivoDTOEntityMapper(DomainMapper):
+    def type(self) -> type:
+        return PerfilDeportivo
+
+    def dto_to_entity(self, dto: PerfilDeportivoDTO) -> PerfilDeportivo:
+
+          return PerfilDeportivo(
+            tipo_identificacion=dto.tipo_identificacion,
+            identificacion=dto.identificacion,
+            habitos_deportivos= dto.habitos
+        )
+    
+    def entity_to_dto(self, entity: PerfilDeportivo) -> PerfilDeportivoDTO:
+         habitos = [HabitoDTOEntityMapper().entity_to_dto(h) for h in entity.habitos_deportivos]
+         return PerfilDeportivoDTO(
+            tipo_identificacion= entity.tipo_identificacion,
+            identificacion=entity.identificacion,
+            habitos=habitos
+         )

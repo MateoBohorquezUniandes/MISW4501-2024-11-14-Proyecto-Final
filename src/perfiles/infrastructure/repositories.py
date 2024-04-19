@@ -2,12 +2,14 @@ from perfiles.domain.entities import (
     PerfilAlimenticio,
     PerfilDemografico,
     PerfilDeportivo,
+    HabitoDeportivo
 )
 from perfiles.domain.factories import PerfilFactory
 from perfiles.domain.repositories import (
     PerfilAlimenticioRepository,
     PerfilDemograficoRepository,
     PerfilDeportivoRepository,
+    HabitoDeportivoRepository
 )
 from perfiles.infrastructure.db import db
 from perfiles.infrastructure.dtos import PerfilAlimenticio as PerfilAlimenticioDTO
@@ -17,6 +19,7 @@ from perfiles.infrastructure.mappers import (
     PerfilAlimenticioMapper,
     PerfilDemograficoMapper,
     PerfilDeportivoMapper,
+    HabitoDeportivoMapper
 )
 
 
@@ -147,6 +150,33 @@ class PerfilAlimenticioRepositoryPostgreSQL(PerfilAlimenticioRepository):
                 identificacion=identificacion
             )
         query.delete()
+
+    def update(self):
+        pass
+
+class HabitoDeportivoRepositoryPostgreSQL(HabitoDeportivoRepository):
+    def __init__(self):
+        self._habito_deportivo_factory: PerfilFactory = PerfilFactory()
+
+    @property
+    def fabrica_habito_deportivo_factory(self):
+        return self._habito_deportivo_factory
+
+    def get_all(self) -> list[HabitoDeportivo]:
+        pass
+
+    def get(self, tipo_identificacion: str, identificacion: str) -> HabitoDeportivo:
+        pass
+
+
+    def append(self, habito: HabitoDeportivo):
+        habito_dto = self._habito_deportivo_factory.create(
+            habito, HabitoDeportivoMapper()
+        )
+        db.session.add(habito_dto)
+
+    def delete(self, tipo_identificacion: str, identificacion: str):
+        pass
 
     def update(self):
         pass
