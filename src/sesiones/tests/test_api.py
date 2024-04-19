@@ -35,7 +35,7 @@ class TestOperations:
         as a precondition for some test cases
         """
         sesion = SesionDeportiva(
-            id=uuid.uuid4(),
+            id=str(uuid.uuid4()),
             tipo_identificacion=self.identificacion["tipo"],
             identificacion=self.identificacion["valor"],
             exigencia="Intermedio",
@@ -82,6 +82,7 @@ class TestOperations:
             headers={"Authorization": f"Bearer {session_token}"},
             json={
                 "id": test_sesion_dto.id,
+                "objetivo": {"exigencia": "Principiante", "deporte": "Ciclismo"},
                 "parametros": {
                     "postencia": [100, 100, 200, 300],
                     "ritmo_cardiaco": [100, 100, 200, 300],

@@ -28,9 +28,8 @@ class EndSesionDeportivaHandler(SesionCommandBaseHandler):
         try:
             uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
 
-            mapper = SesionDeportivaDTOEntityMapper()
             sesion: SesionDeportiva = self.sesiones_factory.create(
-                command.sesion_dto,
+                command.sesion_dto, SesionDeportivaDTOEntityMapper()
             )
             sesion.completed_at = datetime.utcnow()
             sesion.end(command.correlation_id, command.parameters)

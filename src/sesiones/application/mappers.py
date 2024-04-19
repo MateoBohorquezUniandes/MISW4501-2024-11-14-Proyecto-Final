@@ -19,7 +19,7 @@ class SesionDeportivaDTODictMapper(ApplicationMapper):
         )
 
     def external_to_dto(self, external: dict) -> SesionDeportivaDTO:
-        objetivo = self._external_to_objetivo_dto(external.get("duracion", {}))
+        objetivo = self._external_to_objetivo_dto(external.get("objetivo", {}))
         return SesionDeportivaDTO(
             id=external.get("id", ""),
             tipo_identificacion=external.get("tipo_identificacion", ""),
@@ -56,6 +56,7 @@ class SesionDeportivaDTOEntityMapper(DomainMapper):
 
     def entity_to_dto(self, entity: SesionDeportiva) -> SesionDeportivaDTO:
         objetivo = ObjetivoDTO(entity.objetivo.exigencia, entity.objetivo.deporte)
+        completed_at = entity.completed_at.strftime(self.DATE_FORMAT) if entity.completed_at else ""
 
         return SesionDeportivaDTO(
             str(entity.id),
@@ -63,6 +64,6 @@ class SesionDeportivaDTOEntityMapper(DomainMapper):
             entity.updated_at.strftime(self.DATE_FORMAT),
             entity.tipo_identificacion,
             entity.identificacion,
-            entity.completed_at.strftime(self.DATE_FORMAT),
+            completed_at,
             objetivo=objetivo,
         )

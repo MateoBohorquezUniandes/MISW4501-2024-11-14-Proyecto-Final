@@ -21,14 +21,14 @@ class CreateSesionDeportiva(Command):
 
 
 class CreateSesionDeportivaHandler(SesionCommandBaseHandler):
-    def handle(self, command: CreateSesionDeportiva):
+    def handle(self, command: CreateSesionDeportiva) -> CommandResult:
         uowf = None
         try:
             uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
 
             mapper = SesionDeportivaDTOEntityMapper()
             sesion: SesionDeportiva = self.sesiones_factory.create(
-                command.sesion_dto,
+                command.sesion_dto, mapper
             )
             sesion.create(command.correlation_id)
             
@@ -52,5 +52,5 @@ class CreateSesionDeportivaHandler(SesionCommandBaseHandler):
 
 
 @execute_command.register(CreateSesionDeportiva)
-def command_crear_sesion(command: CreateSesionDeportiva):
-    CreateSesionDeportivaHandler().handle(command)
+def command_crear_sesion(command: CreateSesionDeportiva) -> CommandResult:
+    return CreateSesionDeportivaHandler().handle(command)

@@ -1,6 +1,6 @@
 import pickle
 
-from planes.infrastructure.db import db
+from sesiones.infrastructure.db import db
 from seedwork.infrastructure.uow import Batch, Lock, UnitOfWork, UnitOfWorkFactory
 
 

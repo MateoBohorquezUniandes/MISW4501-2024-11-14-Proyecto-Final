@@ -25,7 +25,7 @@ def create_sesion():
     command = CreateSesionDeportiva(sesion_dto=sesion_dto)
     command_result = execute_command(command)
 
-    return jsonify(mapper.dto_to_external(command_result))
+    return jsonify(mapper.dto_to_external(command_result.result))
 
 
 @bp.route("/", methods=("PUT",))

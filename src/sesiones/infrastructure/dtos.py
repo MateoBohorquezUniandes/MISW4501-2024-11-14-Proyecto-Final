@@ -3,7 +3,7 @@ from datetime import datetime as dt
 from sqlalchemy import Column, Integer, Table
 from sqlalchemy.orm import declarative_base, relationship
 
-from perfiles.infrastructure.db import db
+from sesiones.infrastructure.db import db
 
 
 class SesionDeportiva(db.Model):
