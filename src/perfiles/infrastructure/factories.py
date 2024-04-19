@@ -25,15 +25,15 @@ from seedwork.domain.factories import Factory
 @dataclass
 class RepositoryFactory(Factory):
     def create(self, obj):
-        if isinstance(obj, PerfilDemografico):
+        if isinstance(obj, PerfilDemografico) or obj == PerfilDemografico:
             return PerfilDemograficoRepositoryPostgreSQL()
         elif isinstance(obj, PerfilDeportivo) or obj == PerfilDeportivo:
             return PerfilDeportivoRepositoryPostgreSQL()
-        elif isinstance(obj, PerfilAlimenticio):
+        elif isinstance(obj, PerfilAlimenticio) or obj == PerfilAlimenticio:
             return PerfilAlimenticioRepositoryPostgreSQL()
-        elif isinstance(obj, HabitoDeportivo):
+        elif isinstance(obj, HabitoDeportivo) or obj == HabitoDeportivo:
             return HabitoDeportivoRepositoryPostgreSQL()
-        elif isinstance(obj, Molestia):
+        elif isinstance(obj, Molestia) or obj == Molestia:
             return MolestiaRepositoryPostgreSQL()
         else:
             raise InvalidRepositoryFactoryException()

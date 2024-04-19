@@ -3,31 +3,30 @@ from dataclasses import dataclass, field
 
 from sqlalchemy.exc import NoResultFound
 
-import perfiles.domain.value_objects as vo
 from perfiles.application.exceptions import PerfilNotFoundError
-from perfiles.application.mappers import PerfilDemograficoDTOEntityMapper
+from perfiles.application.mappers import PerfilDeportivoDTOEntityMapper
 from perfiles.application.queries.base import PerfilQueryBaseHandler
-from perfiles.domain.entities import PerfilDemografico
+from perfiles.domain.entities import PerfilDeportivo
 from seedwork.application.queries import Query, QueryResult, execute_query
 from seedwork.presentation.exceptions import APIError
 
 
 @dataclass(frozen=True)
-class ObtenerPerfilDemografico(Query):
+class ObtenerPerfilDeportivo(Query):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
 
 
-class ObtenerPerfilDemograficoQueryHandler(PerfilQueryBaseHandler):
+class ObtenerPerfilDeportivoQueryHandler(PerfilQueryBaseHandler):
 
-    def handle(self, query: ObtenerPerfilDemografico) -> QueryResult:
+    def handle(self, query: ObtenerPerfilDeportivo) -> QueryResult:
         try:
-            repository = self.repository_factory.create(PerfilDemografico)
+            repository = self.repository_factory.create(PerfilDeportivo)
             perfil = repository.get(query.tipo_identificacion, query.identificacion)
 
             return QueryResult(
                 result=self.perfiles_factory.create(
-                    perfil, PerfilDemograficoDTOEntityMapper()
+                    perfil, PerfilDeportivoDTOEntityMapper()
                 )
             )
 
@@ -39,6 +38,6 @@ class ObtenerPerfilDemograficoQueryHandler(PerfilQueryBaseHandler):
             raise APIError(message=str(e), code="perfiles.get.error.internal")
 
 
-@execute_query.register(ObtenerPerfilDemografico)
-def execute_query_perfil_demografico(query: ObtenerPerfilDemografico):
-    return ObtenerPerfilDemograficoQueryHandler().handle(query)
+@execute_query.register(ObtenerPerfilDeportivo)
+def execute_query_perfil_demografico(query: ObtenerPerfilDeportivo):
+    return ObtenerPerfilDeportivoQueryHandler().handle(query)
