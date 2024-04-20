@@ -1,0 +1,699 @@
+{
+	"info": {
+		"_postman_id": "efe00251-16e5-4413-896b-c987e4e6ea09",
+		"name": "sesiones",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25979776"
+	},
+	"item": [
+		{
+			"name": "iniciar sesion sucess",
+			"item": [
+				{
+					"name": "iniciar sesion",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"identificacion.tipo\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"identificacion.valor\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.id).to.be.an('string');",
+									"    pm.expect(responseData.identificacion).to.be.an('string');",
+									"    pm.expect(responseData.tipo_identificacion).to.be.an('string');",
+									"    pm.expect(responseData.objetivo).to.be.an('object');",
+									"    pm.expect(responseData.objetivo.deporte).to.be.an('string');",
+									"    pm.expect(responseData.objetivo.exigencia).to.be.an('string');",
+									"    pm.expect(responseData.created_at).to.be.an('string');",
+									"    pm.expect(responseData.updated_at).to.be.an('string');",
+									"    pm.expect(responseData.completed_at).to.be.an('string');",
+									"    pm.expect(responseData.completed_at).to.be.empty;",
+									"",
+									"    pm.collectionVariables.set(\"sesion.id\", `\"${responseData.id}\"`)",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"objetivo\": {\n        \"exigencia\": {{sesion.objetivo.exigencia}},\n        \"deporte\": {{sesion.objetivo.deporte}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sesiones/commands",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sesiones",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "finalizar sesion success",
+			"item": [
+				{
+					"name": "finalizar sesion",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"identificacion.tipo\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"identificacion.valor\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{sesion.id}},\n    \"objetivo\": {\n        \"exigencia\": {{sesion.objetivo.exigencia}},\n        \"deporte\": {{sesion.objetivo.deporte}}\n    },\n    \"parametros\": {\n        \"potencia\": {{sesion.parametros.potencia}},\n        \"ritmo_cardiaco\": {{sesion.parametros.cardiaco}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sesiones/commands",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sesiones",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "iniciar sesion fail",
+			"item": [
+				{
+					"name": "iniciar sesion sin deporte",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"identificacion.tipo\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"identificacion.valor\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"objetivo\": {\n        \"exigencia\": {{sesion.objetivo.exigencia}}\n\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sesiones/commands",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sesiones",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "iniciar sesion sin exigencia",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"identificacion.tipo\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"identificacion.valor\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"objetivo\": {\n        \"deporte\": {{sesion.objetivo.deporte}}\n\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sesiones/commands",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sesiones",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "iniciar sesion sin token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 401', function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"objetivo\": {\n        \"exigencia\": {{sesion.objetivo.exigencia}},\n        \"deporte\": {{sesion.objetivo.deporte}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sesiones/commands",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sesiones",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "finalizar sesion fail",
+			"item": [
+				{
+					"name": "finalizar sesion sin deporte",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"identificacion.tipo\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"identificacion.valor\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{sesion.id}},\n    \"objetivo\": {\n        \"exigencia\": {{sesion.objetivo.exigencia}}\n\n    },\n    \"parametros\": {\n        \"potencia\": {{sesion.parametros.potencia}},\n        \"ritmo_cardiaco\": {{sesion.parametros.cardiaco}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sesiones/commands",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sesiones",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "finalizar sesion sin exigencia",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"identificacion.tipo\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"identificacion.valor\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{sesion.id}},\n    \"objetivo\": {\n\n        \"deporte\": {{sesion.objetivo.deporte}}\n    },\n    \"parametros\": {\n        \"potencia\": {{sesion.parametros.potencia}},\n        \"ritmo_cardiaco\": {{sesion.parametros.cardiaco}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sesiones/commands",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sesiones",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "finalizar sesion sin token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"identificacion.tipo\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"identificacion.valor\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 401', function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{sesion.id}},\n    \"objetivo\": {\n        \"exigencia\": {{sesion.objetivo.exigencia}},\n        \"deporte\": {{sesion.objetivo.deporte}}\n    },\n    \"parametros\": {\n        \"potencia\": {{sesion.parametros.potencia}},\n        \"ritmo_cardiaco\": {{sesion.parametros.cardiaco}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sesiones/commands",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sesiones",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:3070",
+			"type": "string"
+		},
+		{
+			"key": "auth_url",
+			"value": "http://127.0.0.1:3000",
+			"type": "string"
+		},
+		{
+			"key": "identificacion.tipo",
+			"value": "\"CC\"",
+			"type": "string"
+		},
+		{
+			"key": "identificacion.valor",
+			"value": "\"123456789\"",
+			"type": "string"
+		},
+		{
+			"key": "sesion.objetivo.exigencia",
+			"value": "\"Principiante\"",
+			"type": "string"
+		},
+		{
+			"key": "sesion.objetivo.deporte",
+			"value": "\"Ciclismo\"",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "sesion.id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "sesion.parametros.potencia",
+			"value": "[10, 10, 20, 50, 5]",
+			"type": "string"
+		},
+		{
+			"key": "sesion.parametros.cardiaco",
+			"value": "[90, 130, 135, 120, 120]",
+			"type": "string"
+		}
+	]
+}
