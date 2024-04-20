@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import datetime
 
 
 class BusinessRule(ABC):
@@ -123,3 +124,19 @@ class ValidInteger(BusinessRule):
         min_valid = self.valor >= self.min if self.min else True
         max_valid = self.valor <= self.max if self.max else True
         return min_valid and max_valid
+
+
+class ValidStrDate(BusinessRule):
+    date: str
+
+    def __init__(self, date, message, code="valid_Str_date"):
+        super().__init__(message, code)
+        self.date = date
+
+    def is_valid(self) -> bool:
+        try:
+            res = bool(datetime.date.fromisoformat(self.date))
+        except ValueError:
+            res = False
+
+        return res

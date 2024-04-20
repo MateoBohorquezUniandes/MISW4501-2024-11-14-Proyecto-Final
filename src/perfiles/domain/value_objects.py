@@ -121,3 +121,14 @@ class HabitoFrecuencia(ExtendedEnum):
 @dataclass(frozen=True)
 class HabitoDeportivoFrecuencia(ValueObject):
     frecuencia: HabitoFrecuencia = field(default_factory=HabitoFrecuencia)
+
+
+class MolestiaTipoEnum(ExtendedEnum):
+    MOLESTIA = "Molestia"
+    LESION = "Lesion"
+    INCAPACIDAD = "Incapacidad"
+
+
+@dataclass(frozen=True)
+class MolestiaTipo(ValueObject):
+    tipo: MolestiaTipoEnum = field(default_factory=MolestiaTipoEnum)

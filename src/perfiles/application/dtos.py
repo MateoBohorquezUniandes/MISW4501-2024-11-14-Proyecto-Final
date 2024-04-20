@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+import datetime
 
 from seedwork.application.dtos import DTO
 
@@ -73,10 +74,21 @@ class HabitoDeportivoDTO(DTO):
 
 
 @dataclass(frozen=True)
+class MolestiaDTO(DTO):
+    titulo: str = field(default_factory=str)
+    tipo: str = field(default_factory=str)
+    fecha: str = field(default_factory=datetime)
+    descripcion: str = field(default_factory=str)
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)
+
+
+@dataclass(frozen=True)
 class PerfilDeportivoDTO(DTO):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
     habitos: list[HabitoDeportivoDTO] = field(default_factory=list[HabitoDeportivoDTO])
+    molestias: list[MolestiaDTO] = field(default_factory=list[MolestiaDTO])
 
 
 @dataclass(frozen=True)

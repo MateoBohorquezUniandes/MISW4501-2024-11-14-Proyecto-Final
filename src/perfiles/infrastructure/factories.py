@@ -5,6 +5,7 @@ from perfiles.domain.entities import (
     PerfilAlimenticio,
     PerfilDemografico,
     PerfilDeportivo,
+    Molestia,
 )
 from perfiles.domain.events import PerfilDemograficoCreated
 from perfiles.infrastructure.exceptions import InvalidRepositoryFactoryException
@@ -13,6 +14,7 @@ from perfiles.infrastructure.repositories import (
     PerfilAlimenticioRepositoryPostgreSQL,
     PerfilDemograficoRepositoryPostgreSQL,
     PerfilDeportivoRepositoryPostgreSQL,
+    MolestiaRepositoryPostgreSQL,
 )
 from perfiles.infrastructure.schema.v1.mappers import (
     DemografiaCreatedIntegrationEventMapper,
@@ -31,6 +33,8 @@ class RepositoryFactory(Factory):
             return PerfilAlimenticioRepositoryPostgreSQL()
         elif isinstance(obj, HabitoDeportivo):
             return HabitoDeportivoRepositoryPostgreSQL()
+        elif isinstance(obj, Molestia):
+            return MolestiaRepositoryPostgreSQL()
         else:
             raise InvalidRepositoryFactoryException()
 

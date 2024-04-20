@@ -62,6 +62,8 @@ class PerfilDeportivo(db.Model):
         "HabitoDeportivo", back_populates="perfil_deportivo"
     )
 
+    molestias = relationship("Molestia", back_populates="perfil_deportivo")
+
 
 class HabitoDeportivo(db.Model):
     __tablename__ = "habito_deportivo"
@@ -84,6 +86,37 @@ class HabitoDeportivo(db.Model):
     perfil_deportivo = relationship(
         "PerfilDeportivo", back_populates="habitos_deportivos"
     )
+    __table_args__ = (
+        db.ForeignKeyConstraint(
+            [tipo_identificacion, identificacion],
+            [
+                PerfilDeportivo.tipo_identificacion,
+                PerfilDeportivo.identificacion,
+            ],
+        ),
+    )
+
+
+class Molestia(db.Model):
+    __tablename__ = "molestia"
+
+    id = db.Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+        unique=True,
+        nullable=False,
+    )
+    titulo = db.Column(db.String(50), nullable=False)
+    tipo = db.Column(db.String(), nullable=False)
+    fecha = db.Column(db.DateTime())
+    descripcion = db.Column(db.String(400), nullable=False)
+    createdAt = db.Column(db.DateTime(), default=datetime.utcnow())
+
+    tipo_identificacion = db.Column(db.String(10), nullable=False)
+    identificacion = db.Column(db.String(20), nullable=False)
+
+    perfil_deportivo = relationship("PerfilDeportivo", back_populates="molestias")
     __table_args__ = (
         db.ForeignKeyConstraint(
             [tipo_identificacion, identificacion],

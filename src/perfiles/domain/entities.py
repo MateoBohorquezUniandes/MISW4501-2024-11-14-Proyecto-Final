@@ -1,3 +1,4 @@
+import datetime
 import uuid
 from dataclasses import asdict, dataclass, field
 
@@ -57,10 +58,21 @@ class HabitoDeportivo(RootAggregation):
 
 
 @dataclass
+class Molestia(RootAggregation):
+    titulo: str = field(default_factory=str)
+    descripcion: str = field(default_factory=str)
+    tipo: vo.MolestiaTipo = field(default_factory=vo.MolestiaTipo)
+    fecha: str = field(default_factory=datetime)
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)
+
+
+@dataclass
 class PerfilDeportivo(RootAggregation):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
     habitos_deportivos: list[HabitoDeportivo] = field(default_factory=list)
+    molestias: list[Molestia] = field(default_factory=list)
 
 
 @dataclass
