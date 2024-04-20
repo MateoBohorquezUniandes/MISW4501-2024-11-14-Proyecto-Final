@@ -1,5 +1,6 @@
 from flask import Flask, Response, jsonify
 from flask_swagger import swagger
+from flask_cors import CORS
 
 __author__ = "Santiago Cortés Fernández"
 __email__ = "s.cortes@uniandes.edu.co"
@@ -71,5 +72,7 @@ def create_app(config={}):
     @app.route("/health")
     def health():
         return jsonify({"status": "healthy"})
+
+    CORS(app)
 
     return app
