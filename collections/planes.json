@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "082d9e8a-8975-4074-9854-42f1100fe71c",
+		"_postman_id": "59764921-edb4-467e-ad27-0bbc894eb587",
 		"name": "planes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "23877360"
+		"_exporter_id": "25979776"
 	},
 	"item": [
 		{
-			"name": "plan sucess scenarios",
+			"name": "plan success",
 			"item": [
 				{
 					"name": "crear plan",
@@ -44,12 +44,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes",
+							"raw": "{{base_url}}/planes/commands",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"planes"
+								"planes",
+								"commands"
 							]
 						}
 					},
@@ -90,12 +91,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/planes",
+							"raw": "{{base_url}}/planes/queries",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"planes"
+								"planes",
+								"queries"
 							]
 						}
 					},
@@ -104,7 +106,7 @@
 			]
 		},
 		{
-			"name": "entrenamiento success scenarios",
+			"name": "entrenamiento success",
 			"item": [
 				{
 					"name": "crear entrenamiento",
@@ -141,12 +143,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes/entrenamientos",
+							"raw": "{{base_url}}/planes/commands/entrenamientos",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
+								"commands",
 								"entrenamientos"
 							]
 						}
@@ -189,23 +192,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/planes/entrenamientos",
+							"raw": "{{base_url}}/planes/queries/entrenamientos",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
+								"queries",
 								"entrenamientos"
 							]
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "asociar entrenamientos success scenarios",
-			"item": [
+				},
 				{
 					"name": "asociar entrenamientos con plan",
 					"event": [
@@ -241,12 +240,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes",
+							"raw": "{{base_url}}/planes/commands",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"planes"
+								"planes",
+								"commands"
 							]
 						}
 					},
@@ -255,7 +255,7 @@
 			]
 		},
 		{
-			"name": "recomendar success scenarios",
+			"name": "plan usuario success",
 			"item": [
 				{
 					"name": "asociar plan",
@@ -292,12 +292,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes/asociar",
+							"raw": "{{base_url}}/planes/commands/asociar",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
+								"commands",
 								"asociar"
 							]
 						}
@@ -305,37 +306,14 @@
 					"response": []
 				},
 				{
-					"name": "get usuarios",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/planes/usuarios",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"planes",
-								"usuarios"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "consultar planes asociados success",
-			"item": [
-				{
-					"name": "get planes asociados",
+					"name": "obtener planes asociados",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
 									"pm.sendRequest({\r",
-									"    url: pm.collectionVariables.get(\"auth_url\"),\r",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,\r",
 									"    method: 'POST',\r",
 									"    header: { 'content-type': 'application/json' },\r",
 									"    body: {\r",
@@ -389,13 +367,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/planes/usuario",
+							"raw": "{{base_url}}/planes/queries/usuarios",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
-								"usuario"
+								"queries",
+								"usuarios"
 							]
 						}
 					},
@@ -404,7 +383,7 @@
 			]
 		},
 		{
-			"name": "plan fail scenarios",
+			"name": "plan fail",
 			"item": [
 				{
 					"name": "crear plan duplicado",
@@ -437,12 +416,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes",
+							"raw": "{{base_url}}/planes/commands",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"planes"
+								"planes",
+								"commands"
 							]
 						}
 					},
@@ -478,12 +458,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes",
+							"raw": "{{base_url}}/planes/commands",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"planes"
+								"planes",
+								"commands"
 							]
 						}
 					},
@@ -519,12 +500,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes",
+							"raw": "{{base_url}}/planes/commands",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"planes"
+								"planes",
+								"commands"
 							]
 						}
 					},
@@ -560,12 +542,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes",
+							"raw": "{{base_url}}/planes/commands",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"planes"
+								"planes",
+								"commands"
 							]
 						}
 					},
@@ -574,7 +557,7 @@
 			]
 		},
 		{
-			"name": "entrenamiento fail scenarios",
+			"name": "entrenamiento fail",
 			"item": [
 				{
 					"name": "crear entrenamiento duplicado",
@@ -607,12 +590,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes/entrenamientos",
+							"raw": "{{base_url}}/planes/commands/entrenamientos",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
+								"commands",
 								"entrenamientos"
 							]
 						}
@@ -650,12 +634,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes/entrenamientos",
+							"raw": "{{base_url}}/planes/commands/entrenamientos",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
+								"commands",
 								"entrenamientos"
 							]
 						}
@@ -693,12 +678,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes/entrenamientos",
+							"raw": "{{base_url}}/planes/commands/entrenamientos",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
+								"commands",
 								"entrenamientos"
 							]
 						}
@@ -736,12 +722,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes/entrenamientos",
+							"raw": "{{base_url}}/planes/commands/entrenamientos",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
+								"commands",
 								"entrenamientos"
 							]
 						}
@@ -779,12 +766,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes/entrenamientos",
+							"raw": "{{base_url}}/planes/commands/entrenamientos",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
+								"commands",
 								"entrenamientos"
 							]
 						}
@@ -822,23 +810,19 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes/entrenamientos",
+							"raw": "{{base_url}}/planes/commands/entrenamientos",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
+								"commands",
 								"entrenamientos"
 							]
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "asociar entrenamientos fail scenarios",
-			"item": [
+				},
 				{
 					"name": "asociar duplicado",
 					"event": [
@@ -869,12 +853,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes",
+							"raw": "{{base_url}}/planes/commands",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"planes"
+								"planes",
+								"commands"
 							]
 						}
 					},
@@ -883,7 +868,7 @@
 			]
 		},
 		{
-			"name": "recomendar fail scenarios",
+			"name": "plan usuario fail",
 			"item": [
 				{
 					"name": "asociar plan duplicado",
@@ -915,39 +900,35 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes/asociar",
+							"raw": "{{base_url}}/planes/commands/asociar",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
+								"commands",
 								"asociar"
 							]
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "consultar planes fail scenarios",
-			"item": [
+				},
 				{
-					"name": "unexisting user",
+					"name": "obtener planes asociados sin usuario",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
 									"pm.sendRequest({\r",
-									"    url: pm.collectionVariables.get(\"auth_url\"),\r",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,\r",
 									"    method: 'POST',\r",
 									"    header: { 'content-type': 'application/json' },\r",
 									"    body: {\r",
 									"        mode: 'raw',\r",
 									"        raw: JSON.stringify({\r",
-									"            \"tipo\": pm.collectionVariables.get(\"unexistinguser.tipo_identificacion\"),\r",
-									"            \"valor\": pm.collectionVariables.get(\"unexistinguser.identificacion\")\r",
+									"            \"tipo\": \"fake_tipo\",\r",
+									"            \"valor\": \"fake_valor\"\r",
 									"        })\r",
 									"    }\r",
 									"},\r",
@@ -985,13 +966,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/planes/usuario",
+							"raw": "{{base_url}}/planes/queries/usuarios",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
-								"usuario"
+								"queries",
+								"usuarios"
 							]
 						}
 					},
@@ -1060,7 +1042,7 @@
 		},
 		{
 			"key": "auth_url",
-			"value": "http://127.0.0.1:3000/auth",
+			"value": "http://127.0.0.1:3000",
 			"type": "string"
 		},
 		{
@@ -1171,16 +1153,6 @@
 		{
 			"key": "token",
 			"value": "",
-			"type": "string"
-		},
-		{
-			"key": "unexistinguser.tipo_identificacion",
-			"value": "CC",
-			"type": "string"
-		},
-		{
-			"key": "unexistinguser.identificacion",
-			"value": "111111111",
 			"type": "string"
 		},
 		{
