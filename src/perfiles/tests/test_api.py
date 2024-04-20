@@ -12,6 +12,7 @@ from perfiles.infrastructure.dtos import (
     PerfilDemografico,
     PerfilDeportivo,
     ReporteSanguineo,
+    Molestia,
 )
 
 
@@ -55,6 +56,7 @@ class TestOperations:
         db.session.commit()
 
         yield perfil
+        db.session.query(Molestia).delete()
         db.session.query(HabitoDeportivo).delete()
         db.session.query(PerfilDeportivo).delete()
         db.session.commit()
@@ -99,6 +101,25 @@ class TestOperations:
         test_token = create_access_token(identity=test_user)
         response = test_client.post(
             "/perfiles/commands/deportivo/habitos",
+            headers={"Authorization": f"Bearer {test_token}"},
+            json={"payload": payload},
+        )
+        assert response.status_code == HTTPStatus.ACCEPTED.value
+
+    def test_add_molestia_suecess(self, test_client, test_db_perfil):
+        test_user = {
+            "tipo": test_db_perfil.tipo_identificacion,
+            "valor": test_db_perfil.identificacion,
+        }
+        payload = {
+            "titulo": "dolor en la espalda",
+            "descripcion": "dolor al estar sentado",
+            "tipo": "Molestia",
+            "fecha": "2024-03-12",
+        }
+        test_token = create_access_token(identity=test_user)
+        response = test_client.post(
+            "/perfiles/commands/deportivo/molestias",
             headers={"Authorization": f"Bearer {test_token}"},
             json={"payload": payload},
         )
