@@ -40,7 +40,7 @@ class TestOperations:
             "nombre": "Pepito",
             "apellido": "Perez",
             "rol": "DEPORTISTA",
-            "plan_afiliacion":"GRATUITO",
+            "plan_afiliacion": "GRATUITO",
             "contrasena": "contrasena123456",
             "identificacion": {"tipo": "DNI", "valor": "12345678901"},
             "demografia": {
@@ -57,9 +57,8 @@ class TestOperations:
             "deportes": ["ciclismo"],
         }
 
-        response = test_client.post("/usuarios/", json=payload)
+        response = test_client.post("/usuarios/commands/", json=payload)
         assert response.status_code == HTTPStatus.ACCEPTED.value
-
 
     def test_health(self, test_client):
         """Tests health check endpoint"""

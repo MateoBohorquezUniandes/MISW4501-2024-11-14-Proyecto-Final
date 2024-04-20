@@ -1,16 +1,18 @@
-from re import fullmatch
-
-from perfiles.domain.entities import PerfilDemografico, ReporteSanguineo, HabitoDeportivo
+from perfiles.domain.entities import (
+    HabitoDeportivo,
+    PerfilDemografico,
+    ReporteSanguineo,
+)
 from perfiles.domain.value_objects import (
     CategoriaIMC,
     CategoriaRiesgo,
+    ClasificacionRiesgo,
     ExamenSanguineo,
+    HabitoFrecuencia,
     IndiceMasaCorporal,
     InformacionDemografica,
     InformacionFisiologica,
-    ClasificacionRiesgo,
     UnidadExamenSanguineo,
-    HabitoFrecuencia,
 )
 from seedwork.domain.rules import (
     BusinessRule,
@@ -179,6 +181,7 @@ class ValidPerfilDemografico(CompoundBusinessRule):
 
         super().__init__(message, rules, "perfil")
 
+
 class _ValidHabitoFrecuencia(BusinessRule):
     habito: str
 
@@ -188,7 +191,8 @@ class _ValidHabitoFrecuencia(BusinessRule):
 
     def is_valid(self) -> bool:
         return self.habito in HabitoFrecuencia.list()
-    
+
+
 class ValidHabitoDeportivo(CompoundBusinessRule):
     habito: HabitoDeportivo
 
@@ -198,7 +202,7 @@ class ValidHabitoDeportivo(CompoundBusinessRule):
         rules = [
             ValidString(self.habito.titulo, 2, 50, "titulo invalido"),
             ValidString(self.habito.descripcion, 2, 400, "descipcion invalida"),
-            _ValidHabitoFrecuencia(self.habito.frecuencia)
+            _ValidHabitoFrecuencia(self.habito.frecuencia),
         ]
 
         super().__init__(message, rules, "habito")

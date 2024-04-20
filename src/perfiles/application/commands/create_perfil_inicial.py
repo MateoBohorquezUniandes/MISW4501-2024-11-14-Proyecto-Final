@@ -1,30 +1,26 @@
-import uuid
 import traceback
 from dataclasses import dataclass, field
 
 from sqlalchemy.exc import IntegrityError
 
-from perfiles.application.queries.base import PerfilQueryBaseHandler
-from seedwork.application.commands import Command, execute_command
-from seedwork.domain.exceptions import BusinessRuleException
-from seedwork.infrastructure.uow import UnitOfWorkPort
-from seedwork.presentation.exceptions import APIError
 from perfiles.application.dtos import PerfilDemograficoDTO
-from perfiles.application.exceptions import (
-    UnprocessableEntityError,
-    BadRequestError,
-)
+from perfiles.application.exceptions import BadRequestError, UnprocessableEntityError
 from perfiles.application.mappers import (
     PerfilAlimenticioInitialEntityMapper,
     PerfilDemograficoDTOEntityMapper,
     PerfilDeportivoInitialEntityMapper,
 )
+from perfiles.application.queries.base import PerfilQueryBaseHandler
 from perfiles.domain.entities import (
+    PerfilAlimenticio,
     PerfilDemografico,
     PerfilDeportivo,
-    PerfilAlimenticio,
 )
 from perfiles.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
+from seedwork.application.commands import Command, execute_command
+from seedwork.domain.exceptions import BusinessRuleException
+from seedwork.infrastructure.uow import UnitOfWorkPort
+from seedwork.presentation.exceptions import APIError
 
 
 @dataclass

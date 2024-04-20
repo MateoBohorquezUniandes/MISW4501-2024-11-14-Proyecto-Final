@@ -1,10 +1,11 @@
 from uuid import UUID
+
 from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
+from planes.domain.value_objects import Duracion, Imagen, ObjetivoEntrenamiento
 from planes.infrastructure.dtos import Entrenamiento as EntrenamientoDTO
 from planes.infrastructure.dtos import PlanEntrenamiento as PlanEntrenamientoDTO
 from planes.infrastructure.dtos import UsuarioPlan as UsuarioPlanDTO
 from seedwork.domain.repositories import Mapper
-from planes.domain.value_objects import Duracion, Imagen, ObjetivoEntrenamiento
 
 
 class EntrenamientoMapper(Mapper):

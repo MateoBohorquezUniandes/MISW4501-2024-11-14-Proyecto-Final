@@ -12,10 +12,10 @@ from usuarios.domain.exceptions import (
 )
 from usuarios.domain.rules import (
     ValidContrasena,
+    ValidDeportista,
     ValidIdentificacion,
     ValidOrganizador,
     ValidRol,
-    ValidDeportista,
     ValidSocio,
 )
 from usuarios.domain.value_objects import ROL, Contrasena, LoginRequest
@@ -34,7 +34,7 @@ class _UsuarioFactory(Factory):
             self.validate_rule(ValidOrganizador(usuario))
         elif usuario.rol == ROL.SOCIO.value:
             self.validate_rule(ValidSocio(usuario))
-        
+
         return usuario
 
 

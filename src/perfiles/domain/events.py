@@ -1,5 +1,5 @@
 import datetime
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from seedwork.domain.events import DomainEvent
 

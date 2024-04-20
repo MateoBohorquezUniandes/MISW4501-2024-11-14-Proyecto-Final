@@ -7,11 +7,11 @@ from flask_jwt_extended import create_access_token
 from perfiles.app import create_app
 from perfiles.infrastructure.db import db
 from perfiles.infrastructure.dtos import (
+    HabitoDeportivo,
     PerfilAlimenticio,
     PerfilDemografico,
     PerfilDeportivo,
     ReporteSanguineo,
-    HabitoDeportivo,
 )
 
 
@@ -83,7 +83,7 @@ class TestOperations:
             },
         }
 
-        response = test_client.post("/perfiles/demografico/init", json=payload)
+        response = test_client.post("/perfiles/commands/demografico/init", json=payload)
         assert response.status_code == HTTPStatus.ACCEPTED.value
 
     def test_add_habito_deportivo_suecess(self, test_client, test_db_perfil):
@@ -98,7 +98,7 @@ class TestOperations:
         }
         test_token = create_access_token(identity=test_user)
         response = test_client.post(
-            "/perfiles/deportivo/habitos",
+            "/perfiles/commands/deportivo/habitos",
             headers={"Authorization": f"Bearer {test_token}"},
             json={"payload": payload},
         )

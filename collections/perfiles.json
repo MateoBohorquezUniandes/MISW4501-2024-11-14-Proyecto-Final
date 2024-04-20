@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "4d80135d-1e4a-40d0-a72d-c8f56dcaa226",
+		"_postman_id": "7917dbf8-d37a-4364-b8f8-e5ff762c5a29",
 		"name": "perfiles",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "3833174"
+		"_exporter_id": "25979776"
 	},
 	"item": [
 		{
-			"name": "demografico success scenarios",
+			"name": "demografico success",
 			"item": [
 				{
 					"name": "perfilamiento inicial",
@@ -36,7 +36,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"correlation_id\": \"{{correlation_id}}\",\n    \"type\": \"event\",\n    \"specversion\": \"v1\",\n    \"datacontenttype\": \"application/json\", \n    \"payload\": {\n        \"tipo_identificacion\": \"{{demografico[tipo_identificacion]}}\",\n        \"identificacion\": \"{{demografico[identificacion]}}\",\n        \"demografia\":{\n            \"pais_residencia\": \"{{demografico[demografia][pais]}}\",\n            \"ciudad_residencia\": \"{{demografico[demografia][ciudad]}}\"\n        },\n        \"fisiologia\": {\n            \"genero\": \"{{demografico[fisiologia][genero]}}\",\n            \"edad\": \"{{demografico[fisiologia][edad]}}\",\n            \"peso\": \"{{demografico[fisiologia][peso]}}\",\n            \"altura\": \"{{demografico[fisiologia][altura]}}\"\n        }\n    }\n}",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"type\": \"event\",\n    \"specversion\": \"v1\",\n    \"datacontenttype\": \"application/json\",\n    \"payload\": {\n        \"tipo_identificacion\": {{demografico.tipo_identificacion}},\n        \"identificacion\": {{demografico.identificacion}},\n        \"demografia\": {\n            \"pais_residencia\": {{demografico.demografia.pais}},\n            \"ciudad_residencia\": {{demografico.demografia.ciudad}}\n        },\n        \"fisiologia\": {\n            \"genero\": {{demografico.fisiologia.genero}},\n            \"edad\": {{demografico.fisiologia.edad}},\n            \"peso\": {{demografico.fisiologia.peso}},\n            \"altura\": {{demografico.fisiologia.altura}}\n        }\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,11 +44,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/demografico/init",
+							"raw": "{{base_url}}/perfiles/commands/demografico/init",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"perfiles",
+								"commands",
 								"demografico",
 								"init"
 							]
@@ -64,14 +66,14 @@
 							"script": {
 								"exec": [
 									"pm.sendRequest({",
-									"    url: pm.collectionVariables.get(\"auth_url\"),",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
 									"    method: 'POST',",
 									"    header: { 'content-type': 'application/json' },",
 									"    body: {",
 									"        mode: 'raw',",
 									"        raw: JSON.stringify({",
-									"            \"tipo\": pm.collectionVariables.get(\"demografico[tipo_identificacion]\"),",
-									"            \"valor\": pm.collectionVariables.get(\"demografico[identificacion]\")",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')",
 									"        })",
 									"    }",
 									"},",
@@ -120,11 +122,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/demografico",
+							"raw": "{{base_url}}/perfiles/queries/demografico",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"perfiles",
+								"queries",
 								"demografico"
 							]
 						}
@@ -134,24 +138,24 @@
 			]
 		},
 		{
-			"name": "perfil deportivo",
+			"name": "deportivo success",
 			"item": [
 				{
-					"name": "añadir habito satisfactorio",
+					"name": "crear habito deportivo",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
 									"pm.sendRequest({\r",
-									"    url: pm.collectionVariables.get(\"auth_url\"),\r",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,\r",
 									"    method: 'POST',\r",
 									"    header: { 'content-type': 'application/json' },\r",
 									"    body: {\r",
 									"        mode: 'raw',\r",
 									"        raw: JSON.stringify({\r",
-									"            \"tipo\": pm.collectionVariables.get(\"demografico[tipo_identificacion]\"),\r",
-									"            \"valor\": pm.collectionVariables.get(\"demografico[identificacion]\")\r",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')\r",
 									"        })\r",
 									"    }\r",
 									"},\r",
@@ -195,7 +199,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"payload\": {\r\n        \"titulo\":\"{{deportivo[habito][titulo]}}\",\r\n        \"frecuencia\":\"{{deportivo[habito][frecuencia]}}\",\r\n        \"descripcion\":\"{{deportivo[habito][descripcion]}}\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"payload\": {\r\n        \"titulo\": {{deportivo.habito.titulo}},\r\n        \"frecuencia\": {{deportivo.habito.frecuencia}},\r\n        \"descripcion\": {{deportivo.habito.descripcion}}\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -203,66 +207,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/deportivo/habitos",
+							"raw": "{{base_url}}/perfiles/commands/deportivo/habitos",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"deportivo",
-								"habitos"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "añadir habito sin token",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response status code is 401', function () {\r",
-									"    pm.response.to.have.status(401);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"payload\": {\r\n        \"titulo\":\"{{deportivo[habito][titulo]}}\",\r\n        \"frecuencia\":\"{{deportivo[habito][frecuencia]}}\",\r\n        \"descripcion\":\"{{deportivo[habito][descripcion]}}\"\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/deportivo/habitos",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
+								"perfiles",
+								"commands",
 								"deportivo",
 								"habitos"
 							]
@@ -273,7 +224,7 @@
 			]
 		},
 		{
-			"name": "perfil inicial fail scenarios",
+			"name": "demografico fail",
 			"item": [
 				{
 					"name": "perfilamiento inicial duplicado",
@@ -298,7 +249,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"correlation_id\": \"{{correlation_id}}\",\n    \"type\": \"event\",\n    \"specversion\": \"v1\",\n    \"datacontenttype\": \"application/json\", \n    \"payload\": {\n        \"tipo_identificacion\": \"{{demografico[tipo_identificacion]}}\",\n        \"identificacion\": \"{{demografico[identificacion]}}\",\n        \"demografia\":{\n            \"pais_residencia\": \"{{demografico[demografia][pais]}}\",\n            \"ciudad_residencia\": \"{{demografico[demografia][ciudad]}}\"\n        },\n        \"fisiologia\": {\n            \"genero\": \"{{demografico[fisiologia][genero]}}\",\n            \"edad\": \"{{demografico[fisiologia][edad]}}\",\n            \"peso\": \"{{demografico[fisiologia][peso]}}\",\n            \"altura\": \"{{demografico[fisiologia][altura]}}\"\n        }\n    }\n}",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"type\": \"event\",\n    \"specversion\": \"v1\",\n    \"datacontenttype\": \"application/json\",\n    \"payload\": {\n        \"tipo_identificacion\": {{demografico.tipo_identificacion}},\n        \"identificacion\": {{demografico.identificacion}},\n        \"demografia\": {\n            \"pais_residencia\": {{demografico.demografia.pais}},\n            \"ciudad_residencia\": {{demografico.demografia.ciudad}}\n        },\n        \"fisiologia\": {\n            \"genero\": {{demografico.fisiologia.genero}},\n            \"edad\": {{demografico.fisiologia.edad}},\n            \"peso\": {{demografico.fisiologia.peso}},\n            \"altura\": {{demografico.fisiologia.altura}}\n        }\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -306,11 +257,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/demografico/init",
+							"raw": "{{base_url}}/perfiles/commands/demografico/init",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"perfiles",
+								"commands",
 								"demografico",
 								"init"
 							]
@@ -352,11 +305,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/demografico",
+							"raw": "{{base_url}}/perfiles/queries/demografico",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"perfiles",
+								"queries",
 								"demografico"
 							]
 						}
@@ -371,14 +326,14 @@
 							"script": {
 								"exec": [
 									"pm.sendRequest({",
-									"    url: pm.collectionVariables.get(\"auth_url\"),",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
 									"    method: 'POST',",
 									"    header: { 'content-type': 'application/json' },",
 									"    body: {",
 									"        mode: 'raw',",
 									"        raw: JSON.stringify({",
-									"            \"tipo\": pm.collectionVariables.get(\"demografico[tipo_identificacion]\"),",
-									"            \"valor\": \"fake token\"",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),",
+									"            \"valor\": \"fake_token\"",
 									"        })",
 									"    }",
 									"},",
@@ -417,12 +372,76 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/demografico",
+							"raw": "{{base_url}}/perfiles/queries/demografico",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"perfiles",
+								"queries",
 								"demografico"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "deportivo fail",
+			"item": [
+				{
+					"name": "añadir habito sin token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 401', function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": {\r\n        \"titulo\": {{deportivo.habito.titulo}},\r\n        \"frecuencia\": {{deportivo.habito.frecuencia}},\r\n        \"descripcion\": {{deportivo.habito.descripcion}}\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/perfiles/commands/deportivo/habitos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"commands",
+								"deportivo",
+								"habitos"
 							]
 						}
 					},
@@ -455,53 +474,53 @@
 	],
 	"variable": [
 		{
-			"key": "demografico[tipo_identificacion]",
-			"value": "CC",
+			"key": "demografico.tipo_identificacion",
+			"value": "\"CC\"",
 			"type": "string"
 		},
 		{
-			"key": "demografico[identificacion]",
-			"value": "123456789",
+			"key": "demografico.identificacion",
+			"value": "\"123456789\"",
 			"type": "string"
 		},
 		{
-			"key": "demografico[demografia][pais]",
-			"value": "Colombia",
+			"key": "demografico.demografia.pais",
+			"value": "\"Colombia\"",
 			"type": "string"
 		},
 		{
-			"key": "demografico[demografia][ciudad]",
-			"value": "Bogota",
+			"key": "demografico.demografia.ciudad",
+			"value": "\"Bogota\"",
 			"type": "string"
 		},
 		{
-			"key": "demografico[fisiologia][genero]",
-			"value": "M",
+			"key": "demografico.fisiologia.genero",
+			"value": "\"M\"",
 			"type": "string"
 		},
 		{
-			"key": "demografico[fisiologia][edad]",
+			"key": "demografico.fisiologia.edad",
 			"value": "30",
 			"type": "string"
 		},
 		{
-			"key": "demografico[fisiologia][altura]",
+			"key": "demografico.fisiologia.altura",
 			"value": "1.80",
 			"type": "string"
 		},
 		{
-			"key": "demografico[fisiologia][peso]",
+			"key": "demografico.fisiologia.peso",
 			"value": "70.5",
 			"type": "string"
 		},
 		{
 			"key": "correlation_id",
-			"value": "70f9a8c4-190f-49a2-9256-e0d4a4d2ab2a",
+			"value": "\"70f9a8c4-190f-49a2-9256-e0d4a4d2ab2a\"",
 			"type": "string"
 		},
 		{
 			"key": "auth_url",
-			"value": "http://127.0.0.1:3000/auth",
+			"value": "http://127.0.0.1:3000",
 			"type": "string"
 		},
 		{
@@ -511,22 +530,22 @@
 		},
 		{
 			"key": "base_url",
-			"value": "http://127.0.0.1:3021/perfiles",
+			"value": "http://127.0.0.1:3021",
 			"type": "string"
 		},
 		{
-			"key": "deportivo[habito][titulo]",
-			"value": "correr 15 minutos",
+			"key": "deportivo.habito.titulo",
+			"value": "\"correr 15 minutos\"",
 			"type": "string"
 		},
 		{
-			"key": "deportivo[habito][descripcion]",
-			"value": "salgo a correr hasta que me canse",
+			"key": "deportivo.habito.descripcion",
+			"value": "\"salgo a correr hasta que me canse\"",
 			"type": "string"
 		},
 		{
-			"key": "deportivo[habito][frecuencia]",
-			"value": "Diario",
+			"key": "deportivo.habito.frecuencia",
+			"value": "\"Diario\"",
 			"type": "string"
 		}
 	]

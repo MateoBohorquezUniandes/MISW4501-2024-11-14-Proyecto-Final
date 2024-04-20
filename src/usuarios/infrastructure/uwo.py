@@ -1,7 +1,7 @@
 import pickle
 
-from usuarios.infrastructure.db import db
 from seedwork.infrastructure.uow import Batch, Lock, UnitOfWork, UnitOfWorkFactory
+from usuarios.infrastructure.db import db
 
 
 class UnitOfWorkSQLAlchemy(UnitOfWork):

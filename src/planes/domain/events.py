@@ -1,5 +1,5 @@
 import datetime
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from seedwork.domain.events import DomainEvent
 
@@ -16,6 +16,7 @@ class EntrenamientoCreated(DomainEvent):
     id: str = None
     nombre: str = None
     created_at: datetime = None
+
 
 @dataclass
 class UsuarioPlanCreated(DomainEvent):

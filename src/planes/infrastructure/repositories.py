@@ -1,4 +1,5 @@
 from typing import Union
+
 from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
 from planes.domain.factories import PlanFactory
 from planes.domain.repositories import (
@@ -7,8 +8,8 @@ from planes.domain.repositories import (
     UsuarioPlanRepository,
 )
 from planes.infrastructure.db import db
-from planes.infrastructure.dtos import PlanEntrenamiento as PlanEntrenamientoDTO
 from planes.infrastructure.dtos import Entrenamiento as EntrenamientoDTO
+from planes.infrastructure.dtos import PlanEntrenamiento as PlanEntrenamientoDTO
 from planes.infrastructure.dtos import UsuarioPlan as UsuarioPlanDTO
 from planes.infrastructure.mappers import (
     EntrenamientoMapper,

@@ -1,26 +1,18 @@
-import uuid
 import traceback
 from dataclasses import dataclass, field
 
 from sqlalchemy.exc import IntegrityError
 
 from planes.application.commands.base import PlanCommandBaseHandler
+from planes.application.dtos import EntrenamientoDTO
+from planes.application.exceptions import BadRequestError, UnprocessableEntityError
+from planes.application.mappers import EntrenamientoDTOEntityMapper
+from planes.domain.entities import Entrenamiento
+from planes.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 from seedwork.application.commands import Command, execute_command
 from seedwork.domain.exceptions import BusinessRuleException
 from seedwork.infrastructure.uow import UnitOfWorkPort
 from seedwork.presentation.exceptions import APIError
-from planes.application.dtos import EntrenamientoDTO
-from planes.application.exceptions import (
-    UnprocessableEntityError,
-    BadRequestError,
-)
-from planes.application.mappers import (
-    EntrenamientoDTOEntityMapper,
-)
-from planes.domain.entities import (
-    Entrenamiento,
-)
-from planes.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 
 
 @dataclass

@@ -48,9 +48,10 @@ def create_app(config={}):
 
         jwt.init_app(app)
 
-    from usuarios.presentation.api import bp, bp_prefix
+    from usuarios.presentation.commands import bp as bpc
+    from usuarios.presentation.commands import bp_prefix as bpc_prefix
 
-    app.register_blueprint(bp, url_prefix=bp_prefix)
+    app.register_blueprint(bpc, url_prefix=bpc_prefix)
 
     from seedwork.presentation.exceptions import APIError
     from usuarios.presentation.handlers import api_custom_exception_handler

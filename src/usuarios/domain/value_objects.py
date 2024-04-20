@@ -6,9 +6,10 @@ from usuarios.domain.exceptions import InvalidPasswordMatchError
 
 
 class PLAN_AFILIACION(ExtendedEnum):
-    GRATUITO="GRATUITO"
-    INTERMEDIO="INTERMEDIO"
-    PREMIUM="PREMIUM"
+    GRATUITO = "GRATUITO"
+    INTERMEDIO = "INTERMEDIO"
+    PREMIUM = "PREMIUM"
+
 
 class ROL(ExtendedEnum):
     DEPORTISTA = "DEPORTISTA"

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f36cff1e-b253-457f-9c48-5c1b260a555e",
+		"_postman_id": "0b31ad6a-3f0d-484c-8115-9025b59e04e8",
 		"name": "autenticador",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25979776"
@@ -38,7 +38,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"tipo\": \"{{payload[tipo]}}\",\n    \"valor\": \"{{payload[valor]}}\"\n}",
+					"raw": "{\n    \"tipo\": {{payload.tipo}},\n    \"valor\": {{payload.valor}}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -46,15 +46,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:3000/auth",
-					"protocol": "http",
+					"raw": "{{base_url}}/auth",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
 						"auth"
 					]
@@ -91,15 +86,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:3000/auth",
-					"protocol": "http",
+					"raw": "{{base_url}}/auth",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
 						"auth"
 					]
@@ -128,7 +118,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"valor\": \"{{payload[valor]}}\"\n}",
+					"raw": "{\n\n    \"valor\": {{payload.valor}}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -136,15 +126,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:3000/auth",
-					"protocol": "http",
+					"raw": "{{base_url}}/auth",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
 						"auth"
 					]
@@ -173,7 +158,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"tipo\": \"\",\n    \"valor\": \"{{payload[valor]}}\"\n}",
+					"raw": "{\n    \"tipo\": \"\",\n    \"valor\": {{payload.valor}}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -181,15 +166,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:3000/auth",
-					"protocol": "http",
+					"raw": "{{base_url}}/auth",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
 						"auth"
 					]
@@ -218,7 +198,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"tipo\": \"{{payload[tipo]}}\"\n}",
+					"raw": "{\n    \"tipo\": {{payload.tipo}}\n\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -226,15 +206,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:3000/auth",
-					"protocol": "http",
+					"raw": "{{base_url}}/auth",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
 						"auth"
 					]
@@ -263,7 +238,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"tipo\": \"{{payload[tipo]}}\",\n    \"valor\": \"\"\n}",
+					"raw": "{\n    \"tipo\": {{payload.tipo}},\n    \"valor\": \"\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -271,15 +246,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:3000/auth",
-					"protocol": "http",
+					"raw": "{{base_url}}/auth",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "3000",
 					"path": [
 						"auth"
 					]
@@ -312,14 +282,18 @@
 	],
 	"variable": [
 		{
-			"key": "payload[tipo]",
-			"value": "CC",
+			"key": "payload.tipo",
+			"value": "\"CC\"",
 			"type": "string"
 		},
 		{
-			"key": "payload[valor]",
-			"value": "123456789",
+			"key": "payload.valor",
+			"value": "\"123456789\"",
 			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:3000"
 		}
 	]
 }

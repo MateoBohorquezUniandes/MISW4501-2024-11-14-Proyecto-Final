@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "4bf60115-e930-4431-b974-7afbe7a57b80",
+		"_postman_id": "97d2e18a-db33-4a3f-ae4e-637aa7e570d1",
 		"name": "usuarios",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25979776"
 	},
 	"item": [
 		{
-			"name": "registro success scenarios",
+			"name": "registro success",
 			"item": [
 				{
 					"name": "registro deportista",
@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{deportista[identificacion][tipo]}}\",\n        \"valor\": \"{{deportista[identificacion][valor]}}\"\n    },\n    \"nombre\": \"{{deportista[nombre]}}\",\n    \"apellido\": \"{{deportista[apellido]}}\",\n    \"rol\": \"{{deportista[rol]}}\",\n    \"contrasena\": \"{{deportista[contrasena]}}\",\n    \"demografia\": {\n        \"pais_nacimiento\": \"{{deportista[demografia][pais_nacimiento]}}\",\n        \"ciudad_nacimiento\": \"{{deportista[demografia][ciudad_nacimiento]}}\",\n        \"pais_residencia\": \"{{deportista[demografia][pais_residencia]}}\",\n        \"ciudad_residencia\": \"{{deportista[demografia][ciudad_residencia]}}\",\n        \"tiempo_residencia\": \"{{deportista[demografia][tiempo_residencia]}}\",\n        \"genero\": \"{{deportista[demografia][genero]}}\",\n        \"edad\": \"{{deportista[demografia][edad]}}\",\n        \"peso\": \"{{deportista[demografia][peso]}}\",\n        \"altura\": \"{{deportista[demografia][altura]}}\"\n    },\n    \"deportes\": [\"{{deportista[deportes][0]}}\", \"{{deportista[deportes][1]}}\"]\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{deportista.identificacion.tipo}},\n        \"valor\": {{deportista.identificacion.valor}}\n    },\n    \"nombre\": {{deportista.nombre}},\n    \"apellido\": {{deportista.apellido}},\n    \"rol\": {{deportista.rol}},\n    \"contrasena\": {{deportista.contrasena}},\n    \"demografia\": {\n        \"pais_nacimiento\": {{deportista.demografia.pais_nacimiento}},\n        \"ciudad_nacimiento\": {{deportista.demografia.ciudad_nacimiento}},\n        \"pais_residencia\": {{deportista.demografia.pais_residencia}},\n        \"ciudad_residencia\": {{deportista.demografia.ciudad_residencia}},\n        \"tiempo_residencia\": {{deportista.demografia.tiempo_residencia}},\n        \"genero\": {{deportista.demografia.genero}},\n        \"edad\": {{deportista.demografia.edad}},\n        \"peso\": {{deportista.demografia.peso}},\n        \"altura\": {{deportista.demografia.altura}}\n    },\n    \"deportes\": [{{deportista.deportes.0}}, {{deportista.deportes.1}}]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -53,17 +53,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -95,7 +91,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{organizador[identificacion][tipo]}}\",\n        \"valor\": \"{{organizador[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{organizador[rol]}}\",\n    \"contrasena\": \"{{organizador[contrasena]}}\",\n    \"organizacion\": \"{{organizador[organizacion]}}\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{organizador.identificacion.tipo}},\n        \"valor\": {{organizador.identificacion.valor}}\n    },\n    \"rol\": {{organizador.rol}},\n    \"contrasena\": {{organizador.contrasena}},\n    \"organizacion\": {{organizador.organizacion}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -103,17 +99,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -145,7 +137,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\",\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"razon_social\": \"{{socio[razon_social]}}\",\n    \"correo\": \"{{socio[correo]}}\",\n    \"telefono\": \"{{socio[telefono]}}\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{socio.identificacion.tipo}},\n        \"valor\": {{socio.identificacion.valor}}\n    },\n    \"rol\": {{socio.rol}},\n    \"contrasena\": {{socio.contrasena}},\n    \"razon_social\": {{socio.razon_social}},\n    \"correo\": {{socio.correo}},\n    \"telefono\": {{socio.telefono}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -153,17 +145,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -172,7 +160,7 @@
 			]
 		},
 		{
-			"name": "login success scenarios",
+			"name": "login success",
 			"item": [
 				{
 					"name": "login deportista",
@@ -208,7 +196,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"contrasena\": \"{{deportista[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"{{deportista[identificacion][tipo]}}\",\n        \"valor\": \"{{deportista[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{deportista[rol]}}\"\n}",
+							"raw": "{\n    \"contrasena\": {{deportista.contrasena}},\n    \"identificacion\": {\n        \"tipo\": {{deportista.identificacion.tipo}},\n        \"valor\": {{deportista.identificacion.valor}}\n    },\n    \"rol\": {{deportista.rol}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -216,17 +204,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios/login",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands/login",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
 								"usuarios",
+								"commands",
 								"login"
 							]
 						}
@@ -267,7 +251,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"contrasena\": \"{{organizador[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"{{organizador[identificacion][tipo]}}\",\n        \"valor\": \"{{organizador[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{organizador[rol]}}\"\n}",
+							"raw": "{\n    \"contrasena\": {{organizador.contrasena}},\n    \"identificacion\": {\n        \"tipo\": {{organizador.identificacion.tipo}},\n        \"valor\": {{organizador.identificacion.valor}}\n    },\n    \"rol\": {{organizador.rol}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -275,17 +259,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios/login",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands/login",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
 								"usuarios",
+								"commands",
 								"login"
 							]
 						}
@@ -326,7 +306,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\"\n}",
+							"raw": "{\n    \"contrasena\": {{socio.contrasena}},\n    \"identificacion\": {\n        \"tipo\": {{socio.identificacion.tipo}},\n        \"valor\": {{socio.identificacion.valor}}\n    },\n    \"rol\": {{socio.rol}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -334,17 +314,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios/login",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands/login",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
 								"usuarios",
+								"commands",
 								"login"
 							]
 						}
@@ -354,7 +330,7 @@
 			]
 		},
 		{
-			"name": "registro fail scenarios",
+			"name": "registro fail",
 			"item": [
 				{
 					"name": "registro deportista duplicado",
@@ -384,7 +360,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{deportista[identificacion][tipo]}}\",\n        \"valor\": \"{{deportista[identificacion][valor]}}\"\n    },\n    \"nombre\": \"{{deportista[nombre]}}\",\n    \"apellido\": \"{{deportista[apellido]}}\",\n    \"rol\": \"{{deportista[rol]}}\",\n    \"contrasena\": \"{{deportista[contrasena]}}\",\n    \"demografia\": {\n        \"pais_nacimiento\": \"{{deportista[demografia][pais_nacimiento]}}\",\n        \"ciudad_nacimiento\": \"{{deportista[demografia][ciudad_nacimiento]}}\",\n        \"pais_residencia\": \"{{deportista[demografia][pais_residencia]}}\",\n        \"ciudad_residencia\": \"{{deportista[demografia][ciudad_residencia]}}\",\n        \"tiempo_residencia\": \"{{deportista[demografia][tiempo_residencia]}}\",\n        \"genero\": \"{{deportista[demografia][genero]}}\",\n        \"edad\": \"{{deportista[demografia][edad]}}\",\n        \"peso\": \"{{deportista[demografia][peso]}}\",\n        \"altura\": \"{{deportista[demografia][altura]}}\"\n    },\n    \"deportes\": [\"{{deportista[deportes][0]}}\", \"{{deportista[deportes][1]}}\"]\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{deportista.identificacion.tipo}},\n        \"valor\": {{deportista.identificacion.valor}}\n    },\n    \"nombre\": {{deportista.nombre}},\n    \"apellido\": {{deportista.apellido}},\n    \"rol\": {{deportista.rol}},\n    \"contrasena\": {{deportista.contrasena}},\n    \"demografia\": {\n        \"pais_nacimiento\": {{deportista.demografia.pais_nacimiento}},\n        \"ciudad_nacimiento\": {{deportista.demografia.ciudad_nacimiento}},\n        \"pais_residencia\": {{deportista.demografia.pais_residencia}},\n        \"ciudad_residencia\": {{deportista.demografia.ciudad_residencia}},\n        \"tiempo_residencia\": {{deportista.demografia.tiempo_residencia}},\n        \"genero\": {{deportista.demografia.genero}},\n        \"edad\": {{deportista.demografia.edad}},\n        \"peso\": {{deportista.demografia.peso}},\n        \"altura\": {{deportista.demografia.altura}}\n    },\n    \"deportes\": [{{deportista.deportes.0}}, {{deportista.deportes.1}}]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -392,17 +368,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -436,7 +408,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{deportista[identificacion][tipo]}}\",\n        \"valor\": \"{{deportista[identificacion][valor]}}\"\n    },\n    \"nombre\": \"{{deportista[nombre]}}\",\n    \"apellido\": \"{{deportista[apellido]}}\",\n    \"rol\": \"{{deportista[rol]}}\",\n\n    \"demografia\": {\n        \"pais_nacimiento\": \"{{deportista[demografia][pais_nacimiento]}}\",\n        \"ciudad_nacimiento\": \"{{deportista[demografia][ciudad_nacimiento]}}\",\n        \"pais_residencia\": \"{{deportista[demografia][pais_residencia]}}\",\n        \"ciudad_residencia\": \"{{deportista[demografia][ciudad_residencia]}}\",\n        \"tiempo_residencia\": \"{{deportista[demografia][tiempo_residencia]}}\",\n        \"genero\": \"{{deportista[demografia][genero]}}\",\n        \"edad\": \"{{deportista[demografia][edad]}}\",\n        \"peso\": \"{{deportista[demografia][peso]}}\",\n        \"altura\": \"{{deportista[demografia][altura]}}\"\n    },\n    \"deportes\": [\"{{deportista[deportes][0]}}\", \"{{deportista[deportes][1]}}\"]\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{deportista.identificacion.tipo}},\n        \"valor\": {{deportista.identificacion.valor}}\n    },\n    \"nombre\": {{deportista.nombre}},\n    \"apellido\": {{deportista.apellido}},\n    \"rol\": {{deportista.rol}},\n\n    \"demografia\": {\n        \"pais_nacimiento\": {{deportista.demografia.pais_nacimiento}},\n        \"ciudad_nacimiento\": {{deportista.demografia.ciudad_nacimiento}},\n        \"pais_residencia\": {{deportista.demografia.pais_residencia}},\n        \"ciudad_residencia\": {{deportista.demografia.ciudad_residencia}},\n        \"tiempo_residencia\": {{deportista.demografia.tiempo_residencia}},\n        \"genero\": {{deportista.demografia.genero}},\n        \"edad\": {{deportista.demografia.edad}},\n        \"peso\": {{deportista.demografia.peso}},\n        \"altura\": {{deportista.demografia.altura}}\n    },\n    \"deportes\": [{{deportista.deportes.0}}, {{deportista.deportes.1}}]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -444,17 +416,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -488,7 +456,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{deportista[identificacion][tipo]}}\",\n        \"valor\": \"\"\n    },\n    \"nombre\": \"{{deportista[nombre]}}\",\n    \"apellido\": \"{{deportista[apellido]}}\",\n    \"rol\": \"{{deportista[rol]}}\",\n    \"contrasena\": \"{{deportista[contrasena]}}\",\n    \"demografia\": {\n        \"pais_nacimiento\": \"{{deportista[demografia][pais_nacimiento]}}\",\n        \"ciudad_nacimiento\": \"{{deportista[demografia][ciudad_nacimiento]}}\",\n        \"pais_residencia\": \"{{deportista[demografia][pais_residencia]}}\",\n        \"ciudad_residencia\": \"{{deportista[demografia][ciudad_residencia]}}\",\n        \"tiempo_residencia\": \"{{deportista[demografia][tiempo_residencia]}}\",\n        \"genero\": \"{{deportista[demografia][genero]}}\",\n        \"edad\": \"{{deportista[demografia][edad]}}\",\n        \"peso\": \"{{deportista[demografia][peso]}}\",\n        \"altura\": \"{{deportista[demografia][altura]}}\"\n    },\n    \"deportes\": [\"{{deportista[deportes][0]}}\", \"{{deportista[deportes][1]}}\"]\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{deportista.identificacion.tipo}},\n        \"valor\": \"\"\n    },\n    \"nombre\": {{deportista.nombre}},\n    \"apellido\": {{deportista.apellido}},\n    \"rol\": {{deportista.rol}},\n    \"contrasena\": {{deportista.contrasena}},\n    \"demografia\": {\n        \"pais_nacimiento\": {{deportista.demografia.pais_nacimiento}},\n        \"ciudad_nacimiento\": {{deportista.demografia.ciudad_nacimiento}},\n        \"pais_residencia\": {{deportista.demografia.pais_residencia}},\n        \"ciudad_residencia\": {{deportista.demografia.ciudad_residencia}},\n        \"tiempo_residencia\": {{deportista.demografia.tiempo_residencia}},\n        \"genero\": {{deportista.demografia.genero}},\n        \"edad\": {{deportista.demografia.edad}},\n        \"peso\": {{deportista.demografia.peso}},\n        \"altura\": {{deportista.demografia.altura}}\n    },\n    \"deportes\": [{{deportista.deportes.0}}, {{deportista.deportes.1}}]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -496,17 +464,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -540,7 +504,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"\",\n        \"valor\": \"{{deportista[identificacion][valor]}}\"\n    },\n    \"nombre\": \"{{deportista[nombre]}}\",\n    \"apellido\": \"{{deportista[apellido]}}\",\n    \"rol\": \"{{deportista[rol]}}\",\n    \"contrasena\": \"{{deportista[contrasena]}}\",\n    \"demografia\": {\n        \"pais_nacimiento\": \"{{deportista[demografia][pais_nacimiento]}}\",\n        \"ciudad_nacimiento\": \"{{deportista[demografia][ciudad_nacimiento]}}\",\n        \"pais_residencia\": \"{{deportista[demografia][pais_residencia]}}\",\n        \"ciudad_residencia\": \"{{deportista[demografia][ciudad_residencia]}}\",\n        \"tiempo_residencia\": \"{{deportista[demografia][tiempo_residencia]}}\",\n        \"genero\": \"{{deportista[demografia][genero]}}\",\n        \"edad\": \"{{deportista[demografia][edad]}}\",\n        \"peso\": \"{{deportista[demografia][peso]}}\",\n        \"altura\": \"{{deportista[demografia][altura]}}\"\n    },\n    \"deportes\": [\"{{deportista[deportes][0]}}\", \"{{deportista[deportes][1]}}\"]\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"\",\n        \"valor\": {{deportista.identificacion.valor}}\n    },\n    \"nombre\": {{deportista.nombre}},\n    \"apellido\": {{deportista.apellido}},\n    \"rol\": {{deportista.rol}},\n    \"contrasena\": {{deportista.contrasena}},\n    \"demografia\": {\n        \"pais_nacimiento\": {{deportista.demografia.pais_nacimiento}},\n        \"ciudad_nacimiento\": {{deportista.demografia.ciudad_nacimiento}},\n        \"pais_residencia\": {{deportista.demografia.pais_residencia}},\n        \"ciudad_residencia\": {{deportista.demografia.ciudad_residencia}},\n        \"tiempo_residencia\": {{deportista.demografia.tiempo_residencia}},\n        \"genero\": {{deportista.demografia.genero}},\n        \"edad\": {{deportista.demografia.edad}},\n        \"peso\": {{deportista.demografia.peso}},\n        \"altura\": {{deportista.demografia.altura}}\n    },\n    \"deportes\": [{{deportista.deportes.0}}, {{deportista.deportes.1}}]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -548,17 +512,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -592,7 +552,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{deportista[identificacion][tipo]}}\",\n        \"valor\": \"{{deportista[identificacion][valor]}}\"\n    },\n    \"nombre\": \"{{deportista[nombre]}}\",\n    \"apellido\": \"{{deportista[apellido]}}\",\n    \"rol\": \"{{deportista[rol]}}\",\n    \"contrasena\": \"{{deportista[contrasena]}}\",\n    \"demografia\": {},\n    \"deportes\": [\"{{deportista[deportes][0]}}\", \"{{deportista[deportes][1]}}\"]\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{deportista.identificacion.tipo}},\n        \"valor\": {{deportista.identificacion.valor}}\n    },\n    \"nombre\": {{deportista.nombre}},\n    \"apellido\": {{deportista.apellido}},\n    \"rol\": {{deportista.rol}},\n    \"contrasena\": {{deportista.contrasena}},\n    \"demografia\": {},\n    \"deportes\": [{{deportista.deportes.0}}, {{deportista.deportes.1}}]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -600,17 +560,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -644,7 +600,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{organizador[identificacion][tipo]}}\",\n        \"valor\": \"{{organizador[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{organizador[rol]}}\",\n    \"contrasena\": \"{{organizador[contrasena]}}\",\n    \"organizacion\": \"{{organizador[organizacion]}}\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{organizador.identificacion.tipo}},\n        \"valor\": {{organizador.identificacion.valor}}\n    },\n    \"rol\": {{organizador.rol}},\n    \"contrasena\": {{organizador.contrasena}},\n    \"organizacion\": {{organizador.organizacion}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -652,17 +608,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -696,7 +648,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{organizador[identificacion][tipo]}}\",\n        \"valor\": \"{{organizador[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{organizador[rol]}}\",\n    \"contrasena\": \"\",\n    \"organizacion\": \"{{organizador[organizacion]}}\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{organizador.identificacion.tipo}},\n        \"valor\": {{organizador.identificacion.valor}}\n    },\n    \"rol\": {{organizador.rol}},\n    \"contrasena\": \"\",\n    \"organizacion\": {{organizador.organizacion}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -704,17 +656,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -748,7 +696,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"\",\n        \"valor\": \"\"\n    },\n    \"rol\": \"{{organizador[rol]}}\",\n    \"contrasena\": \"{{organizador[contrasena]}}\",\n    \"organizacion\": \"{{organizador[organizacion]}}\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"\",\n        \"valor\": \"\"\n    },\n    \"rol\": {{organizador.rol}},\n    \"contrasena\": {{organizador.contrasena}},\n    \"organizacion\": {{organizador.organizacion}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -756,17 +704,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -800,7 +744,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{organizador[identificacion][tipo]}}\",\n        \"valor\": \"{{organizador[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{organizador[rol]}}\",\n    \"contrasena\": \"{{organizador[contrasena]}}\",\n    \"organizacion\": \"\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{organizador.identificacion.tipo}},\n        \"valor\": {{organizador.identificacion.valor}}\n    },\n    \"rol\": {{organizador.rol}},\n    \"contrasena\": {{organizador.contrasena}},\n    \"organizacion\": \"\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -808,17 +752,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -852,7 +792,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\",\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"razon_social\": \"{{socio[razon_social]}}\",\n    \"correo\": \"{{socio[correo]}}\",\n    \"telefono\": \"{{socio[telefono]}}\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{socio.identificacion.tipo}},\n        \"valor\": {{socio.identificacion.valor}}\n    },\n    \"rol\": {{socio.rol}},\n    \"contrasena\": {{socio.contrasena}},\n    \"razon_social\": {{socio.razon_social}},\n    \"correo\": {{socio.correo}},\n    \"telefono\": {{socio.telefono}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -860,17 +800,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -904,7 +840,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\",\n    \"contrasena\": \"\",\n    \"razon_social\": \"{{socio[razon_social]}}\",\n    \"correo\": \"{{socio[correo]}}\",\n    \"telefono\": \"{{socio[telefono]}}\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{socio.identificacion.tipo}},\n        \"valor\": {{socio.identificacion.valor}}\n    },\n    \"rol\": {{socio.rol}},\n    \"contrasena\": \"\",\n    \"razon_social\": {{socio.razon_social}},\n    \"correo\": {{socio.correo}},\n    \"telefono\": {{socio.telefono}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -912,17 +848,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -956,7 +888,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"\",\n        \"valor\": \"\"\n    },\n    \"rol\": \"{{socio[rol]}}\",\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"razon_social\": \"{{socio[razon_social]}}\",\n    \"correo\": \"{{socio[correo]}}\",\n    \"telefono\": \"{{socio[telefono]}}\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"\",\n        \"valor\": \"\"\n    },\n    \"rol\": {{socio.rol}},\n    \"contrasena\": {{socio.contrasena}},\n    \"razon_social\": {{socio.razon_social}},\n    \"correo\": {{socio.correo}},\n    \"telefono\": {{socio.telefono}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -964,17 +896,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -1008,7 +936,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\",\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"razon_social\": \"\",\n    \"correo\": \"{{socio[correo]}}\",\n    \"telefono\": \"{{socio[telefono]}}\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{socio.identificacion.tipo}},\n        \"valor\": {{socio.identificacion.valor}}\n    },\n    \"rol\": {{socio.rol}},\n    \"contrasena\": {{socio.contrasena}},\n    \"razon_social\": \"\",\n    \"correo\": {{socio.correo}},\n    \"telefono\": {{socio.telefono}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1016,17 +944,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -1060,7 +984,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\",\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"razon_social\": \"{{socio[razon_social]}}\",\n    \"correo\": \"\",\n    \"telefono\": \"{{socio[telefono]}}\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{socio.identificacion.tipo}},\n        \"valor\": {{socio.identificacion.valor}}\n    },\n    \"rol\": {{socio.rol}},\n    \"contrasena\": {{socio.contrasena}},\n    \"razon_social\": {{socio.razon_social}},\n    \"correo\": \"\",\n    \"telefono\": {{socio.telefono}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1068,17 +992,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -1112,7 +1032,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\",\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"razon_social\": \"{{socio[razon_social]}}\",\n    \"correo\": \"correoinvalido\",\n    \"telefono\": \"{{socio[telefono]}}\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{socio.identificacion.tipo}},\n        \"valor\": {{socio.identificacion.valor}}\n    },\n    \"rol\": {{socio.rol}},\n    \"contrasena\": {{socio.contrasena}},\n    \"razon_social\": {{socio.razon_social}},\n    \"correo\": \"correoinvalido\",\n    \"telefono\": {{socio.telefono}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1120,17 +1040,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -1164,7 +1080,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identificacion\": {\n        \"tipo\": \"{{socio[identificacion][tipo]}}\",\n        \"valor\": \"{{socio[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{socio[rol]}}\",\n    \"contrasena\": \"{{socio[contrasena]}}\",\n    \"razon_social\": \"{{socio[razon_social]}}\",\n    \"correo\": \"{{socio[correo]}}\",\n    \"telefono\": \"\"\n}",
+							"raw": "{\n    \"identificacion\": {\n        \"tipo\": {{socio.identificacion.tipo}},\n        \"valor\": {{socio.identificacion.valor}}\n    },\n    \"rol\": {{socio.rol}},\n    \"contrasena\": {{socio.contrasena}},\n    \"razon_social\": {{socio.razon_social}},\n    \"correo\": {{socio.correo}},\n    \"telefono\": \"\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1172,17 +1088,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
-								"usuarios"
+								"usuarios",
+								"commands"
 							]
 						}
 					},
@@ -1191,7 +1103,7 @@
 			]
 		},
 		{
-			"name": "login fail scenarios",
+			"name": "login fail",
 			"item": [
 				{
 					"name": "login sin contrasena",
@@ -1226,7 +1138,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"contrasena\": \"\",\n    \"identificacion\": {\n        \"tipo\": \"{{deportista[identificacion][tipo]}}\",\n        \"valor\": \"{{deportista[identificacion][valor]}}\"\n    },\n    \"rol\": \"{{deportista[rol]}}\"\n}",
+							"raw": "{\n    \"contrasena\": \"\",\n    \"identificacion\": {\n        \"tipo\": {{deportista.identificacion.tipo}},\n        \"valor\": {{deportista.identificacion.valor}}\n    },\n    \"rol\": {{deportista.rol}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1234,17 +1146,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios/login",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands/login",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
 								"usuarios",
+								"commands",
 								"login"
 							]
 						}
@@ -1284,7 +1192,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"contrasena\": \"{{deportista[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"{{deportista[identificacion][tipo]}}\",\n        \"valor\": \"{{deportista[identificacion][valor]}}\"\n    },\n    \"rol\": \"\"\n}",
+							"raw": "{\n    \"contrasena\": {{deportista.contrasena}},\n    \"identificacion\": {\n        \"tipo\": {{deportista.identificacion.tipo}},\n        \"valor\": {{deportista.identificacion.valor}}\n    },\n    \"rol\": \"\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1292,17 +1200,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios/login",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands/login",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
 								"usuarios",
+								"commands",
 								"login"
 							]
 						}
@@ -1342,7 +1246,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"contrasena\": \"{{deportista[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"{{deportista[identificacion][tipo]}}\",\n        \"valor\": \"{{deportista[identificacion][valor]}}\"\n    },\n    \"rol\": \"rol\"\n}",
+							"raw": "{\n    \"contrasena\": {{deportista.contrasena}},\n    \"identificacion\": {\n        \"tipo\": {{deportista.identificacion.tipo}},\n        \"valor\": {{deportista.identificacion.valor}}\n    },\n    \"rol\": \"rol\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1350,17 +1254,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios/login",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands/login",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
 								"usuarios",
+								"commands",
 								"login"
 							]
 						}
@@ -1400,7 +1300,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"contrasena\": \"{{deportista[contrasena]}}\",\n    \"identificacion\": {\n        \"tipo\": \"\",\n        \"valor\": \"\"\n    },\n    \"rol\": \"{{deportista[rol]}}\"\n}",
+							"raw": "{\n    \"contrasena\": {{deportista.contrasena}},\n    \"identificacion\": {\n        \"tipo\": \"\",\n        \"valor\": \"\"\n    },\n    \"rol\": {{deportista.rol}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1408,17 +1308,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3011/usuarios/login",
-							"protocol": "http",
+							"raw": "{{base_url}}/usuarios/commands/login",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "3011",
 							"path": [
 								"usuarios",
+								"commands",
 								"login"
 							]
 						}
@@ -1452,148 +1348,156 @@
 	],
 	"variable": [
 		{
-			"key": "deportista[identificacion][tipo]",
-			"value": "CC",
+			"key": "deportista.identificacion.tipo",
+			"value": "\"CC\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[identificacion][valor]",
-			"value": "123456789",
+			"key": "deportista.identificacion.valor",
+			"value": "\"123456789\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[rol]",
-			"value": "DEPORTISTA",
+			"key": "deportista.rol",
+			"value": "\"DEPORTISTA\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[contrasena]",
-			"value": "SaveP4assword123",
+			"key": "deportista.contrasena",
+			"value": "\"SaveP4assword123\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[nombre]",
-			"value": "John",
+			"key": "deportista.nombre",
+			"value": "\"John\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[apellido]",
-			"value": "Doe",
+			"key": "deportista.apellido",
+			"value": "\"Doe\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[demografia][genero]",
-			"value": "M",
+			"key": "deportista.demografia.genero",
+			"value": "\"M\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[demografia][edad]",
+			"key": "deportista.demografia.edad",
 			"value": "30",
 			"type": "string"
 		},
 		{
-			"key": "deportista[demografia][peso]",
+			"key": "deportista.demografia.peso",
 			"value": "70.5",
 			"type": "string"
 		},
 		{
-			"key": "deportista[demografia][altura]",
+			"key": "deportista.demografia.altura",
 			"value": "1.80",
 			"type": "string"
 		},
 		{
-			"key": "deportista[demografia][pais_nacimiento]",
-			"value": "Colombia",
+			"key": "deportista.demografia.pais_nacimiento",
+			"value": "\"Colombia\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[demografia][deportista]",
-			"value": "Bogota",
+			"key": "deportista.demografia.ciudad_nacimiento",
+			"value": "\"Bogota\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[demografia][pais_residencia]",
-			"value": "Colombia",
+			"key": "deportista.demografia.pais_residencia",
+			"value": "\"Colombia\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[demografia][ciudad_residencia]",
-			"value": "Bogota",
+			"key": "deportista.demografia.ciudad_residencia",
+			"value": "\"Bogota\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[demografia][tiempo_residencia]",
+			"key": "deportista.demografia.tiempo_residencia",
 			"value": "5",
 			"type": "string"
 		},
 		{
-			"key": "deportista[deportes][0]",
-			"value": "ciclismo",
+			"key": "deportista.deportes.0",
+			"value": "\"ciclismo\"",
 			"type": "string"
 		},
 		{
-			"key": "deportista[deportes][1]",
-			"value": "atletistmo",
+			"key": "deportista.deportes.1",
+			"value": "\"atletistmo\"",
 			"type": "string"
 		},
 		{
-			"key": "organizador[identificacion][tipo]",
-			"value": "NIT",
+			"key": "organizador.identificacion.tipo",
+			"value": "\"NIT\"",
 			"type": "string"
 		},
 		{
-			"key": "organizador[identificacion][valor]",
-			"value": "123456789-1",
+			"key": "organizador.identificacion.valor",
+			"value": "\"123456789-1\"",
 			"type": "string"
 		},
 		{
-			"key": "organizador[rol]",
-			"value": "ORGANIZADOR",
+			"key": "organizador.rol",
+			"value": "\"ORGANIZADOR\"",
 			"type": "string"
 		},
 		{
-			"key": "organizador[contrasena]",
-			"value": "OrgaPass1352",
+			"key": "organizador.contrasena",
+			"value": "\"OrgaPass1352\"",
 			"type": "string"
 		},
 		{
-			"key": "organizador[organizacion]",
-			"value": "Pruebas Org",
+			"key": "organizador.organizacion",
+			"value": "\"Pruebas Org\"",
 			"type": "string"
 		},
 		{
-			"key": "socio[identificacion][tipo]",
-			"value": "NIT",
+			"key": "socio.identificacion.tipo",
+			"value": "\"NIT\"",
 			"type": "string"
 		},
 		{
-			"key": "socio[identificacion][valor]",
-			"value": "987654321-1",
+			"key": "socio.identificacion.valor",
+			"value": "\"987654321-1\"",
 			"type": "string"
 		},
 		{
-			"key": "socio[rol]",
-			"value": "SOCIO",
+			"key": "socio.rol",
+			"value": "\"SOCIO\"",
 			"type": "string"
 		},
 		{
-			"key": "socio[contrasena]",
-			"value": "SocioPass123456",
+			"key": "socio.contrasena",
+			"value": "\"SocioPass123456\"",
 			"type": "string"
 		},
 		{
-			"key": "socio[razon_social]",
-			"value": "Socio SAS",
+			"key": "socio.razon_social",
+			"value": "\"Socio SAS\"",
 			"type": "string"
 		},
 		{
-			"key": "socio[correo]",
-			"value": "socio@mail.com",
+			"key": "socio.correo",
+			"value": "\"socio@mail.com\"",
 			"type": "string"
 		},
 		{
-			"key": "socio[telefono]",
-			"value": "+573101234567",
+			"key": "socio.telefono",
+			"value": "\"+573101234567\"",
+			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:3011"
+		},
+		{
+			"value": "",
 			"type": "string"
 		}
 	]

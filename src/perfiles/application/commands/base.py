@@ -1,6 +1,6 @@
-from seedwork.application.commands import CommandHandler
 from perfiles.domain.factories import PerfilFactory
 from perfiles.infrastructure.factories import RepositoryFactory
+from seedwork.application.commands import CommandHandler
 
 
 class PerfilCommandBaseHandler(CommandHandler):

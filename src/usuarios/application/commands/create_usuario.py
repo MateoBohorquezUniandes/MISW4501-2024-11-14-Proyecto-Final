@@ -1,4 +1,3 @@
-import uuid
 import traceback
 from dataclasses import dataclass, field
 
@@ -10,15 +9,10 @@ from seedwork.infrastructure.uow import UnitOfWorkPort
 from seedwork.presentation.exceptions import APIError
 from usuarios.application.commands.base import UsuarioBaseHandler
 from usuarios.application.dtos import UsuarioDTO
-from usuarios.application.exceptions import (
-    UnprocessableEntityError,
-    BadRequestError,
-)
+from usuarios.application.exceptions import BadRequestError, UnprocessableEntityError
 from usuarios.application.mappers import ContrasenaMapper, UsuarioDTOEntityMapper
 from usuarios.domain.entities import Usuario
-from usuarios.domain.exceptions import (
-    InvalidRolUsuarioError
-)
+from usuarios.domain.exceptions import InvalidRolUsuarioError
 from usuarios.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 
 
@@ -60,6 +54,7 @@ class CreateUsuarioHandler(UsuarioBaseHandler):
             if uowf:
                 UnitOfWorkPort.rollback(uowf)
             raise APIError(message=str(e), code="register.error.internal")
+
 
 @execute_command.register(CreateUsuario)
 def command_crear_usuario(command: CreateUsuario):

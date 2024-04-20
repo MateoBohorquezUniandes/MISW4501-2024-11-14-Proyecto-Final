@@ -1,4 +1,3 @@
-from seedwork.infrastructure.schema.v1.mappers import IntegrationMapper
 from perfiles.domain.events import PerfilDemograficoCreated
 from perfiles.infrastructure.schema.v1.events import (
     ClasificacionRiesgoPayload,
@@ -8,6 +7,7 @@ from perfiles.infrastructure.schema.v1.events import (
     InformacionDemograficaPayload,
     InformacionFisiologicaPayload,
 )
+from seedwork.infrastructure.schema.v1.mappers import IntegrationMapper
 
 
 class DemografiaCreatedIntegrationEventMapper(IntegrationMapper):

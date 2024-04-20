@@ -43,7 +43,7 @@ class Usuario(db.Model):
 
 class Deportista(Usuario):
     __tablename__ = "deportista"
-        
+
     # Informacion exlusiva de deportistas
     nombre = db.Column(db.String(250), nullable=True)
     apellido = db.Column(db.String(250), nullable=True)

@@ -1,5 +1,5 @@
 import traceback
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from perfiles.application.mappers import PerfilDeportivoDTOEntityMapper
 from perfiles.application.queries.base import PerfilQueryBaseHandler
@@ -20,14 +20,14 @@ class GetPerfilesDeportivosQueryHandler(PerfilQueryBaseHandler):
             perfiles: list[PerfilDeportivo] = repository.get_all()
 
             mapper = PerfilDeportivoDTOEntityMapper()
-            perfiles_dto = [
-                self._perfiles_factory.create(e, mapper) for e in perfiles
-            ]
+            perfiles_dto = [self._perfiles_factory.create(e, mapper) for e in perfiles]
             return QueryResult(result=perfiles_dto)
 
         except Exception as e:
             traceback.print_exc()
-            raise APIError(message=str(e), code="perfiles_derportivos.get.error.internal")
+            raise APIError(
+                message=str(e), code="perfiles_derportivos.get.error.internal"
+            )
 
 
 @execute_query.register(GetPerfilesDeportivos)

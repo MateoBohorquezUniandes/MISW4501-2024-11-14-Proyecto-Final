@@ -1,4 +1,5 @@
 from http import HTTPStatus
+
 from seedwork.presentation.exceptions import APIError
 
 
@@ -10,6 +11,7 @@ class UnprocessableEntityError(APIError):
 class BadRequestError(APIError):
     def __init__(self, message=HTTPStatus.BAD_REQUEST.phrase, code=""):
         super().__init__(HTTPStatus.BAD_REQUEST.value, message, code)
+
 
 class PerfilNotFoundError(APIError):
     def __init__(self, message=HTTPStatus.NOT_FOUND.phrase):

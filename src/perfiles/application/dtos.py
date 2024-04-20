@@ -70,19 +70,16 @@ class HabitoDeportivoDTO(DTO):
     descripcion: str = field(default_factory=str)
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
-    
+
 
 @dataclass(frozen=True)
 class PerfilDeportivoDTO(DTO):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
-    habitos: list[HabitoDeportivoDTO] = field(
-        default_factory=list[HabitoDeportivoDTO]
-    )
+    habitos: list[HabitoDeportivoDTO] = field(default_factory=list[HabitoDeportivoDTO])
 
 
 @dataclass(frozen=True)
 class PerfilAlimenticioDTO(DTO):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
-

@@ -1,4 +1,3 @@
-from seedwork.domain.entities import Entity
 from seedwork.domain.repositories import Mapper
 from usuarios.domain.entities import Deportista, Organizador, Socio, Usuario
 from usuarios.domain.value_objects import (

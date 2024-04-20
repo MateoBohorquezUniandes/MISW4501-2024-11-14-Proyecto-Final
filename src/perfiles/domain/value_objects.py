@@ -110,14 +110,14 @@ class TipoActividadDeportiva(str, Enum):
 
 class TipoAlimentacion(str, Enum): ...
 
+
 class HabitoFrecuencia(ExtendedEnum):
     DIARIO = "Diario"
     SEMANAL = "Semanal"
     MENSUAL = "Mensual"
     ANUAL = "Anual"
 
+
 @dataclass(frozen=True)
 class HabitoDeportivoFrecuencia(ValueObject):
-    frecuencia: HabitoFrecuencia = field(
-        default_factory=HabitoFrecuencia)
-    
+    frecuencia: HabitoFrecuencia = field(default_factory=HabitoFrecuencia)

@@ -1,17 +1,16 @@
 from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
-from seedwork.domain.rules import (
-    BusinessRule,
-    CompoundBusinessRule,
-    ValidFloat,
-    ValidInteger,
-    ValidString,
-)
 from planes.domain.value_objects import (
     DEPORTE,
     DURACION_UNIDAD,
     EXIGENCIA,
     PLAN_CATEGORIA,
     ObjetivoEntrenamiento,
+)
+from seedwork.domain.rules import (
+    BusinessRule,
+    CompoundBusinessRule,
+    ValidInteger,
+    ValidString,
 )
 
 

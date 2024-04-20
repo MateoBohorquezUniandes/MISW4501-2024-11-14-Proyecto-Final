@@ -25,7 +25,7 @@ class UsuarioBaseHandler(CommandHandler):
     @property
     def contrasena_factory(self):
         return self._contrasena_factory
-    
+
     @property
     def login_factory(self):
         return self._login_factory

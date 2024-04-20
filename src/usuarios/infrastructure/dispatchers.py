@@ -2,7 +2,6 @@ import json
 from dataclasses import asdict
 from os import environ
 
-import requests
 from google.cloud import tasks_v2
 
 from seedwork.infrastructure.dispatchers import Dispatcher

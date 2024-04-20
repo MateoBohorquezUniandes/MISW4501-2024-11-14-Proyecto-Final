@@ -1,22 +1,17 @@
 from dataclasses import dataclass
 
+from perfiles.domain.entities import (
+    HabitoDeportivo,
+    PerfilAlimenticio,
+    PerfilDemografico,
+    PerfilDeportivo,
+)
+from perfiles.domain.exceptions import InvalidPerfilDemograficoFactoryException
+from perfiles.domain.rules import ValidHabitoDeportivo, ValidPerfilDemografico
 from seedwork.domain.entities import Entity
 from seedwork.domain.events import DomainEvent
 from seedwork.domain.factories import Factory
 from seedwork.domain.repositories import Mapper, UnidirectionalMapper
-from perfiles.domain.entities import (
-    PerfilAlimenticio,
-    PerfilDemografico,
-    PerfilDeportivo,
-    HabitoDeportivo
-)
-from perfiles.domain.exceptions import (
-    InvalidPerfilDemograficoFactoryException,
-)
-from perfiles.domain.rules import (
-    ValidPerfilDemografico,
-    ValidHabitoDeportivo
-)
 
 
 @dataclass
@@ -57,7 +52,8 @@ class _PerfilAlimenticioFactory(Factory):
         # self.validate_rule(ValidPerfilAlimenticio(perfil))
 
         return perfil
-    
+
+
 @dataclass
 class _HabitoDeportivoFactory(Factory):
     def create(self, obj: any, mapper: Mapper = None) -> HabitoDeportivo:
