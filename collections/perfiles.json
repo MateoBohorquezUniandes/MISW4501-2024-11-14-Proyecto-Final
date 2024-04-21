@@ -280,7 +280,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"payload\": {\r\n       \"titulo\": {{deportivo.habito.titulo}},\r\n        \"descripcion\":{{deportivo.habito.descripcion}},\r\n        \"tipo\": {{deportivo.habito.tipo}},\r\n        \"fecha\": {{deportivo.habito.fecha}}\r\n    }\r\n}",
+							"raw": "{\r\n    \"payload\": {\r\n       \"titulo\": {{deportivo.molestia.titulo}},\r\n        \"descripcion\":{{deportivo.molestia.descripcion}},\r\n        \"tipo\": {{deportivo.molestia.tipo}},\r\n        \"fecha\": {{deportivo.molestia.fecha}}\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -332,8 +332,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Response status code is 202', function () {\r",
-									"    pm.response.to.have.status(202);\r",
+									"pm.test('Response status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
 									"pm.test('Response has the required fields', function () {\r",
