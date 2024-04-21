@@ -123,3 +123,18 @@ services:
     ports:
       - 3070:3070
     restart: always
+
+  productos-api:
+    container_name: 'productos-api'
+    build:
+      context: ./
+      dockerfile: productos.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      - ./envs/.env.autenticador.local
+      - ./envs/.env.productos.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3090:3090
+    restart: always
