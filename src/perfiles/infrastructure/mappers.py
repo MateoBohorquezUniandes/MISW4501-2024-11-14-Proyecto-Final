@@ -4,6 +4,7 @@ from perfiles.domain.entities import (
     PerfilDemografico,
     PerfilDeportivo,
     ReporteSanguineo,
+    Molestia,
 )
 from perfiles.domain.value_objects import (
     ClasificacionRiesgo,
@@ -12,12 +13,14 @@ from perfiles.domain.value_objects import (
     InformacionDemografica,
     InformacionFisiologica,
     ResultadoElementoSanguineo,
+    MolestiaTipo,
 )
 from perfiles.infrastructure.dtos import HabitoDeportivo as HabitoDeportivoDTO
 from perfiles.infrastructure.dtos import PerfilAlimenticio as PerfilAlimenticioDTO
 from perfiles.infrastructure.dtos import PerfilDemografico as PerfilDemograficoDTO
 from perfiles.infrastructure.dtos import PerfilDeportivo as PerfilDeportivoDTO
 from perfiles.infrastructure.dtos import ReporteSanguineo as ReporteSanguineoDTO
+from perfiles.infrastructure.dtos import Molestia as MolestiaDTO
 from seedwork.domain.repositories import Mapper
 
 
@@ -108,6 +111,32 @@ class HabitoDeportivoMapper(Mapper):
         return habito_dto
 
 
+class MolestiaMapper(Mapper):
+    def type(self) -> type:
+        return Molestia
+
+    def dto_to_entity(self, dto: MolestiaDTO) -> Molestia:
+        return Molestia(
+            tipo_identificacion=dto.tipo_identificacion,
+            identificacion=dto.identificacion,
+            descripcion=dto.descripcion,
+            tipo=MolestiaTipo(dto.tipo),
+            titulo=dto.titulo,
+            fecha=dto.fecha,
+        )
+
+    def entity_to_dto(self, entity: Molestia) -> MolestiaDTO:
+        molestia_dto = MolestiaDTO()
+        molestia_dto.tipo = entity.tipo
+        molestia_dto.descripcion = entity.descripcion
+        molestia_dto.titulo = entity.titulo
+        molestia_dto.tipo_identificacion = entity.tipo_identificacion
+        molestia_dto.identificacion = entity.identificacion
+        molestia_dto.fecha = entity.fecha
+
+        return molestia_dto
+
+
 class PerfilDeportivoMapper(Mapper):
     def type(self) -> type:
         return PerfilDeportivo
@@ -117,19 +146,24 @@ class PerfilDeportivoMapper(Mapper):
         habitos_deportivos = [
             mapper.entity_to_dto(h) for h in entity.habitos_deportivos
         ]
+        molestias = [mapper.entity_to_dto(h) for h in entity.molestias]
         perfil = PerfilDeportivoDTO()
         perfil.tipo_identificacion = entity.tipo_identificacion
         perfil.identificacion = entity.identificacion
         perfil.habitos_deportivos = habitos_deportivos
+        perfil.molestias = molestias
         return perfil
 
     def dto_to_entity(self, dto: PerfilDeportivoDTO) -> PerfilDeportivo:
         mapper = HabitoDeportivoMapper()
         habitos_deportivos = [mapper.dto_to_entity(h) for h in dto.habitos_deportivos]
+        mapper_molestia = MolestiaMapper()
+        molestias = [mapper_molestia.dto_to_entity(h) for h in dto.molestias]
         return PerfilDeportivo(
             tipo_identificacion=dto.tipo_identificacion,
             identificacion=dto.identificacion,
             habitos_deportivos=habitos_deportivos,
+            molestias=molestias,
         )
 
 

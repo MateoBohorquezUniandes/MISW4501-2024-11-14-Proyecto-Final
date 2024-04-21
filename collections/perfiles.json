@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "7917dbf8-d37a-4364-b8f8-e5ff762c5a29",
+		"_postman_id": "da2f2f86-9d55-48da-b881-7fc3294a8347",
 		"name": "perfiles",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25979776"
+		"_exporter_id": "3833174"
 	},
 	"item": [
 		{
@@ -216,6 +216,170 @@
 								"commands",
 								"deportivo",
 								"habitos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear molestia",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {\r",
+									"    pm.response.to.have.status(202);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": {\r\n       \"titulo\": {{deportivo.molestia.titulo}},\r\n        \"descripcion\":{{deportivo.molestia.descripcion}},\r\n        \"tipo\": {{deportivo.molestia.tipo}},\r\n        \"fecha\": {{deportivo.molestia.fecha}}\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/perfiles/commands/deportivo/molestias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"commands",
+								"deportivo",
+								"molestias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get perfiles deportivos",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": {\r\n        \"titulo\": \"\",\r\n        \"frecuencia\":\"\" ,\r\n        \"tipo\": \"\",\r\n        \"fecha\": \"\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/perfiles/queries/deportivos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"queries",
+								"deportivos"
 							]
 						}
 					},
@@ -546,6 +710,26 @@
 		{
 			"key": "deportivo.habito.frecuencia",
 			"value": "\"Diario\"",
+			"type": "string"
+		},
+		{
+			"key": "deportivo.molestia.titulo",
+			"value": "\"Dolor en la rodilla\"",
+			"type": "string"
+		},
+		{
+			"key": "deportivo.molestia.descripcion",
+			"value": "\"Siento dolor al cargar peso\"",
+			"type": "string"
+		},
+		{
+			"key": "deportivo.molestia.fecha",
+			"value": "\"2024-04-05\"",
+			"type": "string"
+		},
+		{
+			"key": "deportivo.molestia.tipo",
+			"value": "\"Molestia\"",
 			"type": "string"
 		}
 	]

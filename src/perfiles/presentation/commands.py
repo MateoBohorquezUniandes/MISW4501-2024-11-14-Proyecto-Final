@@ -6,9 +6,11 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 import seedwork.presentation.api as api
 from perfiles.application.commands.crear_habito_deportivo import CrearHabitoDeportivo
 from perfiles.application.commands.create_perfil_inicial import PerfilamientoInicial
+from perfiles.application.commands.crear_molestia import CrearMolestia
 from perfiles.application.mappers import (
     HabitoDTODictMapper,
     PerfilDemograficoJsonDtoMapper,
+    MolestiaDTODictMapper,
 )
 from seedwork.application.commands import execute_command
 
@@ -42,6 +44,24 @@ def crear_habito_deportivo():
     habito_dto = mapper.external_to_dto(payload)
 
     command = CrearHabitoDeportivo(habito_dto=habito_dto)
+
+    execute_command(command)
+    return {}, 202
+
+
+@bp.route("/deportivo/molestias", methods=("POST",))
+@jwt_required()
+def crear_molestias():
+    mapper = MolestiaDTODictMapper()
+    data = request.json
+    identificacion: dict = get_jwt_identity()
+    payload = data.get("payload")
+    payload["identificacion"] = identificacion.get("valor")
+    payload["tipo_identificacion"] = identificacion.get("tipo")
+    molestia_dto = mapper.external_to_dto(payload)
+
+    print(molestia_dto)
+    command = CrearMolestia(molestia_dto=molestia_dto)
 
     execute_command(command)
     return {}, 202

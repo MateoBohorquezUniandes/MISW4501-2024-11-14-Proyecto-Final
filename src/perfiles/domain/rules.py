@@ -1,7 +1,10 @@
+from datetime import datetime, date
+
 from perfiles.domain.entities import (
     HabitoDeportivo,
     PerfilDemografico,
     ReporteSanguineo,
+    Molestia,
 )
 from perfiles.domain.value_objects import (
     CategoriaIMC,
@@ -13,6 +16,7 @@ from perfiles.domain.value_objects import (
     InformacionDemografica,
     InformacionFisiologica,
     UnidadExamenSanguineo,
+    MolestiaTipoEnum,
 )
 from seedwork.domain.rules import (
     BusinessRule,
@@ -20,6 +24,7 @@ from seedwork.domain.rules import (
     ValidFloat,
     ValidInteger,
     ValidString,
+    ValidStrDate,
 )
 from seedwork.domain.value_objects import GENERO
 
@@ -206,3 +211,44 @@ class ValidHabitoDeportivo(CompoundBusinessRule):
         ]
 
         super().__init__(message, rules, "habito")
+
+
+class _ValidMolestiaTipo(BusinessRule):
+    tipo: str
+
+    def __init__(self, molestia, message="El tipo de molestia no es una opcion valida"):
+        super().__init__(message, "molestia")
+        self.tipo = molestia
+
+    def is_valid(self) -> bool:
+        return self.tipo in MolestiaTipoEnum.list()
+
+
+class _ValidMolestiaFechaEsPasado(BusinessRule):
+    fecha: str
+
+    def __init__(self, fecha, message="La fecha no es en el pasado"):
+        super().__init__(message, "molestia fecha pasado")
+        self.fecha = fecha
+
+    def is_valid(self) -> bool:
+        present = datetime.now()
+        past = date.fromisoformat(self.fecha)
+        return past < present.date()
+
+
+class ValidMolestia(CompoundBusinessRule):
+    molestia: Molestia
+
+    def __init__(self, molestia: Molestia, message="molestia invalido"):
+        self.molestia: Molestia = molestia
+
+        rules = [
+            ValidString(self.molestia.titulo, 2, 50, "titulo invalido"),
+            ValidString(self.molestia.descripcion, 2, 400, "descipcion invalida"),
+            _ValidMolestiaTipo(self.molestia.tipo),
+            ValidStrDate(self.molestia.fecha, "fecha invalida"),
+            _ValidMolestiaFechaEsPasado(self.molestia.fecha),
+        ]
+
+        super().__init__(message, rules, "molestia")
