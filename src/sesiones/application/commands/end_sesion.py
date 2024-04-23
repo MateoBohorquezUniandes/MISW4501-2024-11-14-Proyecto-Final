@@ -1,6 +1,7 @@
 import traceback
 from dataclasses import dataclass, field
 from datetime import datetime
+from requests import HTTPError
 
 from sqlalchemy.exc import IntegrityError
 
@@ -44,6 +45,16 @@ class EndSesionDeportivaHandler(SesionCommandBaseHandler):
         except IntegrityError:
             traceback.print_exc()
             raise BadRequestError(code="sesiones.update.integrity")
+        except HTTPError as herr:
+            traceback.print_exc()
+            if uowf:
+                UnitOfWorkPort.rollback(uowf)
+
+            response = herr.response
+            data = response.json()
+            raise APIError(
+                response.status_code, data.get("message", ""), data.get("code", "")
+            )
         except Exception as e:
             traceback.print_exc()
             if uowf:
