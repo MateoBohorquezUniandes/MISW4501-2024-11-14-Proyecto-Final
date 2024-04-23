@@ -36,3 +36,18 @@ def get_perfiles_deportivos():
     mapper = PerfilDeportivoDTODictMapper()
     query_result = execute_query(GetPerfilesDeportivos())
     return jsonify([mapper.dto_to_external(e) for e in query_result.result])
+
+
+@bp.route("/deportivo", methods=("GET",))
+@jwt_required()
+def get_perfil_deportivo(id=None):
+    identificacion: dict = get_jwt_identity()
+    query_result = execute_query(
+        ObtenerPerfilDemografico(
+            tipo_identificacion=identificacion.get("tipo"),
+            identificacion=identificacion.get("valor"),
+        )
+    )
+    mapper = PerfilDeportivoDTODictMapper()
+
+    return jsonify(mapper.dto_to_external(query_result.result))
