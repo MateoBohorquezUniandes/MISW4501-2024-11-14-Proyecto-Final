@@ -16,7 +16,7 @@ class UnitOfWorkSQLAlchemy(UnitOfWork):
         self.rollback()
 
     def _clear_batches(self):
-        self._batches = list()
+        self._batches.clear()
 
     @property
     def batches(self) -> list[Batch]:
