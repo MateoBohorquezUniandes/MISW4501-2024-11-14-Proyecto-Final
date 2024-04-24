@@ -25,7 +25,7 @@ from seedwork.presentation.exceptions import APIError
 
 @dataclass
 class PerfilamientoInicial(Command):
-    perfiles_demografico_dto: PerfilDemograficoDTO = field(
+    perfil_dto: PerfilDemograficoDTO = field(
         default_factory=PerfilDemograficoDTO
     )
 
@@ -36,18 +36,18 @@ class CreatePerfilInicialHandler(PerfilQueryBaseHandler):
         uowf = None
         try:
             perfil_demografico: PerfilDemografico = self.perfiles_factory.create(
-                command.perfiles_demografico_dto, PerfilDemograficoDTOEntityMapper()
+                command.perfil_dto, PerfilDemograficoDTOEntityMapper()
             )
-            perfil_demografico.create(command.correlation_id)
+            perfil_demografico.create(command.correlation_id, command.perfil_dto.deportes)
             repository_pdm = self.repository_factory.create(perfil_demografico)
 
             perfi_deportivo: PerfilDeportivo = self.perfiles_factory.create(
-                command.perfiles_demografico_dto, PerfilDeportivoInitialEntityMapper()
+                command.perfil_dto, PerfilDeportivoInitialEntityMapper()
             )
             repository_pdp = self.repository_factory.create(perfi_deportivo)
 
             perfi_alimenticio: PerfilAlimenticio = self.perfiles_factory.create(
-                command.perfiles_demografico_dto, PerfilAlimenticioInitialEntityMapper()
+                command.perfil_dto, PerfilAlimenticioInitialEntityMapper()
             )
             repository_am = self.repository_factory.create(perfi_alimenticio)
 

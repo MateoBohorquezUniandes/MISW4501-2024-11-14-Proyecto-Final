@@ -1,10 +1,10 @@
 from pydispatch import dispatcher
 
-from perfiles.domain.events import PerfilDemograficoCreated
+from perfiles.domain.events import PerfilDemograficoModified
 
-from .handlers import PerfilDemograficoCreatedIntegrationMessageHandler
+from .handlers import PerfilDemograficoModifiedIntegrationMessageHandler
 
 dispatcher.connect(
-    PerfilDemograficoCreatedIntegrationMessageHandler.handle,
-    signal=f"{PerfilDemograficoCreated.__name__}Integration",
+    PerfilDemograficoModifiedIntegrationMessageHandler.handle,
+    signal=f"{PerfilDemograficoModified.__name__}Integration",
 )

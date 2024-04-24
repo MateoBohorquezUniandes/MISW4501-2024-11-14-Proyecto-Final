@@ -7,7 +7,7 @@ from perfiles.domain.entities import (
     PerfilDeportivo,
     Molestia,
 )
-from perfiles.domain.events import PerfilDemograficoCreated
+from perfiles.domain.events import PerfilDemograficoModified
 from perfiles.infrastructure.exceptions import InvalidRepositoryFactoryException
 from perfiles.infrastructure.repositories import (
     HabitoDeportivoRepositoryPostgreSQL,
@@ -17,7 +17,7 @@ from perfiles.infrastructure.repositories import (
     MolestiaRepositoryPostgreSQL,
 )
 from perfiles.infrastructure.schema.v1.mappers import (
-    DemografiaCreatedIntegrationEventMapper,
+    DemograficoModifiedIntegrationEventMapper,
 )
 from seedwork.domain.factories import Factory
 
@@ -41,8 +41,8 @@ class RepositoryFactory(Factory):
 
 class IntegrationMessageFactory(Factory):
     def create(self, event: any) -> any:
-        if type(event) is PerfilDemograficoCreated:
-            mapper = DemografiaCreatedIntegrationEventMapper()
+        if type(event) is PerfilDemograficoModified:
+            mapper = DemograficoModifiedIntegrationEventMapper()
             return mapper.external_to_message(event)
         else:
             raise InvalidRepositoryFactoryException()

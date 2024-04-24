@@ -26,7 +26,7 @@ def create():
 
     command = PerfilamientoInicial(
         correlation_id=UUID(data.get("correlation_id")),
-        perfiles_demografico_dto=pefil_demografico_dto,
+        perfil_dto=pefil_demografico_dto,
     )
     execute_command(command)
     return {}, 202

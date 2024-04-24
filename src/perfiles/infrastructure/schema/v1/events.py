@@ -25,13 +25,22 @@ class IndiceMasaCorporalPayload(MessagePayload):
 
 
 @dataclass(frozen=True)
+class VolumenMaximoOxigenoPayload(MessagePayload):
+    valor: float = field(default_factory=float)
+    categoria: str = field(default_factory=str)
+
+
+@dataclass(frozen=True)
 class ClasificacionRiesgoPayload(MessagePayload):
     imc: IndiceMasaCorporalPayload = field(default_factory=IndiceMasaCorporalPayload)
+    vo_max: VolumenMaximoOxigenoPayload = field(
+        default_factory=VolumenMaximoOxigenoPayload
+    )
     riesgo: str = field(default_factory=str)
 
 
 @dataclass(frozen=True)
-class DemografiaCreatedPayload(MessagePayload):
+class DemograficoModifiedPayload(MessagePayload):
     created_at: str = field(default_factory=str)
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
@@ -49,5 +58,7 @@ class DemografiaCreatedPayload(MessagePayload):
 
 
 @dataclass(frozen=True)
-class DemograficaCreatedIntegrationEvent(IntegrationEvent):
-    payload: DemografiaCreatedPayload = field(default_factory=DemografiaCreatedPayload)
+class DemograficoModifiedIntegrationEvent(IntegrationEvent):
+    payload: DemograficoModifiedPayload = field(
+        default_factory=DemograficoModifiedPayload
+    )

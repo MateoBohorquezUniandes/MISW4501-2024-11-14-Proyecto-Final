@@ -39,8 +39,15 @@ class IndiceMasaCorporalDTO(DTO):
 
 
 @dataclass(frozen=True)
+class VolumenMaximoOxigenoDTO(DTO):
+    valor: float = field(default_factory=float)
+    categoria: str = field(default_factory=str)
+
+
+@dataclass(frozen=True)
 class ClasificacionRiesgoDTO(DTO):
     imc: IndiceMasaCorporalDTO = field(default_factory=IndiceMasaCorporalDTO)
+    vo_max: VolumenMaximoOxigenoDTO = field(default_factory=VolumenMaximoOxigenoDTO)
     riesgo: str = field(default_factory=str)
 
 

@@ -33,7 +33,7 @@ class PerfilDemografico(RootAggregation):
 
     def create(self, correlation_id: uuid.UUID, deportes: list[str] = []):
         self.append_event(
-            PerfilDemograficoCreated(
+            PerfilDemograficoModified(
                 correlation_id=correlation_id,
                 tipo_identificacion=self.tipo_identificacion,
                 identificacion=self.identificacion,

@@ -9,6 +9,7 @@ from perfiles.application.dtos import (
     ReporteSanguineoDTO,
     ResultadoElementoSanguineoDTO,
     MolestiaDTO,
+    VolumenMaximoOxigenoDTO,
 )
 from perfiles.domain.entities import (
     HabitoDeportivo,
@@ -19,10 +20,12 @@ from perfiles.domain.entities import (
     Molestia,
 )
 from perfiles.domain.value_objects import (
+    CategoriaVOM,
     ClasificacionRiesgo,
     InformacionDemografica,
     InformacionFisiologica,
     ResultadoElementoSanguineo,
+    VolumenMaximoOxigeno,
 )
 from seedwork.application.dtos import Mapper as ApplicationMapper
 from seedwork.domain.repositories import Mapper as DomainMapper
@@ -200,7 +203,15 @@ class PerfilDemograficoDTOEntityMapper(DomainMapper):
             dto.fisiologia.altura,
             dto.fisiologia.peso,
         )
-        clasificacion = ClasificacionRiesgo(fisiologia.calculate_imc())
+        vo_max = VolumenMaximoOxigeno(
+            dto.clasificacion_riesgo.vo_max.valor,
+            CategoriaVOM.get(
+                dto.clasificacion_riesgo.vo_max.valor,
+                dto.fisiologia.genero,
+                dto.fisiologia.edad,
+            ),
+        )
+        clasificacion = ClasificacionRiesgo(fisiologia.calculate_imc(), vo_max)
         reportes = self._dto_to_reportes_sanguineo(dto.reportes_sanguineo)
         return PerfilDemografico(
             tipo_identificacion=dto.tipo_identificacion,
@@ -241,6 +252,10 @@ class PerfilDemograficoDTOEntityMapper(DomainMapper):
             IndiceMasaCorporalDTO(
                 entity.clasificacion_riesgo.imc.valor,
                 entity.clasificacion_riesgo.imc.categoria,
+            ),
+            VolumenMaximoOxigenoDTO(
+                entity.clasificacion_riesgo.vo_max.valor,
+                entity.clasificacion_riesgo.vo_max.categoria,
             ),
             entity.clasificacion_riesgo.riesgo,
         )

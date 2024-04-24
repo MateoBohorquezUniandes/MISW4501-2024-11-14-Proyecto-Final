@@ -6,7 +6,7 @@ from perfiles.infrastructure.dispatchers import (
 from seedwork.application.handlers import Handler
 
 
-class PerfilDemograficoCreatedIntegrationMessageHandler(Handler):
+class PerfilDemograficoModifiedIntegrationMessageHandler(Handler):
 
     @staticmethod
     def handle(event):
