@@ -4,10 +4,14 @@ from dataclasses import dataclass, field
 from sqlalchemy.exc import IntegrityError
 
 from planes.application.commands.base import PlanCommandBaseHandler
-from planes.application.dtos import UsuarioPlanDTO
+from planes.application.dtos import ObjetivoEntrenamientoDTO, UsuarioPlanDTO
 from planes.application.exceptions import BadRequestError, UnprocessableEntityError
-from planes.application.mappers import UsuarioPlanDTOEntityMapper
+from planes.application.mappers import (
+    ObjetivoEntrenamientoDTOEntityMapper,
+    UsuarioPlanDTOEntityMapper,
+)
 from planes.domain.entities import UsuarioPlan
+from planes.domain.value_objects import ObjetivoEntrenamiento
 from planes.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 from seedwork.application.commands import Command, execute_command
 from seedwork.domain.exceptions import BusinessRuleException
@@ -18,13 +22,18 @@ from seedwork.presentation.exceptions import APIError
 @dataclass
 class CreateRecomendacionPlan(Command):
     usuario_dto: UsuarioPlanDTO = field(default_factory=UsuarioPlanDTO)
-    deportes: list[str] = field(default_factory=list)
+    objetivo_dto: ObjetivoEntrenamientoDTO = field(
+        default_factory=ObjetivoEntrenamientoDTO
+    )
 
 
 class CreateRecomendacionPlanHandler(PlanCommandBaseHandler):
     def handle(self, command: CreateRecomendacionPlan):
         uowf = None
         try:
+            objetivo: ObjetivoEntrenamiento = self.planes_factory.create(
+                command.objetivo_dto, ObjetivoEntrenamientoDTOEntityMapper()
+            )
             usuario: UsuarioPlan = self.planes_factory.create(
                 command.usuario_dto, UsuarioPlanDTOEntityMapper()
             )
@@ -33,8 +42,13 @@ class CreateRecomendacionPlanHandler(PlanCommandBaseHandler):
 
             uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
             UnitOfWorkPort.register_batch(
-                uowf, repository_u.append, usuario, command.deportes[0]
+                uowf,
+                repository_u.append,
+                usuario,
+                objetivo.deporte,
+                objetivo.exigencia,
             )
+
             UnitOfWorkPort.commit(uowf)
 
         except BusinessRuleException as bre:
