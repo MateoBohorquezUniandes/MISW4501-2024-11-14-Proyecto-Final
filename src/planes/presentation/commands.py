@@ -13,6 +13,7 @@ from planes.application.commands.create_plan_entrenamiento import (
 )
 from planes.application.mappers import (
     EntrenamientoDTODictMapper,
+    ObjetivoEntrenamientoDTODictMapper,
     PlanEntrenamientoDTODictMapper,
     UsuarioPlanDTODictMapper,
 )
@@ -77,13 +78,17 @@ def associate_plan_entrenamiento():
     if "correlation_id" in data:
         correlation_id = UUID(data.get("correlation_id"))
 
-    payload = data.get("payload")
-    mapper = UsuarioPlanDTODictMapper()
-    usuario_dto = mapper.external_to_dto(payload)
+    payload: dict = data.get("payload")
+    usuario_dto = UsuarioPlanDTODictMapper().external_to_dto(payload)
 
-    command = CreateRecomendacionPlan(
-        correlation_id, usuario_dto, payload.pop("deportes", [])
+    objetivo_dict = dict(
+        deporte=payload.get("deporte", [None])[0],
+        exigencia=payload.get("clasificacion_riesgo", {})
+        .get("vo_max", {})
+        .get("valor", None),
     )
-    execute_command(command)
+    objetivo_dto = ObjetivoEntrenamientoDTODictMapper().external_to_dto(objetivo_dict)
 
+    command = CreateRecomendacionPlan(correlation_id, usuario_dto, objetivo_dto)
+    execute_command(command)
     return {}, 202
