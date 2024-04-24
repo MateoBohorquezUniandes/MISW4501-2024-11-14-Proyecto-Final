@@ -1,4 +1,4 @@
-from eventos.domain.factories import EventoFactory
+from eventos.domain.factories import EventoFactoy
 from eventos.infrastructure.factories import RepositoryFactory
 
 from seedwork.application.commands import CommandHandler
@@ -7,7 +7,7 @@ from seedwork.application.commands import CommandHandler
 class EventoCommandBaseHandler(CommandHandler):
     def __init__(self):
         self._repository_factory: RepositoryFactory = RepositoryFactory()
-        self._eventos_factory: EventoFactory = EventoFactory()
+        self._eventos_factory: EventoFactoy = EventoFactoy()
 
     @property
     def repository_factory(self):

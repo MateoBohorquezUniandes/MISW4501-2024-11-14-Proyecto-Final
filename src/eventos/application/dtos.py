@@ -12,3 +12,4 @@ class EventoDTO(DTO):
     lugar: str = field(default_factory=str)
     distancia: float = field(default_factory=float)
     nivel: str = field(default_factory=str)
+    nombre: str = field(default_factory=str)

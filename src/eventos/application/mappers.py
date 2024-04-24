@@ -21,6 +21,7 @@ class EventoDTODictMapper(ApplicationMapper):
             lugar=external.get("lugar", ""),
             distancia=external.get("distancia", ""),
             nivel=external.get("nivel", ""),
+            nombre=external.get("nombre", ""),
         )
 
     def dto_to_external(self, dto: EventoDTO) -> dict:
@@ -47,7 +48,8 @@ class EventoDTOEntityMapper(DomainMapper):
             fecha=dto.fecha,
             lugar=dto.lugar,
             distancia=dto.distancia,
-            nivel=dto.nivel
+            nivel=dto.nivel,
+            nombre=dto.nombre
         )
         return evento
 
@@ -60,4 +62,5 @@ class EventoDTOEntityMapper(DomainMapper):
             entity.lugar,
             entity.distancia,
             entity.nivel,
+            entity.nombre,
         )

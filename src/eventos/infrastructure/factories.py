@@ -9,7 +9,7 @@ from seedwork.domain.factories import Factory
 @dataclass
 class RepositoryFactory(Factory):
     def create(self, obj):
-        if isinstance(obj, Evento):
+        if isinstance(obj, Evento) or obj == Evento:
             return EventoRepositoryPostgreSQL()
 
         else:
