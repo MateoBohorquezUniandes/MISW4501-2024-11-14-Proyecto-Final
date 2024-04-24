@@ -9,8 +9,12 @@ from eventos.domain.entities import Evento
 from eventos.application.mappers import EventoDTOEntityMapper
 
 
-@dataclass(frozen=True)
-class GetEventos(Query): ...
+class GetEventos(Query):
+
+    def __init__(self, lugar=None, fecha=None, nivel=None):
+        self.lugar = lugar
+        self.fecha = fecha
+        self.nivel = nivel
 
 
 class GetEventosQueryHandler(EventoQueryBaseHandler):
@@ -18,7 +22,9 @@ class GetEventosQueryHandler(EventoQueryBaseHandler):
     def handle(self, query: GetEventos) -> QueryResult:
         try:
             repository = self.repository_factory.create(Evento)
-            eventos: list[Evento] = repository.get_all()
+            eventos: list[Evento] = repository.get_all(
+                query.lugar, query.fecha, query.nivel
+            )
 
             mapper = EventoDTOEntityMapper()
             eventos_dto = [self.eventos_factory.create(e, mapper) for e in eventos]
