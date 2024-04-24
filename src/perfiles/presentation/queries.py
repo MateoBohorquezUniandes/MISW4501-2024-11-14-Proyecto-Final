@@ -5,7 +5,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 import seedwork.presentation.api as api
 from perfiles.application.mappers import (
-    PerfilDemograficoJsonDtoMapper,
+    PerfilDemograficoDTODictMapper,
     PerfilDeportivoDTODictMapper,
 )
 from perfiles.application.queries.get_perfil_demografico import ObtenerPerfilDemografico
@@ -26,7 +26,7 @@ def get_perfil_demografico(id=None):
             identificacion=identificacion.get("valor"),
         )
     )
-    mapper = PerfilDemograficoJsonDtoMapper()
+    mapper = PerfilDemograficoDTODictMapper()
     return jsonify(mapper.dto_to_external(query_result.result))
 
 

@@ -41,15 +41,21 @@ class PerfilDemograficoRepositoryPostgreSQL(PerfilDemograficoRepository):
             for dto in perfiles_dto
         ]
 
-    def get(self, tipo_identificacion: str, identificacion: str) -> PerfilDemografico:
+    def get(
+        self, tipo_identificacion: str, identificacion: str, as_entity=True
+    ) -> PerfilDemografico:
         perfil_dto = (
             db.session.query(PerfilDemograficoDTO)
             .filter_by(tipo_identificacion=tipo_identificacion)
             .filter_by(identificacion=identificacion)
             .one()
         )
-        return self.fabrica_perfil_demografico.create(
-            perfil_dto, PerfilDemograficoMapper()
+        return (
+            self.fabrica_perfil_demografico.create(
+                perfil_dto, PerfilDemograficoMapper()
+            )
+            if as_entity
+            else perfil_dto
         )
 
     def append(self, perfil: PerfilDemografico):
@@ -66,8 +72,11 @@ class PerfilDemograficoRepositoryPostgreSQL(PerfilDemograficoRepository):
             )
         query.delete()
 
-    def update(self):
-        pass
+    def update(self, perfil: PerfilDemografico):
+        perfil_dto = self.get(perfil.tipo_identificacion, perfil.identificacion, as_entity=False)
+        perfil_dto = self.fabrica_perfil_demografico.create(
+            perfil, PerfilDemograficoMapper(), perfil_dto=perfil_dto
+        )
 
 
 class PerfilDeportivoRepositoryPostgreSQL(PerfilDeportivoRepository):

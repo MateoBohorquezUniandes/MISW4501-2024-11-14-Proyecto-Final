@@ -21,11 +21,11 @@ from seedwork.domain.repositories import Mapper, UnidirectionalMapper
 
 @dataclass
 class _PerfilDemograficoFactory(Factory):
-    def create(self, obj: any, mapper: Mapper = None) -> PerfilDemografico:
+    def create(self, obj: any, mapper: Mapper = None, **kwargs) -> PerfilDemografico:
         if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
-            return mapper.entity_to_dto(obj)
+            return mapper.entity_to_dto(obj, **kwargs)
 
-        perfil: PerfilDemografico = mapper.dto_to_entity(obj)
+        perfil: PerfilDemografico = mapper.dto_to_entity(obj, **kwargs)
         self.validate_rule(ValidPerfilDemografico(perfil))
 
         return perfil
@@ -33,13 +33,13 @@ class _PerfilDemograficoFactory(Factory):
 
 @dataclass
 class _PerfilDeportivoFactory(Factory):
-    def create(self, obj: any, mapper: Mapper = None) -> PerfilDeportivo:
+    def create(self, obj: any, mapper: Mapper = None, **kwargs) -> PerfilDeportivo:
         if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
-            return mapper.entity_to_dto(obj)
+            return mapper.entity_to_dto(obj, **kwargs)
         elif isinstance(mapper, UnidirectionalMapper):
-            return mapper.map(obj)
+            return mapper.map(obj, **kwargs)
 
-        perfil: PerfilDeportivo = mapper.dto_to_entity(obj)
+        perfil: PerfilDeportivo = mapper.dto_to_entity(obj, **kwargs)
         # self.validate_rule(ValidPerfilDeportivo(perfil))
 
         return perfil
@@ -47,13 +47,13 @@ class _PerfilDeportivoFactory(Factory):
 
 @dataclass
 class _PerfilAlimenticioFactory(Factory):
-    def create(self, obj: any, mapper: Mapper = None) -> PerfilAlimenticio:
+    def create(self, obj: any, mapper: Mapper = None, **kwargs) -> PerfilAlimenticio:
         if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
-            return mapper.entity_to_dto(obj)
+            return mapper.entity_to_dto(obj, **kwargs)
         elif isinstance(mapper, UnidirectionalMapper):
-            return mapper.map(obj)
+            return mapper.map(obj, **kwargs)
 
-        perfil: PerfilAlimenticio = mapper.dto_to_entity(obj)
+        perfil: PerfilAlimenticio = mapper.dto_to_entity(obj, **kwargs)
         # self.validate_rule(ValidPerfilAlimenticio(perfil))
 
         return perfil
@@ -61,10 +61,10 @@ class _PerfilAlimenticioFactory(Factory):
 
 @dataclass
 class _HabitoDeportivoFactory(Factory):
-    def create(self, obj: any, mapper: Mapper = None) -> HabitoDeportivo:
+    def create(self, obj: any, mapper: Mapper = None, **kwargs) -> HabitoDeportivo:
         if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
-            return mapper.entity_to_dto(obj)
-        habito: HabitoDeportivo = mapper.dto_to_entity(obj)
+            return mapper.entity_to_dto(obj, **kwargs)
+        habito: HabitoDeportivo = mapper.dto_to_entity(obj, **kwargs)
         self.validate_rule(ValidHabitoDeportivo(habito))
 
         return habito
@@ -72,10 +72,10 @@ class _HabitoDeportivoFactory(Factory):
 
 @dataclass
 class _MolestiaFactory(Factory):
-    def create(self, obj: any, mapper: Mapper = None) -> Molestia:
+    def create(self, obj: any, mapper: Mapper = None, **kwargs) -> Molestia:
         if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
-            return mapper.entity_to_dto(obj)
-        molestia: Molestia = mapper.dto_to_entity(obj)
+            return mapper.entity_to_dto(obj, **kwargs)
+        molestia: Molestia = mapper.dto_to_entity(obj, **kwargs)
         self.validate_rule(ValidMolestia(molestia))
 
         return molestia
@@ -83,21 +83,21 @@ class _MolestiaFactory(Factory):
 
 @dataclass
 class PerfilFactory(Factory):
-    def create(self, obj: any, mapper: Mapper):
+    def create(self, obj: any, mapper: Mapper, **kwargs):
         if mapper.type() == PerfilDemografico:
             perfil_factory = _PerfilDemograficoFactory()
-            return perfil_factory.create(obj, mapper)
+            return perfil_factory.create(obj, mapper, **kwargs)
         elif mapper.type() == PerfilDeportivo:
             perfil_factory = _PerfilDeportivoFactory()
-            return perfil_factory.create(obj, mapper)
+            return perfil_factory.create(obj, mapper, **kwargs)
         elif mapper.type() == PerfilAlimenticio:
             perfil_factory = _PerfilAlimenticioFactory()
-            return perfil_factory.create(obj, mapper)
+            return perfil_factory.create(obj, mapper, **kwargs)
         elif mapper.type() == HabitoDeportivo:
             perfil_factory = _HabitoDeportivoFactory()
-            return perfil_factory.create(obj, mapper)
+            return perfil_factory.create(obj, mapper, **kwargs)
         elif mapper.type() == Molestia:
             perfil_factory = _MolestiaFactory()
-            return perfil_factory.create(obj, mapper)
+            return perfil_factory.create(obj, mapper, **kwargs)
         else:
             raise InvalidPerfilDemograficoFactoryException()
