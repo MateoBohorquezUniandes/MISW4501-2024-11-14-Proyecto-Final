@@ -123,3 +123,19 @@ services:
     ports:
       - 3070:3070
     restart: always
+
+  eventos-api:
+    container_name: 'eventos-api'
+    build:
+      context: ./
+      dockerfile: eventos.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      - ./envs/.env.autenticador.local
+      - ./envs/.env.eventos.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3080:3080
+    restart: always
+
