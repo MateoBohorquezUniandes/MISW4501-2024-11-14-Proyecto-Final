@@ -120,7 +120,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/eventos/queries?lugar=Cali",
+					"raw": "{{base_url}}/eventos/queries",
 					"host": [
 						"{{base_url}}"
 					],
@@ -131,7 +131,13 @@
 					"query": [
 						{
 							"key": "lugar",
-							"value": "Cali"
+							"value": "Manizales",
+							"disabled": true
+						},
+						{
+							"key": "fecha",
+							"value": "2024-10-05",
+							"disabled": true
 						}
 					]
 				}
