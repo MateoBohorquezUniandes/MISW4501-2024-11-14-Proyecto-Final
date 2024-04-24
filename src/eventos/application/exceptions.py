@@ -13,6 +13,6 @@ class BadRequestError(APIError):
         super().__init__(HTTPStatus.BAD_REQUEST.value, message, code)
 
 
-class PerfilNotFoundError(APIError):
+class EventoNotFoundError(APIError):
     def __init__(self, message=HTTPStatus.NOT_FOUND.phrase):
-        super().__init__(HTTPStatus.NOT_FOUND.value, message, "perfil.not_found")
+        super().__init__(HTTPStatus.NOT_FOUND.value, message, "evento.not_found")
