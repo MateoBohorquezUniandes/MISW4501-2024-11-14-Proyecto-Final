@@ -25,6 +25,8 @@ spec:
                   key: jwtsecretkey
             - name: "AUTH_BASE_URL"
               value: http://autenticador-service/auth
+            - name: "INDICADORES_BASE_URL"
+              value: http://indicadores-service/auth
             - name: "DB_USER"
               valueFrom:
                 secretKeyRef:
