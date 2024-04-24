@@ -112,10 +112,10 @@ class PlanEntrenamientoRepositoryPostgreSQL(PlanEntrenamientoRepository):
             query = query.filter_by(id=id)
         query.delete()
 
-    def update(self, plan: PlanEntrenamiento):
-        plan_dto: PlanEntrenamientoDTO = self.get(str(plan.id), as_entity=False)
+    def update(self, plan_id: str, entrenamientos: list[str]):
+        plan_dto: PlanEntrenamientoDTO = self.get(plan_id, as_entity=False)
         entrenamientos_dto = EntrenamientoRepositoryPostgreSQL().get_all(
-            ids=[str(e.id) for e in plan.entrenamientos], as_entity=False
+            ids=entrenamientos, as_entity=False
         )
         plan_dto.entrenamientos.extend(entrenamientos_dto)
 
@@ -167,7 +167,7 @@ class UsuarioPlanRepositoryPostgreSQL(UsuarioPlanRepository):
             usuario_dto: UsuarioPlanDTO = self.plan_factory.create(
                 usuario, UsuarioPlanMapper()
             )
-
+        print(f"should add new? {should_add}")
         self.update(usuario_dto, deporte=deporte, exigencia=exigencia)
 
         if should_add:
@@ -189,5 +189,5 @@ class UsuarioPlanRepositoryPostgreSQL(UsuarioPlanRepository):
         )
         planes_asociados = [p.id for p in usuario_dto.planes]
         usuario_dto.planes.extend(
-            [p for p in planes_dto if p.id not in [planes_asociados]]
+            [p for p in planes_dto if p.id not in planes_asociados]
         )

@@ -7,7 +7,12 @@ from flask_jwt_extended import create_access_token
 
 from planes.app import create_app
 from planes.infrastructure.db import db
-from planes.infrastructure.dtos import Entrenamiento, PlanEntrenamiento, UsuarioPlan
+from planes.infrastructure.dtos import (
+    Entrenamiento,
+    PlanEntrenamiento,
+    UsuarioPlan,
+    recomendacion_table,
+)
 
 
 class TestOperations:
@@ -33,6 +38,7 @@ class TestOperations:
         before each test case
         """
         db.session.query(Entrenamiento).delete()
+        db.session.query(recomendacion_table).delete()
         db.session.query(PlanEntrenamiento).delete()
         db.session.query(UsuarioPlan).delete()
         db.session.commit()
@@ -52,9 +58,6 @@ class TestOperations:
 
         yield user
 
-        db.session.query(UsuarioPlan).delete()
-        db.session.commit()
-
     @pytest.fixture(scope="function")
     def test_db_plan(self):
         """
@@ -73,9 +76,6 @@ class TestOperations:
         db.session.commit()
 
         yield plan
-
-        db.session.query(UsuarioPlan).delete()
-        db.session.commit()
 
     def test_create_plan_success(self, test_client):
         """Creacion exitosa de un usuario deportista"""
@@ -128,7 +128,9 @@ class TestOperations:
         response = test_client.post("/planes/commands/asociar", json=payload)
         assert response.status_code == HTTPStatus.ACCEPTED.value
 
-    def test_create_usuario_existente_success(self, test_client, test_db_user, test_db_plan):
+    def test_create_usuario_existente_success(
+        self, test_client, test_db_user, test_db_plan
+    ):
         """Creacion exitosa de un usuario deportista"""
         payload = {
             "correlation_id": "dfebc03f-c6be-48b2-bb5f-4e49bddec908",

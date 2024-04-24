@@ -57,15 +57,15 @@ def create_entrenamiento():
 
 @bp.route("/", methods=("PATCH",))
 def asociar_entrenamientos():
-    data = request.json
+    data: dict = request.json
     correlation_id = None
     if "correlation_id" in data:
         correlation_id = UUID(data.get("correlation_id"))
 
-    mapper = PlanEntrenamientoDTODictMapper()
-    plan_dto = mapper.external_to_dto(data)
+    plan_id = data.get("id", "")
+    entrenamientos = [e.get("id", "") for e in data.get("entrenamientos", [])]
 
-    command = AsociarEntrenamientos(correlation_id, plan_dto)
+    command = AsociarEntrenamientos(correlation_id, plan_id, entrenamientos)
     execute_command(command)
 
     return {}, 202
@@ -82,10 +82,8 @@ def associate_plan_entrenamiento():
     usuario_dto = UsuarioPlanDTODictMapper().external_to_dto(payload)
 
     objetivo_dict = dict(
-        deporte=payload.get("deporte", [None])[0],
-        exigencia=payload.get("clasificacion_riesgo", {})
-        .get("vo_max", {})
-        .get("valor", None),
+        deporte=payload.get("deportes", [None])[0],
+        exigencia=payload.get("clasificacion_riesgo", {}).get("riesgo", None),
     )
     objetivo_dto = ObjetivoEntrenamientoDTODictMapper().external_to_dto(objetivo_dict)
 
