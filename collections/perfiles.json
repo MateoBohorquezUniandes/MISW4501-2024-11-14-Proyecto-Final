@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "da2f2f86-9d55-48da-b881-7fc3294a8347",
+		"_postman_id": "f24bba65-28b0-4909-b92c-9daccf8894c9",
 		"name": "perfiles",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "3833174"
+		"_exporter_id": "25979776"
 	},
 	"item": [
 		{
@@ -36,7 +36,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"type\": \"event\",\n    \"specversion\": \"v1\",\n    \"datacontenttype\": \"application/json\",\n    \"payload\": {\n        \"tipo_identificacion\": {{demografico.tipo_identificacion}},\n        \"identificacion\": {{demografico.identificacion}},\n        \"demografia\": {\n            \"pais_residencia\": {{demografico.demografia.pais}},\n            \"ciudad_residencia\": {{demografico.demografia.ciudad}}\n        },\n        \"fisiologia\": {\n            \"genero\": {{demografico.fisiologia.genero}},\n            \"edad\": {{demografico.fisiologia.edad}},\n            \"peso\": {{demografico.fisiologia.peso}},\n            \"altura\": {{demografico.fisiologia.altura}}\n        }\n    }\n}",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"type\": \"event\",\n    \"specversion\": \"v1\",\n    \"datacontenttype\": \"application/json\",\n    \"payload\": {\n        \"tipo_identificacion\": {{demografico.tipo_identificacion}},\n        \"identificacion\": {{demografico.identificacion}},\n        \"demografia\": {\n            \"pais_residencia\": {{demografico.demografia.pais}},\n            \"ciudad_residencia\": {{demografico.demografia.ciudad}}\n        },\n        \"fisiologia\": {\n            \"genero\": {{demografico.fisiologia.genero}},\n            \"edad\": {{demografico.fisiologia.edad}},\n            \"peso\": {{demografico.fisiologia.peso}},\n            \"altura\": {{demografico.fisiologia.altura}}\n        },\n        \"deportes\": {{demografico.deportes}}\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -101,6 +101,162 @@
 									"    pm.expect(responseData.reportes_sanguineo).to.be.an('array');",
 									"    pm.expect(responseData.demografia).to.be.an('object');",
 									"    pm.expect(responseData.fisiologia).to.be.an('object');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/perfiles/queries/demografico",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"queries",
+								"demografico"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar clasificacion riesgo",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"type\": \"event\",\n    \"specversion\": \"v1\",\n    \"datacontenttype\": \"application/json\",\n    \"payload\": {\n        \"tipo_identificacion\": {{demografico.tipo_identificacion}},\n        \"identificacion\": {{demografico.identificacion}},\n        \"vo_max\": {{demografico.clasificacion.vo_max}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/perfiles/commands/demografico/riesgo",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"commands",
+								"demografico",
+								"riesgo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validar clasificacion riesgo",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json().data;",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.clasificacion_riesgo).to.be.an('object');",
+									"    pm.expect(responseData.clasificacion_riesgo.riesgo).to.be.an('string');",
+									"    pm.expect(responseData.clasificacion_riesgo.riesgo).to.be.equals('Muy Bajo');",
 									"});"
 								],
 								"type": "text/javascript",
@@ -303,7 +459,7 @@
 					"response": []
 				},
 				{
-					"name": "Get perfiles deportivos",
+					"name": "perfiles deportivos",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -380,6 +536,81 @@
 								"perfiles",
 								"queries",
 								"deportivos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "perfil deportivo",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json().data;",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.tipo_identificacion).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.identificacion).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.habitos).to.be.an('array');",
+									"    pm.expect(responseData.molestias).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/perfiles/queries/deportivo",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"queries",
+								"deportivo"
 							]
 						}
 					},
@@ -730,6 +961,16 @@
 		{
 			"key": "deportivo.molestia.tipo",
 			"value": "\"Molestia\"",
+			"type": "string"
+		},
+		{
+			"key": "demografico.clasificacion.vo_max",
+			"value": "35.7",
+			"type": "string"
+		},
+		{
+			"key": "demografico.deportes",
+			"value": "[\"Ciclismo\"]",
 			"type": "string"
 		}
 	]
