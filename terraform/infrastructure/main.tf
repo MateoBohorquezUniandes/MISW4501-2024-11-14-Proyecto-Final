@@ -101,6 +101,19 @@ module "misw450x_perfiles_events" {
   max_retry_duration = "4s"
 }
 
+module "misw450x_sesiones_events" {
+  source  = "./modules/cloudtasks"
+  project = var.project
+  region  = var.region
+
+  task_queue_name    = "misw450x-sesiones-integration-events"
+  max_doublings      = 1
+  max_attempts       = 5
+  min_backoff        = "1s"
+  max_backoff        = "2s"
+  max_retry_duration = "4s"
+}
+
 module "cloud_task_service_account" {
   source  = "./modules/service_account"
   project = var.project
