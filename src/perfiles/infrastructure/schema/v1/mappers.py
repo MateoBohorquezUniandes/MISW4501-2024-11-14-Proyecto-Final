@@ -17,7 +17,6 @@ class DemograficoModifiedIntegrationEventMapper(IntegrationMapper):
     def external_to_message(
         self, external: PerfilDemograficoModified
     ) -> DemograficoModifiedIntegrationEvent:
-        print(external.clasificacion_riesgo)
         imc = external.clasificacion_riesgo.get("imc", {})
         vom = external.clasificacion_riesgo.get("vo_max", {})
         clasificacion = ClasificacionRiesgoPayload(
