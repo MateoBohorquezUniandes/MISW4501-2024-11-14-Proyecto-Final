@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "productos sucess",
+			"name": "productos success",
 			"item": [
 				{
 					"name": "crear  producto",
@@ -16,7 +16,20 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									""
+									"pm.sendRequest({\r",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
+									");"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -56,6 +69,156 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"payload\": {\r\n        \"tipo\": {{tipo}},\r\n        \"nombre\": {{nombre}},\r\n        \"descripcion\": {{descripcion}},\r\n        \"imagen\": {{imagen}},\r\n        \"precio\": {{precio}},\r\n        \"deporte\": {{deporte}}\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/productos/commands",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obtener producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json()[0];\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.be.an('string');\r",
+									"    pm.expect(responseData.nombre).to.be.an('string');\r",
+									"    pm.expect(responseData.imagen).to.be.an('string');\r",
+									"    pm.expect(responseData.descripcion).to.be.an('string');\r",
+									"    pm.expect(responseData.tipo).to.be.an('string');\r",
+									"    pm.expect(responseData.deporte).to.be.an('string');\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/queries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"queries"
+							],
+							"query": [
+								{
+									"key": "tipo",
+									"value": "Alimentacion",
+									"disabled": true
+								},
+								{
+									"key": "deporte",
+									"value": "Ciclismo",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "productos fail",
+			"item": [
+				{
+					"name": "crear  producto tipo incorrecto",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {\r",
+									"    pm.response.to.have.status(422);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": {\r\n        \"tipo\": \"medicinal\",\r\n        \"nombre\": {{nombre}},\r\n        \"descripcion\": {{descripcion}},\r\n        \"imagen\": {{imagen}},\r\n        \"precio\": {{precio}},\r\n        \"deporte\": {{deporte}}\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
