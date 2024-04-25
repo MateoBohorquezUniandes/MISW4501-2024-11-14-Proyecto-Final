@@ -21,6 +21,10 @@ class SesionDeportiva(RootAggregation):
     def end(self, correlation_id: uuid.UUID, parametros: dict):
         self.append_event(
             SesionEnded(
-                self.id, correlation_id=correlation_id, parametros=parametros
+                self.id,
+                correlation_id=correlation_id,
+                tipo_identificacion=self.tipo_identificacion,
+                identificacion=self.identificacion,
+                parametros=parametros,
             )
         )
