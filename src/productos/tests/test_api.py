@@ -44,6 +44,18 @@ class TestOperations:
         )
         assert response.status_code == HTTPStatus.ACCEPTED.value
 
+    def test_get_prodcutos_suecess(self, test_client):
+        test_user = {
+            "tipo": "CC",
+            "valor": "111111111",
+        }
+
+        test_token = create_access_token(identity=test_user)
+        response = test_client.get(
+            "/productos/queries/", headers={"Authorization": f"Bearer {test_token}"}
+        )
+        assert response.status_code == HTTPStatus.OK.value
+
     def test_health(self, test_client):
         """Tests health check endpoint"""
         response = test_client.get("/health")
