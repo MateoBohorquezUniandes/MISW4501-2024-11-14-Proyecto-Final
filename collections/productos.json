@@ -1,0 +1,160 @@
+{
+	"info": {
+		"_postman_id": "46c32436-2701-4f33-b099-8d1b4c377c77",
+		"name": "productos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3833174"
+	},
+	"item": [
+		{
+			"name": "productos sucess",
+			"item": [
+				{
+					"name": "crear  producto",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {\r",
+									"    pm.response.to.have.status(202);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": {\r\n        \"tipo\": {{tipo}},\r\n        \"nombre\": {{nombre}},\r\n        \"descripcion\": {{descripcion}},\r\n        \"imagen\": {{imagen}},\r\n        \"precio\": {{precio}},\r\n        \"deporte\": {{deporte}}\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/productos/commands",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:3090",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "nombre",
+			"value": "\"super bicicleta\"",
+			"type": "string"
+		},
+		{
+			"key": "tipo",
+			"value": "\"Alimentacion\"",
+			"type": "string"
+		},
+		{
+			"key": "descripcion",
+			"value": "\"el mejor producto para tu bicicleta\"",
+			"type": "string"
+		},
+		{
+			"key": "imagen",
+			"value": "\"https://www.wikihow.com/images_en/thumb/a/ad/Fix-a-Slipped-Bike-Chain-Step-1-Version-3.jpg/v4-460px-Fix-a-Slipped-Bike-Chain-Step-1-Version-3.jpg\"",
+			"type": "string"
+		},
+		{
+			"key": "precio",
+			"value": "2500000",
+			"type": "string"
+		},
+		{
+			"key": "deporte",
+			"value": "\"Ciclismo\"",
+			"type": "string"
+		},
+		{
+			"key": "auth_url",
+			"value": "http://127.0.0.1:3000",
+			"type": "string"
+		},
+		{
+			"key": "demografico.identificacion",
+			"value": "\"123456789\"",
+			"type": "string"
+		},
+		{
+			"key": "demografico.tipo_identificacion",
+			"value": "\"CC\"",
+			"type": "string"
+		}
+	]
+}
