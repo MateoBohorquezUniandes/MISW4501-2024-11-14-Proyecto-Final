@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "59764921-edb4-467e-ad27-0bbc894eb587",
+		"_postman_id": "1fa58858-9ab2-4023-a328-c3373c903aac",
 		"name": "planes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25979776"
@@ -871,49 +871,6 @@
 			"name": "plan usuario fail",
 			"item": [
 				{
-					"name": "asociar plan duplicado",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Response status code is 400', function () {",
-									"    pm.response.to.have.status(400);",
-									"});",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"correlation_id\": {{correlation_id}},\n    \"specversion\": \"v1\",\n    \"type\": \"event\",\n    \"datacontenttype\": \"application/json\",\n    \"payload\": {\n        \"created_at\": \"2024-04-10T02:02:01Z\",\n        \"tipo_identificacion\": {{usuario.tipo_identificacion}},\n        \"identificacion\": {{usuario.identificacion}},\n        \"clasificacion_riesgo\": {\n            \"imc\": {\n                \"valor\": {{clasificacion_riesgo.imc.valor}},\n                \"categoria\": {{clasificacion_riesgo.imc.categoria}}\n            },\n            \"riesgo\": {{clasificacion_riesgo.riesgo}}\n        },\n        \"demografia\": {\n            \"pais\": {{demografico.demografia.pais}},\n            \"ciudad\": {{demografico.demografia.ciudad}}\n        },\n        \"fisiologia\": {\n            \"genero\": {{fisiologia.genero}},\n            \"edad\": {{fisiologia.edad}},\n            \"altura\": {{fisiologia.altura}},\n            \"peso\": {{fisiologia.peso}}\n        },\n        \"deportes\": {{usuario.deportes}}\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/planes/commands/asociar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"planes",
-								"commands",
-								"asociar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "obtener planes asociados sin usuario",
 					"event": [
 						{
@@ -1072,7 +1029,7 @@
 		},
 		{
 			"key": "clasificacion_riesgo.riesgo",
-			"value": "\"Bajo\"",
+			"value": "\"Alto\"",
 			"type": "string"
 		},
 		{
