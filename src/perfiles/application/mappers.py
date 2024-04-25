@@ -294,7 +294,13 @@ class HabitoDTOEntityMapper(DomainMapper):
         )
 
     def entity_to_dto(self, entity: HabitoDeportivo) -> HabitoDeportivoDTO:
-        return entity.__dict__
+        return HabitoDeportivoDTO(
+            entity.titulo,
+            entity.frecuencia,
+            entity.descripcion,
+            entity.tipo_identificacion,
+            entity.identificacion,
+        )
 
 
 class MolestiaDTOEntityMapper(DomainMapper):
@@ -313,7 +319,14 @@ class MolestiaDTOEntityMapper(DomainMapper):
         )
 
     def entity_to_dto(self, entity: Molestia) -> MolestiaDTO:
-        return entity.__dict__
+        return MolestiaDTO(
+            entity.titulo,
+            entity.tipo,
+            entity.fecha,
+            entity.descripcion,
+            entity.tipo_identificacion,
+            entity.identificacion,
+        )
 
 
 class PerfilDeportivoDTOEntityMapper(DomainMapper):
