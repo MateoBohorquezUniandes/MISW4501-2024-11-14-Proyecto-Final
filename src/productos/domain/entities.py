@@ -11,4 +11,4 @@ class Producto(RootAggregation):
     imagen: vo.Imagen = field(default_factory=vo.Imagen)
     precio: float = field(default_factory=float)
     nombre: str = field(default_factory=str)
-    deporte: str = field(default_factory=str)
+    deporte: vo.ProductoDeporte = field(default_factory=vo.ProductoDeporte)

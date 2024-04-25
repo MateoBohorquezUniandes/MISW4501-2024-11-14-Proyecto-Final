@@ -15,6 +15,11 @@ class ProductoTipoEnum(str, ExtendedEnum):
     LAVADO = "Lavado"
 
 
+class DEPORTE(ExtendedEnum):
+    CILICMO = "Ciclismo"
+    ATLETISMO = "Atletismo"
+
+
 @dataclass(frozen=True)
 class Imagen(ValueObject):
     url: str = field(default_factory=str)
@@ -23,3 +28,8 @@ class Imagen(ValueObject):
 @dataclass(frozen=True)
 class ProductoTipo(ValueObject):
     tipo: ProductoTipoEnum = field(default_factory=ProductoTipoEnum)
+
+
+@dataclass(frozen=True)
+class ProductoDeporte(ValueObject):
+    deporte: DEPORTE = field(default_factory=DEPORTE)
