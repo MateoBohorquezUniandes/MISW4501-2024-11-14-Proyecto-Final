@@ -14,13 +14,11 @@ bp: Blueprint = api.create_blueprint("commands", bp_prefix)
 
 @bp.route("/", methods=("POST",))
 @jwt_required()
-def crear_habito_deportivo():
+def crear_evento():
     mapper = EventoDTODictMapper()
     data = request.json
-    # identificacion: dict = get_jwt_identity()
+
     payload = data.get("payload")
-    # payload["identificacion"] = identificacion.get("valor")
-    # payload["tipo_identificacion"] = identificacion.get("tipo")
     evento_dto = mapper.external_to_dto(payload)
 
     command = CreateEvento(evento_dto=evento_dto)
