@@ -14,16 +14,9 @@ spec:
       labels:
         app: eventos
     spec:
-      volumes:
-        - name: google-cloud-key
-          secret:
-            secretName: tasks-key
       containers:
         - name: eventos
           image: us-central1-docker.pkg.dev/proyecto-final-416123/misw450x-registry/eventos-api:latest
-          volumeMounts:
-            - name: google-cloud-key
-              mountPath: /var/secrets/google
           env:
             - name: "JWT_SECRET_KEY"
               valueFrom:
@@ -55,30 +48,9 @@ spec:
                 secretKeyRef:
                   name: deportistasecrets
                   key: pgsqlname
-
           ports:
             - containerPort: 3011
           imagePullPolicy: Always
----
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: eventos
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: eventos
-  minReplicas: 1
-  maxReplicas: 4
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 50
-
 ---
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
