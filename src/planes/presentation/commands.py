@@ -80,9 +80,10 @@ def associate_plan_entrenamiento():
 
     payload: dict = data.get("payload")
     usuario_dto = UsuarioPlanDTODictMapper().external_to_dto(payload)
+    deportes = payload.get("deportes", [])
 
     objetivo_dict = dict(
-        deporte=payload.get("deportes", [None])[0],
+        deporte=deportes[0] if len(deportes) else None,
         exigencia=payload.get("clasificacion_riesgo", {}).get("riesgo", None),
     )
     objetivo_dto = ObjetivoEntrenamientoDTODictMapper().external_to_dto(objetivo_dict)
