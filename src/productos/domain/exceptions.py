@@ -1,0 +1,6 @@
+from seedwork.domain.exceptions import DomainException, FactoryException
+
+
+class InvalidProductoFactoryException(FactoryException):
+    def __init__(self):
+        super().__init__(code="factory.producto")
