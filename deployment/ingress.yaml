@@ -38,3 +38,24 @@ spec:
             name: planes-service
             port: 
               number: 80
+      - pathType: Prefix
+        path: /eventos
+        backend:
+          service:
+            name: eventos-service
+            port: 
+              number: 80
+      - pathType: Prefix
+        path: /productos
+        backend:
+          service:
+            name: productos-service
+            port: 
+              number: 80
+      - pathType: Prefix
+        path: /sesiones
+        backend:
+          service:
+            name: sesiones-service
+            port: 
+              number: 80
