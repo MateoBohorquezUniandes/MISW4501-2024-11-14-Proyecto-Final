@@ -14,12 +14,12 @@ from perfiles.domain.value_objects import (
     InformacionFisiologica,
     ResultadoElementoSanguineo,
     MolestiaTipo,
+    VolumenMaximoOxigeno,
 )
 from perfiles.infrastructure.dtos import HabitoDeportivo as HabitoDeportivoDTO
 from perfiles.infrastructure.dtos import PerfilAlimenticio as PerfilAlimenticioDTO
 from perfiles.infrastructure.dtos import PerfilDemografico as PerfilDemograficoDTO
 from perfiles.infrastructure.dtos import PerfilDeportivo as PerfilDeportivoDTO
-from perfiles.infrastructure.dtos import ReporteSanguineo as ReporteSanguineoDTO
 from perfiles.infrastructure.dtos import Molestia as MolestiaDTO
 from seedwork.domain.repositories import Mapper
 
@@ -28,39 +28,32 @@ class PerfilDemograficoMapper(Mapper):
     def type(self) -> type:
         return PerfilDemografico
 
-    def entity_to_dto(self, entity: PerfilDemografico) -> PerfilDemograficoDTO:
-        deportista_dto = PerfilDemograficoDTO()
-        deportista_dto.tipo_identificacion = entity.tipo_identificacion
-        deportista_dto.identificacion = entity.identificacion
+    def entity_to_dto(
+        self, entity: PerfilDemografico, perfil_dto: PerfilDemograficoDTO = None
+    ) -> PerfilDemograficoDTO:
+        perfil_dto = perfil_dto or PerfilDemograficoDTO()
+        perfil_dto.tipo_identificacion = entity.tipo_identificacion
+        perfil_dto.identificacion = entity.identificacion
 
-        deportista_dto.genero = entity.fisiologia.genero
-        deportista_dto.edad = entity.fisiologia.edad
-        deportista_dto.peso = entity.fisiologia.peso
-        deportista_dto.altura = entity.fisiologia.altura
-        deportista_dto.pais = entity.demografia.pais
-        deportista_dto.ciudad = entity.demografia.ciudad
+        perfil_dto.genero = entity.fisiologia.genero
+        perfil_dto.edad = entity.fisiologia.edad
+        perfil_dto.peso = entity.fisiologia.peso
+        perfil_dto.altura = entity.fisiologia.altura
+        perfil_dto.pais = entity.demografia.pais
+        perfil_dto.ciudad = entity.demografia.ciudad
 
-        deportista_dto.imc_valor = entity.clasificacion_riesgo.imc.valor
-        deportista_dto.imc_cateroria = entity.clasificacion_riesgo.imc.categoria
-        deportista_dto.clasificacion_riesgo = entity.clasificacion_riesgo.riesgo
+        perfil_dto.imc_valor = entity.clasificacion_riesgo.imc.valor
+        perfil_dto.imc_cateroria = entity.clasificacion_riesgo.imc.categoria
+        perfil_dto.vo_max_valor = entity.clasificacion_riesgo.vo_max.valor
+        perfil_dto.vo_max_cateroria = entity.clasificacion_riesgo.vo_max.categoria
+        perfil_dto.clasificacion_riesgo = entity.clasificacion_riesgo.riesgo
 
-        reportes = list()
-        for reporte in entity.reportes_sanguineo:
-            reporte_dto = ReporteSanguineoDTO()
-            reporte_dto.tipo_identificacion = entity.tipo_identificacion
-            reporte_dto.identificacion = entity.identificacion
-
-            reporte_dto.tipo_examen = reporte.resultado.tipo_examen
-            reporte_dto.valor = reporte.resultado.valor
-            reporte_dto.unidad = reporte.resultado.unidad
-            reportes.append(reporte_dto)
-        deportista_dto.reportes_sanguineos = reportes
-
-        return deportista_dto
+        return perfil_dto
 
     def dto_to_entity(self, dto: PerfilDemograficoDTO) -> PerfilDemografico:
         clasificacion_riesgo = ClasificacionRiesgo(
             imc=IndiceMasaCorporal(dto.imc_valor, dto.imc_cateroria),
+            vo_max=VolumenMaximoOxigeno(dto.vo_max_valor, dto.vo_max_cateroria),
         )
 
         reportes = list()

@@ -5,7 +5,7 @@ from seedwork.domain.events import DomainEvent
 
 
 @dataclass
-class PerfilDemograficoCreated(DomainEvent):
+class PerfilDemograficoModified(DomainEvent):
     tipo_identificacion: str = None
     identificacion: str = None
     created_at: datetime = None

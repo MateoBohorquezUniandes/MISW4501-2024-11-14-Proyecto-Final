@@ -3,9 +3,10 @@ from uuid import UUID
 from flask import Blueprint, Response, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
+from perfiles.application.queries.get_perfil_deportivo import ObtenerPerfilDeportivo
 import seedwork.presentation.api as api
 from perfiles.application.mappers import (
-    PerfilDemograficoJsonDtoMapper,
+    PerfilDemograficoDTODictMapper,
     PerfilDeportivoDTODictMapper,
 )
 from perfiles.application.queries.get_perfil_demografico import ObtenerPerfilDemografico
@@ -26,7 +27,7 @@ def get_perfil_demografico(id=None):
             identificacion=identificacion.get("valor"),
         )
     )
-    mapper = PerfilDemograficoJsonDtoMapper()
+    mapper = PerfilDemograficoDTODictMapper()
     return jsonify(mapper.dto_to_external(query_result.result))
 
 
@@ -43,11 +44,12 @@ def get_perfiles_deportivos():
 def get_perfil_deportivo(id=None):
     identificacion: dict = get_jwt_identity()
     query_result = execute_query(
-        ObtenerPerfilDemografico(
+        ObtenerPerfilDeportivo(
             tipo_identificacion=identificacion.get("tipo"),
             identificacion=identificacion.get("valor"),
         )
     )
+    print(query_result.result)
     mapper = PerfilDeportivoDTODictMapper()
 
     return jsonify(mapper.dto_to_external(query_result.result))

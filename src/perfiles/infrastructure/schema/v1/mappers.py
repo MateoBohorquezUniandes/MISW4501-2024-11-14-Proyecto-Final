@@ -1,25 +1,27 @@
-from perfiles.domain.events import PerfilDemograficoCreated
+from perfiles.domain.events import PerfilDemograficoModified
 from perfiles.infrastructure.schema.v1.events import (
     ClasificacionRiesgoPayload,
-    DemografiaCreatedPayload,
-    DemograficaCreatedIntegrationEvent,
+    DemograficoModifiedPayload,
+    DemograficoModifiedIntegrationEvent,
     IndiceMasaCorporalPayload,
     InformacionDemograficaPayload,
     InformacionFisiologicaPayload,
+    VolumenMaximoOxigenoPayload,
 )
 from seedwork.infrastructure.schema.v1.mappers import IntegrationMapper
 
 
-class DemografiaCreatedIntegrationEventMapper(IntegrationMapper):
+class DemograficoModifiedIntegrationEventMapper(IntegrationMapper):
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
     def external_to_message(
-        self, external: PerfilDemograficoCreated
-    ) -> DemograficaCreatedIntegrationEvent:
-        print(external.clasificacion_riesgo)
+        self, external: PerfilDemograficoModified
+    ) -> DemograficoModifiedIntegrationEvent:
         imc = external.clasificacion_riesgo.get("imc", {})
+        vom = external.clasificacion_riesgo.get("vo_max", {})
         clasificacion = ClasificacionRiesgoPayload(
             imc=IndiceMasaCorporalPayload(imc.get("valor"), imc.get("categoria")),
+            vo_max=VolumenMaximoOxigenoPayload(vom.get("valor"), vom.get("categoria")),
             riesgo=external.clasificacion_riesgo.get("riesgo"),
         )
 
@@ -35,7 +37,7 @@ class DemografiaCreatedIntegrationEventMapper(IntegrationMapper):
             float(external.fisiologia.get("peso")),
         )
 
-        payload: DemografiaCreatedPayload = DemografiaCreatedPayload(
+        payload: DemograficoModifiedPayload = DemograficoModifiedPayload(
             tipo_identificacion=str(external.tipo_identificacion),
             identificacion=str(external.identificacion),
             created_at=external.created_at.strftime(self.DATE_FORMAT),
@@ -44,7 +46,7 @@ class DemografiaCreatedIntegrationEventMapper(IntegrationMapper):
             fisiologia=fisiologia,
             deportes=external.deportes,
         )
-        return DemograficaCreatedIntegrationEvent(
+        return DemograficoModifiedIntegrationEvent(
             correlation_id=str(external.correlation_id),
             type="event",
             datacontenttype="application/json",

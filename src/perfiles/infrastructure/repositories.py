@@ -41,22 +41,28 @@ class PerfilDemograficoRepositoryPostgreSQL(PerfilDemograficoRepository):
             for dto in perfiles_dto
         ]
 
-    def get(self, tipo_identificacion: str, identificacion: str) -> PerfilDemografico:
-        deportista_dto = (
+    def get(
+        self, tipo_identificacion: str, identificacion: str, as_entity=True
+    ) -> PerfilDemografico:
+        perfil_dto = (
             db.session.query(PerfilDemograficoDTO)
             .filter_by(tipo_identificacion=tipo_identificacion)
             .filter_by(identificacion=identificacion)
             .one()
         )
-        return self.fabrica_perfil_demografico.create(
-            deportista_dto, PerfilDemograficoMapper()
+        return (
+            self.fabrica_perfil_demografico.create(
+                perfil_dto, PerfilDemograficoMapper()
+            )
+            if as_entity
+            else perfil_dto
         )
 
-    def append(self, deportista: PerfilDemografico):
-        deportista_dto = self.fabrica_perfil_demografico.create(
-            deportista, PerfilDemograficoMapper()
+    def append(self, perfil: PerfilDemografico):
+        perfil_dto = self.fabrica_perfil_demografico.create(
+            perfil, PerfilDemograficoMapper()
         )
-        db.session.add(deportista_dto)
+        db.session.add(perfil_dto)
 
     def delete(self, tipo_identificacion: str, identificacion: str):
         query = db.session.query(PerfilDemograficoDTO)
@@ -66,8 +72,11 @@ class PerfilDemograficoRepositoryPostgreSQL(PerfilDemograficoRepository):
             )
         query.delete()
 
-    def update(self):
-        pass
+    def update(self, perfil: PerfilDemografico):
+        perfil_dto = self.get(perfil.tipo_identificacion, perfil.identificacion, as_entity=False)
+        perfil_dto = self.fabrica_perfil_demografico.create(
+            perfil, PerfilDemograficoMapper(), perfil_dto=perfil_dto
+        )
 
 
 class PerfilDeportivoRepositoryPostgreSQL(PerfilDeportivoRepository):
@@ -86,21 +95,21 @@ class PerfilDeportivoRepositoryPostgreSQL(PerfilDeportivoRepository):
         ]
 
     def get(self, tipo_identificacion: str, identificacion: str) -> PerfilDeportivo:
-        deportista_dto = (
+        perfil_dto = (
             db.session.query(PerfilDeportivoDTO)
             .filter_by(tipo_identificacion=tipo_identificacion)
             .filter_by(identificacion=identificacion)
             .one()
         )
         return self.fabrica_perfil_demografico.create(
-            deportista_dto, PerfilDeportivoMapper()
+            perfil_dto, PerfilDeportivoMapper()
         )
 
-    def append(self, deportista: PerfilDeportivo):
-        deportista_dto = self.fabrica_perfil_demografico.create(
-            deportista, PerfilDeportivoMapper()
+    def append(self, perfil: PerfilDeportivo):
+        perfil_dto = self.fabrica_perfil_demografico.create(
+            perfil, PerfilDeportivoMapper()
         )
-        db.session.add(deportista_dto)
+        db.session.add(perfil_dto)
 
     def delete(self, tipo_identificacion: str, identificacion: str):
         query = db.session.query(PerfilDeportivoDTO)
@@ -130,21 +139,21 @@ class PerfilAlimenticioRepositoryPostgreSQL(PerfilAlimenticioRepository):
         ]
 
     def get(self, tipo_identificacion: str, identificacion: str) -> PerfilAlimenticio:
-        deportista_dto = (
+        perfil_dto = (
             db.session.query(PerfilAlimenticioDTO)
             .filter_by(tipo_identificacion=tipo_identificacion)
             .filter_by(identificacion=identificacion)
             .one()
         )
         return self.fabrica_perfil_demografico.create(
-            deportista_dto, PerfilAlimenticioMapper()
+            perfil_dto, PerfilAlimenticioMapper()
         )
 
-    def append(self, deportista: PerfilAlimenticio):
-        deportista_dto = self.fabrica_perfil_demografico.create(
-            deportista, PerfilAlimenticioMapper()
+    def append(self, perfil: PerfilAlimenticio):
+        perfil_dto = self.fabrica_perfil_demografico.create(
+            perfil, PerfilAlimenticioMapper()
         )
-        db.session.add(deportista_dto)
+        db.session.add(perfil_dto)
 
     def delete(self, tipo_identificacion: str, identificacion: str):
         query = db.session.query(PerfilAlimenticioDTO)

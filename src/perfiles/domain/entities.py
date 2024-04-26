@@ -3,7 +3,7 @@ import uuid
 from dataclasses import asdict, dataclass, field
 
 import perfiles.domain.value_objects as vo
-from perfiles.domain.events import PerfilDemograficoCreated
+from perfiles.domain.events import PerfilDemograficoModified
 from seedwork.domain.entities import Entity, RootAggregation
 
 
@@ -33,7 +33,7 @@ class PerfilDemografico(RootAggregation):
 
     def create(self, correlation_id: uuid.UUID, deportes: list[str] = []):
         self.append_event(
-            PerfilDemograficoCreated(
+            PerfilDemograficoModified(
                 correlation_id=correlation_id,
                 tipo_identificacion=self.tipo_identificacion,
                 identificacion=self.identificacion,
@@ -42,6 +42,20 @@ class PerfilDemografico(RootAggregation):
                 demografia=asdict(self.demografia),
                 fisiologia=asdict(self.fisiologia),
                 deportes=deportes,
+            )
+        )
+    
+    def update(self, correlation_id: uuid.UUID):
+        self.append_event(
+            PerfilDemograficoModified(
+                correlation_id=correlation_id,
+                tipo_identificacion=self.tipo_identificacion,
+                identificacion=self.identificacion,
+                created_at=self.created_at,
+                clasificacion_riesgo=asdict(self.clasificacion_riesgo),
+                demografia=asdict(self.demografia),
+                fisiologia=asdict(self.fisiologia),
+                deportes=[],
             )
         )
 

@@ -16,7 +16,6 @@ class PerfilDemograficoIntegrationEventDispatcher(Dispatcher):
         self.__bypass = environ.get("TESTING", "") == "True"
 
     def publish(self, url):
-        print(asdict(self._message))
         if self.__bypass:
             return
 

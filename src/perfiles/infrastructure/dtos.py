@@ -24,6 +24,8 @@ class PerfilDemografico(db.Model):
 
     imc_valor = db.Column(db.Float, nullable=True)
     imc_cateroria = db.Column(db.String(50))
+    vo_max_valor = db.Column(db.Float, nullable=True)
+    vo_max_cateroria = db.Column(db.String(50))
     clasificacion_riesgo = db.Column(db.String(50))
 
     reportes_sanguineos = relationship("ReporteSanguineo", backref="perfil_demografico")

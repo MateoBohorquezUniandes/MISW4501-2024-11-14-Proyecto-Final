@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from perfiles.application.dtos import (
     ClasificacionRiesgoDTO,
     HabitoDeportivoDTO,
@@ -9,6 +10,7 @@ from perfiles.application.dtos import (
     ReporteSanguineoDTO,
     ResultadoElementoSanguineoDTO,
     MolestiaDTO,
+    VolumenMaximoOxigenoDTO,
 )
 from perfiles.domain.entities import (
     HabitoDeportivo,
@@ -19,12 +21,14 @@ from perfiles.domain.entities import (
     Molestia,
 )
 from perfiles.domain.value_objects import (
+    CategoriaVOM,
     ClasificacionRiesgo,
     InformacionDemografica,
     InformacionFisiologica,
     ResultadoElementoSanguineo,
+    VolumenMaximoOxigeno,
 )
-from seedwork.application.dtos import Mapper as ApplicationMapper
+from seedwork.application.dtos import DTO, Mapper as ApplicationMapper
 from seedwork.domain.repositories import Mapper as DomainMapper
 from seedwork.domain.repositories import (
     UnidirectionalMapper as UnidirectionalDomainMapper,
@@ -35,7 +39,7 @@ from seedwork.domain.repositories import (
 # #####################################################################################
 
 
-class PerfilDemograficoJsonDtoMapper(ApplicationMapper):
+class PerfilamientoInicialDTODictMapper(ApplicationMapper):
 
     def _external_to_demografia_dto(self, external: dict) -> InformacionDemograficaDTO:
         return InformacionDemograficaDTO(
@@ -49,6 +53,39 @@ class PerfilDemograficoJsonDtoMapper(ApplicationMapper):
             int(external.get("edad")),
             float(external.get("altura")),
             float(external.get("peso")),
+        )
+
+    def external_to_dto(self, external: any) -> PerfilDemograficoDTO:
+        demografia = self._external_to_demografia_dto(external.get("demografia"))
+        fisiologia = self._external_to_fisiolofia_dto(external.get("fisiologia"))
+
+        deportes = external.get("deportes", [])
+        return PerfilDemograficoDTO(
+            tipo_identificacion=external.get("tipo_identificacion"),
+            identificacion=external.get("identificacion"),
+            reportes_sanguineo=[],
+            demografia=demografia,
+            fisiologia=fisiologia,
+            deportes=deportes,
+        )
+
+    def dto_to_external(self, dto: PerfilDemograficoDTO) -> any:
+        return asdict(dto)
+
+
+class PerfilDemograficoDTODictMapper(ApplicationMapper):
+
+    def _external_to_clasificacion_dto(self, external: dict) -> ClasificacionRiesgoDTO:
+        imc: IndiceMasaCorporalDTO = IndiceMasaCorporalDTO(
+            external.get("imc", {}).get("valor", 0.0),
+            external.get("imc", {}).get("categoria", ""),
+        )
+        vo_max: VolumenMaximoOxigenoDTO = VolumenMaximoOxigenoDTO(
+            external.get("vo_max", {}).get("valor", 0.0),
+            external.get("vo_max", {}).get("categoria", ""),
+        )
+        return ClasificacionRiesgoDTO(
+            imc=imc, vo_max=vo_max, riesgo=external.get("riesgo", "")
         )
 
     def _external_to_reportes_sanguineo_dto(
@@ -67,24 +104,41 @@ class PerfilDemograficoJsonDtoMapper(ApplicationMapper):
             )
         return reportes
 
-    def external_to_dto(self, external: any) -> PerfilDemograficoDTO:
+    def _external_to_demografia_dto(self, external: dict) -> InformacionDemograficaDTO:
+        return InformacionDemograficaDTO(
+            external.get("pais"),
+            external.get("ciudad"),
+        )
+
+    def _external_to_fisiolofia_dto(self, external: dict) -> InformacionFisiologicaDTO:
+        return InformacionFisiologicaDTO(
+            external.get("genero"),
+            int(external.get("edad")),
+            float(external.get("altura")),
+            float(external.get("peso")),
+        )
+
+    def external_to_dto(self, external: dict) -> PerfilDemograficoDTO:
+        clasificacion_riesgo = self._external_to_clasificacion_dto(
+            external.get("clasificacion_riesgo")
+        )
+        reportes_sanguineo = self._external_to_reportes_sanguineo_dto(
+            external.get("reportes_sanguineo")
+        )
         demografia = self._external_to_demografia_dto(external.get("demografia"))
         fisiologia = self._external_to_fisiolofia_dto(external.get("fisiologia"))
-        reportes = self._external_to_reportes_sanguineo_dto(
-            external.get("reportes_sanguineo", [])
-        )
-        deportes = external.get("deportes", [])
         return PerfilDemograficoDTO(
-            tipo_identificacion=external.get("tipo_identificacion"),
-            identificacion=external.get("identificacion"),
-            reportes_sanguineo=reportes,
+            tipo_identificacion=external.get("tipo_identificacion", ""),
+            identificacion=external.get("identificacion", ""),
+            clasificacion_riesgo=clasificacion_riesgo,
+            reportes_sanguineo=reportes_sanguineo,
             demografia=demografia,
             fisiologia=fisiologia,
-            deportes=deportes,
+            deportes=external.get("deportes", []),
         )
 
     def dto_to_external(self, dto: PerfilDemograficoDTO) -> any:
-        return dto.__dict__
+        return asdict(dto)
 
 
 class HabitoDTODictMapper(ApplicationMapper):
@@ -99,7 +153,7 @@ class HabitoDTODictMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: HabitoDeportivoDTO) -> dict:
-        return dto.__dict__
+        return asdict(dto)
 
 
 class MolestiaDTODictMapper(ApplicationMapper):
@@ -115,7 +169,7 @@ class MolestiaDTODictMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: MolestiaDTO) -> dict:
-        return dto.__dict__
+        return asdict(dto)
 
 
 class PerfilDeportivoDTODictMapper(ApplicationMapper):
@@ -162,7 +216,7 @@ class PerfilDeportivoDTODictMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: PerfilDeportivoDTO) -> dict:
-        return dto.__dict__
+        return asdict(dto)
 
 
 # #####################################################################################
@@ -200,7 +254,15 @@ class PerfilDemograficoDTOEntityMapper(DomainMapper):
             dto.fisiologia.altura,
             dto.fisiologia.peso,
         )
-        clasificacion = ClasificacionRiesgo(fisiologia.calculate_imc())
+        vo_max = VolumenMaximoOxigeno(
+            dto.clasificacion_riesgo.vo_max.valor,
+            CategoriaVOM.get(
+                dto.clasificacion_riesgo.vo_max.valor,
+                dto.fisiologia.genero,
+                dto.fisiologia.edad,
+            ),
+        )
+        clasificacion = ClasificacionRiesgo(fisiologia.calculate_imc(), vo_max)
         reportes = self._dto_to_reportes_sanguineo(dto.reportes_sanguineo)
         return PerfilDemografico(
             tipo_identificacion=dto.tipo_identificacion,
@@ -241,6 +303,10 @@ class PerfilDemograficoDTOEntityMapper(DomainMapper):
             IndiceMasaCorporalDTO(
                 entity.clasificacion_riesgo.imc.valor,
                 entity.clasificacion_riesgo.imc.categoria,
+            ),
+            VolumenMaximoOxigenoDTO(
+                entity.clasificacion_riesgo.vo_max.valor,
+                entity.clasificacion_riesgo.vo_max.categoria,
             ),
             entity.clasificacion_riesgo.riesgo,
         )
