@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from uuid import UUID
 from seedwork.application.dtos import Mapper as ApplicationMapper
 from seedwork.domain.repositories import Mapper as DomainMapper
@@ -28,7 +29,7 @@ class SesionDeportivaDTODictMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: SesionDeportivaDTO) -> dict:
-        return dto.__dict__
+        return asdict(dto)
 
 
 # #####################################################################################
