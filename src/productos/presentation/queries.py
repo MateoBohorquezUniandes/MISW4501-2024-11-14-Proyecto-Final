@@ -13,8 +13,8 @@ bp: Blueprint = api.create_blueprint("queries", bp_prefix)
 def get_productos():
     mapper = ProductoDTODictMapper()
     args = request.args
-    deporte = args.get("deporte")
-    tipo = args.get("tipo")
+    deporte = args.get("deporte", None)
+    tipo = args.get("tipo", None)
 
     query_result = execute_query(GetProductos(deporte=deporte, tipo=tipo))
     return jsonify([mapper.dto_to_external(e) for e in query_result.result])
