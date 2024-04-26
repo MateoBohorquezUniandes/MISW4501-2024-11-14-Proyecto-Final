@@ -7,7 +7,12 @@ class SesionEndedIntegrationEventMapper(IntegrationMapper):
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
     def external_to_message(self, external: SesionEnded) -> SesionEndedIntegrationEvent:
-        payload = SesionEndedPayload(external.parametros)
+        payload = SesionEndedPayload(
+            external.tipo_identificacion,
+            external.identificacion,
+            external.id,
+            external.parametros,
+        )
         return SesionEndedIntegrationEvent(
             external.correlation_id,
             type="command",

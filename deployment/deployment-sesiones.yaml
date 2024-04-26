@@ -26,7 +26,26 @@ spec:
             - name: "AUTH_BASE_URL"
               value: http://autenticador-service/auth
             - name: "INDICADORES_BASE_URL"
-              value: http://indicadores-service/auth
+              value: http://indicadores-service/indicadores/commands
+            - name: "INTEGRATION_EVENT_URL"
+              value: http://34.36.129.27/perfiles/commands/demografico/riesgo
+            - name: "LOCATION_ID"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: locationid
+            - name: "PROJECT_ID"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: projectid
+            - name: "QUEUE_ID"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: queuessesionesid
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
             - name: "DB_USER"
               valueFrom:
                 secretKeyRef:
