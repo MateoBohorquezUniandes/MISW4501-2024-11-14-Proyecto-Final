@@ -56,9 +56,9 @@ class ProductoDTOEntityMapper(DomainMapper):
         return ProductoDTO(
             entity.id,
             entity.tipo,
-            entity.nombre,
+            entity.descripcion,
             entity.imagen,
             entity.precio,
-            entity.descripcion,
+            entity.nombre,
             entity.deporte,
         )
