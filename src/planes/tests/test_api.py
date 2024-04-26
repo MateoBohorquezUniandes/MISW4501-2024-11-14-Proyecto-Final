@@ -7,7 +7,12 @@ from flask_jwt_extended import create_access_token
 
 from planes.app import create_app
 from planes.infrastructure.db import db
-from planes.infrastructure.dtos import Entrenamiento, PlanEntrenamiento, UsuarioPlan
+from planes.infrastructure.dtos import (
+    Entrenamiento,
+    PlanEntrenamiento,
+    UsuarioPlan,
+    recomendacion_table,
+)
 
 
 class TestOperations:
@@ -33,6 +38,7 @@ class TestOperations:
         before each test case
         """
         db.session.query(Entrenamiento).delete()
+        db.session.query(recomendacion_table).delete()
         db.session.query(PlanEntrenamiento).delete()
         db.session.query(UsuarioPlan).delete()
         db.session.commit()
@@ -52,8 +58,24 @@ class TestOperations:
 
         yield user
 
-        db.session.query(UsuarioPlan).delete()
+    @pytest.fixture(scope="function")
+    def test_db_plan(self):
+        """
+        Function fixture for creating an initial plan
+        as a precondition for some test cases
+        """
+        plan = PlanEntrenamiento()
+        plan.id = str(uuid.uuid4())
+        plan.nombre = "Plan Prueba"
+        plan.descripcion = "descripcion de prueba"
+        plan.categoria = "Resistencia"
+        plan.nivel_exigencia = "Alta"
+        plan.deporte_objetivo = "Ciclismo"
+
+        db.session.add(plan)
         db.session.commit()
+
+        yield plan
 
     def test_create_plan_success(self, test_client):
         """Creacion exitosa de un usuario deportista"""
@@ -95,10 +117,38 @@ class TestOperations:
                 "clasificacion_riesgo": {
                     "imc": {"valor": 21.76, "categoria": "Peso Normal"},
                     "riesgo": "Bajo",
+                    "vo_max": {"valor": 0.0, "categoria": "Muy Pobre"},
                 },
                 "demografia": {"pais": "Colombia", "ciudad": "Bogota"},
                 "fisiologia": {"genero": "M", "edad": 30, "altura": 7.8, "peso": 70.5},
                 "deportes": ["Ciclismo"],
+            },
+        }
+
+        response = test_client.post("/planes/commands/asociar", json=payload)
+        assert response.status_code == HTTPStatus.ACCEPTED.value
+
+    def test_create_usuario_existente_success(
+        self, test_client, test_db_user, test_db_plan
+    ):
+        """Creacion exitosa de un usuario deportista"""
+        payload = {
+            "correlation_id": "dfebc03f-c6be-48b2-bb5f-4e49bddec908",
+            "specversion": "v1",
+            "type": "event",
+            "datacontenttype": "application/json",
+            "payload": {
+                "created_at": "2024-04-10T02:02:01Z",
+                "tipo_identificacion": test_db_user.tipo_identificacion,
+                "identificacion": test_db_user.identificacion,
+                "clasificacion_riesgo": {
+                    "imc": {"valor": 21.76, "categoria": "Peso Normal"},
+                    "riesgo": "Bajo",
+                    "vo_max": {"valor": 0.0, "categoria": "Muy Pobre"},
+                },
+                "demografia": {"pais": "Colombia", "ciudad": "Bogota"},
+                "fisiologia": {"genero": "M", "edad": 30, "altura": 7.8, "peso": 70.5},
+                "deportes": [test_db_plan.deporte_objetivo],
             },
         }
 

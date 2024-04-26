@@ -4,13 +4,16 @@ from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
 from planes.domain.exceptions import InvalidPlanesFactoryException
 from planes.domain.rules import (
     ValidEntrenamiento,
+    ValidObjetivo,
     ValidPlanEntrenamiento,
     ValidUsuarioPlan,
 )
+from planes.domain.value_objects import ObjetivoEntrenamiento
 from seedwork.domain.entities import Entity
 from seedwork.domain.events import DomainEvent
 from seedwork.domain.factories import Factory
 from seedwork.domain.repositories import Mapper
+from seedwork.domain.value_objects import ValueObject
 
 
 @dataclass
@@ -23,6 +26,18 @@ class _EntrenamientoFactory(Factory):
         self.validate_rule(ValidEntrenamiento(entrenamiento))
 
         return entrenamiento
+
+
+@dataclass
+class _ObjetivoEntrenamientoFactory(Factory):
+    def create(self, obj: any, mapper: Mapper = None) -> ObjetivoEntrenamiento:
+        if isinstance(obj, ValueObject):
+            return mapper.entity_to_dto(obj)
+
+        objetivo: ObjetivoEntrenamiento = mapper.dto_to_entity(obj)
+        self.validate_rule(ValidObjetivo(objetivo))
+
+        return objetivo
 
 
 @dataclass
@@ -53,11 +68,14 @@ class _UsuarioPlanFactory(Factory):
 class PlanFactory(Factory):
     def create(self, obj: any, mapper: Mapper):
         if mapper.type() == Entrenamiento:
-            perfil_factory = _EntrenamientoFactory()
-            return perfil_factory.create(obj, mapper)
+            entrenamiento_factory = _EntrenamientoFactory()
+            return entrenamiento_factory.create(obj, mapper)
+        elif mapper.type() == ObjetivoEntrenamiento:
+            objetivo_factory = _ObjetivoEntrenamientoFactory()
+            return objetivo_factory.create(obj, mapper)
         elif mapper.type() == PlanEntrenamiento:
-            perfil_factory = _PlanEntrenamientoFactory()
-            return perfil_factory.create(obj, mapper)
+            plan_factory = _PlanEntrenamientoFactory()
+            return plan_factory.create(obj, mapper)
         elif mapper.type() == UsuarioPlan:
             usuario_facotry = _UsuarioPlanFactory()
             return usuario_facotry.create(obj, mapper)

@@ -112,10 +112,10 @@ class PlanEntrenamientoRepositoryPostgreSQL(PlanEntrenamientoRepository):
             query = query.filter_by(id=id)
         query.delete()
 
-    def update(self, plan: PlanEntrenamiento):
-        plan_dto: PlanEntrenamientoDTO = self.get(str(plan.id), as_entity=False)
+    def update(self, plan_id: str, entrenamientos: list[str]):
+        plan_dto: PlanEntrenamientoDTO = self.get(plan_id, as_entity=False)
         entrenamientos_dto = EntrenamientoRepositoryPostgreSQL().get_all(
-            ids=[str(e.id) for e in plan.entrenamientos], as_entity=False
+            ids=entrenamientos, as_entity=False
         )
         plan_dto.entrenamientos.extend(entrenamientos_dto)
 
@@ -137,28 +137,41 @@ class UsuarioPlanRepositoryPostgreSQL(UsuarioPlanRepository):
         )
 
     def get(
-        self, tipo_identificacion: str, identificacion: str, as_entity=True
+        self,
+        tipo_identificacion: str,
+        identificacion: str,
+        as_entity=True,
+        raise_error=True,
     ) -> Union[UsuarioPlan, UsuarioPlanDTO]:
         usuario_dto = (
             db.session.query(UsuarioPlanDTO)
             .filter_by(tipo_identificacion=tipo_identificacion)
             .filter_by(identificacion=identificacion)
-            .one()
         )
+        usuario_dto = usuario_dto.one() if raise_error else usuario_dto.first()
         if as_entity:
             return self.plan_factory.create(usuario_dto, UsuarioPlanMapper())
         else:
             return usuario_dto
 
     def append(self, usuario: UsuarioPlan, deporte: str = None, exigencia: str = None):
-        usuario_dto: UsuarioPlanDTO = self.plan_factory.create(
-            usuario, UsuarioPlanMapper()
+        usuario_dto = self.get(
+            usuario.tipo_identificacion,
+            usuario.identificacion,
+            as_entity=False,
+            raise_error=False,
         )
-        planes_dto = PlanEntrenamientoRepositoryPostgreSQL().get_all(
-            nivel_exigencia=exigencia, deporte_objetivo=deporte, as_entity=False
-        )
-        usuario_dto.planes.extend(planes_dto)
-        db.session.add(usuario_dto)
+        should_add = False
+        if not usuario_dto:
+            should_add = True
+            usuario_dto: UsuarioPlanDTO = self.plan_factory.create(
+                usuario, UsuarioPlanMapper()
+            )
+        print(f"should add new? {should_add}")
+        self.update(usuario_dto, deporte=deporte, exigencia=exigencia)
+
+        if should_add:
+            db.session.add(usuario_dto)
 
     def delete(self, tipo_identificacion: str, identificacion: str):
         query = db.session.query(UsuarioPlanDTO)
@@ -168,11 +181,13 @@ class UsuarioPlanRepositoryPostgreSQL(UsuarioPlanRepository):
             )
         query.delete()
 
-    def update(self, usuario: UsuarioPlan, planes: list[PlanEntrenamientoDTO]):
-        usuario_dto: UsuarioPlanDTO = self.get(
-            usuario.tipo_identificacion, usuario.identificacion, as_entity=False
+    def update(
+        self, usuario_dto: UsuarioPlanDTO, deporte: str = None, exigencia: str = None
+    ):
+        planes_dto = PlanEntrenamientoRepositoryPostgreSQL().get_all(
+            nivel_exigencia=exigencia, deporte_objetivo=deporte, as_entity=False
         )
-        usuario_dto.planes.extend(planes)
-
-    def relate_plan_entrenamiento(self):
-        pass
+        planes_asociados = [p.id for p in usuario_dto.planes]
+        usuario_dto.planes.extend(
+            [p for p in planes_dto if p.id not in planes_asociados]
+        )

@@ -8,7 +8,12 @@ from planes.application.dtos import (
     UsuarioPlanDTO,
 )
 from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
-from planes.domain.value_objects import Duracion, Imagen, ObjetivoEntrenamiento
+from planes.domain.value_objects import (
+    EXIGENCIA,
+    Duracion,
+    Imagen,
+    ObjetivoEntrenamiento,
+)
 from seedwork.application.dtos import Mapper as ApplicationMapper
 from seedwork.domain.repositories import Mapper as DomainMapper
 
@@ -40,6 +45,20 @@ class EntrenamientoDTODictMapper(ApplicationMapper):
         return dto.__dict__
 
 
+class ObjetivoEntrenamientoDTODictMapper(ApplicationMapper):
+    def type(self) -> type:
+        return ObjetivoEntrenamiento
+
+    def external_to_dto(self, external: dict) -> ObjetivoEntrenamientoDTO:
+        return ObjetivoEntrenamientoDTO(
+            external.get("exigencia", ""),
+            external.get("deporte", ""),
+        )
+
+    def dto_to_external(self, dto: ObjetivoEntrenamientoDTO) -> dict:
+        return dto.__dict__
+
+
 class PlanEntrenamientoDTODictMapper(ApplicationMapper):
     def _external_to_objetivo_dto(self, external: dict) -> ObjetivoEntrenamientoDTO:
         return ObjetivoEntrenamientoDTO(
@@ -48,7 +67,9 @@ class PlanEntrenamientoDTODictMapper(ApplicationMapper):
         )
 
     def external_to_dto(self, external: dict) -> PlanEntrenamientoDTO:
-        objetivo = self._external_to_objetivo_dto(external.get("objetivo", {}))
+        objetivo = ObjetivoEntrenamientoDTODictMapper().external_to_dto(
+            external.get("objetivo", {})
+        )
         mapper = EntrenamientoDTODictMapper()
         entrenamientos = [
             mapper.external_to_dto(e) for e in external.get("entrenamientos", [])
@@ -125,6 +146,17 @@ class EntrenamientoDTOEntityMapper(DomainMapper):
         )
 
 
+class ObjetivoEntrenamientoDTOEntityMapper(DomainMapper):
+    def type(self) -> type:
+        return ObjetivoEntrenamiento
+
+    def dto_to_entity(self, dto: ObjetivoEntrenamientoDTO) -> ObjetivoEntrenamiento:
+        return ObjetivoEntrenamiento(EXIGENCIA.get(dto.exigencia), dto.deporte)
+
+    def entity_to_dto(self, vo: ObjetivoEntrenamiento) -> ObjetivoEntrenamientoDTO:
+        return ObjetivoEntrenamientoDTO(vo.exigencia, vo.deporte)
+
+
 class PlanEntrenamientoDTOEntityMapper(DomainMapper):
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
@@ -132,7 +164,7 @@ class PlanEntrenamientoDTOEntityMapper(DomainMapper):
         return PlanEntrenamiento
 
     def dto_to_entity(self, dto: PlanEntrenamientoDTO) -> PlanEntrenamiento:
-        objetivo = ObjetivoEntrenamiento(dto.objetivo.exigencia, dto.objetivo.deporte)
+        objetivo = ObjetivoEntrenamientoDTOEntityMapper().dto_to_entity(dto.objetivo)
         mapper = EntrenamientoDTOEntityMapper()
         entrenamientos = [mapper.dto_to_entity(e) for e in dto.entrenamientos]
 
@@ -148,9 +180,7 @@ class PlanEntrenamientoDTOEntityMapper(DomainMapper):
         return plan
 
     def entity_to_dto(self, entity: PlanEntrenamiento) -> PlanEntrenamientoDTO:
-        objetivo = ObjetivoEntrenamientoDTO(
-            entity.objetivo.exigencia, entity.objetivo.deporte
-        )
+        objetivo = ObjetivoEntrenamientoDTOEntityMapper().entity_to_dto(entity.objetivo)
         mapper = EntrenamientoDTOEntityMapper()
         entrenamientos = [mapper.entity_to_dto(e) for e in entity.entrenamientos]
 

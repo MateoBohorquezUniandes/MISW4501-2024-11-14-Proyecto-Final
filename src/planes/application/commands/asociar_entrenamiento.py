@@ -5,9 +5,7 @@ from dataclasses import dataclass, field
 from sqlalchemy.exc import IntegrityError
 
 from planes.application.commands.base import PlanCommandBaseHandler
-from planes.application.dtos import PlanEntrenamientoDTO
 from planes.application.exceptions import BadRequestError, UnprocessableEntityError
-from planes.application.mappers import PlanEntrenamientoDTOEntityMapper
 from planes.domain.entities import PlanEntrenamiento
 from planes.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 from seedwork.application.commands import Command, execute_command
@@ -18,7 +16,8 @@ from seedwork.presentation.exceptions import APIError
 
 @dataclass
 class AsociarEntrenamientos(Command):
-    plan_dto: PlanEntrenamientoDTO = field(default_factory=PlanEntrenamientoDTO)
+    plan_id: str = field(default_factory=str)
+    entrenamientos: list[str] = field(default_factory=list)
 
 
 class AsociarEntrenamientosHandler(PlanCommandBaseHandler):
@@ -28,8 +27,9 @@ class AsociarEntrenamientosHandler(PlanCommandBaseHandler):
             uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
             repository_p = self.repository_factory.create(PlanEntrenamiento)
 
-            plan = PlanEntrenamientoDTOEntityMapper().dto_to_entity(command.plan_dto)
-            UnitOfWorkPort.register_batch(uowf, repository_p.update, plan)
+            UnitOfWorkPort.register_batch(
+                uowf, repository_p.update, command.plan_id, command.entrenamientos
+            )
             UnitOfWorkPort.commit(uowf)
 
         except BusinessRuleException as bre:

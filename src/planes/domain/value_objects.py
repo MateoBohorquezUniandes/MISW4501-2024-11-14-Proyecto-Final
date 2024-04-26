@@ -15,12 +15,26 @@ class DEPORTE(ExtendedEnum):
     ATLETISMO = "Atletismo"
 
 
+class _CategoriaRiesgo(ExtendedEnum):
+    MUY_BAJA = "Muy Bajo"
+    BAJA = "Bajo"
+    MODERADA = "Moderado"
+    ALTA = "Alto"
+    MUY_ALTA = "Muy Alto"
+
+
 class EXIGENCIA(ExtendedEnum):
-    SEDENTARIO = "Sedentario"
-    PRINCIPIANTE = "Principiante"
-    MODERADA = "Moderada"
-    ALTA = "Alta"
     ALTO_RENDIMIENTO = "Alto rendimiento"
+    ALTA = "Alta"
+    MODERADA = "Moderada"
+    PRINCIPIANTE = "Principiante"
+    SEDENTARIO = "Sedentario"
+
+    @classmethod
+    def get(cls, exigencia):
+        if exigencia in cls.list():
+            return exigencia
+        return cls.list()[_CategoriaRiesgo.list().index(exigencia)]
 
 
 class DURACION_UNIDAD(ExtendedEnum):
