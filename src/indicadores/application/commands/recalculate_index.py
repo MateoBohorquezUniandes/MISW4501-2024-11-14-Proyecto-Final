@@ -39,8 +39,9 @@ class CalculateIndicadorHandler(IndicadorCommandBaseHandler):
             formulas_globales: list[Formula] = repositorio_f.get(TIPO_GLOBAL, IDENTIFICACION_GLOBAL)
             formulas_usuario.extend(formulas_globales)
             
-            for formula in formulas_usuario: 
-                indicador: Indicador = calculator.calculate(command.indicador_dto.parametros, formula ,command.indicador_dto.idSesion)
+            for formula in formulas_usuario:
+                last_indicador: Indicador = repositorio.get_last_formula_id(formula.id, command.indicador_dto.tipo_identificacion, command.indicador_dto.identificacion)
+                indicador: Indicador = calculator.calculate(command.indicador_dto.parametros, formula ,command.indicador_dto.idSesion, last_indicador)
                 indicadores_calculados.append(indicador)
                 UnitOfWorkPort.register_batch(uowf, repositorio.append, indicador)
 
@@ -57,7 +58,7 @@ class CalculateIndicadorHandler(IndicadorCommandBaseHandler):
             traceback.print_exc()
             if uowf:
                 UnitOfWorkPort.rollback(uowf)
-            raise APIError(message=str(e), code="indices.error.internal")
+            raise APIError(message=str(e), code="indicadores.error.internal")
 
 @execute_command.register(CalculateIndicador)
 def command_crear_indice(command: CalculateIndicador) -> CommandResult:

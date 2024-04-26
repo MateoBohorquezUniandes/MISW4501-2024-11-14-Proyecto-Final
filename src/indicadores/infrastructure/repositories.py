@@ -22,6 +22,12 @@ class IndicadorRepositoryPostgreSQL(IndicadorRepository):
     def get():
         pass
 
+    def get_for_session_id(self, sesion_id:str) -> list[Indicador]:
+        pass
+
+    def get_last_formula_id(self, formula_id:str, tipo_identificacion:str, identificacion:str) -> Indicador:
+        pass #para la varianza
+
     def append(self, indicador: Indicador):
         indicador_dto: IndicadorDTO = self.indice_factory.create(
             indicador, IndicadorMapper()

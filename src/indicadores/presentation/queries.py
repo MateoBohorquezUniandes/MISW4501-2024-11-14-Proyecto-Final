@@ -13,7 +13,7 @@ IDENTIFICACION_GLOBAL = "global"
 
 bp_prefix: str = "/indices/queries"
 bp: Blueprint = api.create_blueprint("queries", bp_prefix)
-
+@bp.route("/sesionid")
 
 @bp.route("/formula", methods=("GET",))
 @jwt_required()

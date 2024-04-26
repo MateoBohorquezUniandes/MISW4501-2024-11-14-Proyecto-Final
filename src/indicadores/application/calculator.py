@@ -31,7 +31,7 @@ class FormulaCalculator():
     def compile(self, parametros, formula):
         pass
 
-    def calculate(self, valores: list[ValorParametroDTO], formula: Formula, sesionId:str) -> Indicador:
+    def calculate(self, valores: list[ValorParametroDTO], formula: Formula, sesionId:str, last_indicador:Indicador) -> Indicador:
         formula_resultante = self.simplify_values(valores, formula)
         resultado = numexpr.evaluate(formula_resultante)
         return Indicador(
