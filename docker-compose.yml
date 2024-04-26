@@ -33,7 +33,7 @@ services:
     networks:
       - deportistas_net
     ports:
-      - 5432:5432
+      - 5433:5432
     restart: always
 
   usuarios-api:
@@ -154,3 +154,17 @@ services:
       - 3090:3090
     restart: always
 
+  indicadores-api:
+    container_name: 'indicadores-api'
+    build:
+      context: ./
+      dockerfile: indicadores.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      - ./envs/.env.autenticador.local
+      - ./envs/.env.indicadores.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3060:3060
+    restart: always
