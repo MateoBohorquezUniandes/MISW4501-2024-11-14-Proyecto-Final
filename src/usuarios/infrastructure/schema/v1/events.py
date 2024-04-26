@@ -19,6 +19,14 @@ class DemografiaPayload(MessagePayload):
 
 
 @dataclass(frozen=True)
+class FisiologiaPayload(MessagePayload):
+    genero: str = field(default_factory=str)
+    edad: int = field(default_factory=int)
+    peso: float = field(default_factory=float)
+    altura: float = field(default_factory=float)
+
+
+@dataclass(frozen=True)
 class UsuarioCreatedPayload(MessagePayload):
     created_at: str = field(default_factory=str)
     tipo_identificacion: str = field(default_factory=str)
@@ -26,6 +34,7 @@ class UsuarioCreatedPayload(MessagePayload):
     rol: str = field(default_factory=str)
 
     demografia: DemografiaPayload = field(default_factory=DemografiaPayload)
+    fisiologia: FisiologiaPayload = field(default_factory=DemografiaPayload)
     deportes: list[str] = field(default_factory=list)
 
 

@@ -49,7 +49,7 @@ spec:
                   name: deportistasecrets
                   key: pgsqlname
           ports:
-            - containerPort: 3011
+            - containerPort: 3080
           imagePullPolicy: Always
 ---
 apiVersion: cloud.google.com/v1
@@ -59,7 +59,7 @@ metadata:
 spec:
   healthCheck:
     checkIntervalSec: 30
-    port: 3011
+    port: 3080
     type: HTTP
     requestPath: /health
 ---
