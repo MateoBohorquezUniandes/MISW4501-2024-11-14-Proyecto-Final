@@ -24,8 +24,8 @@ class Indicador(db.Model):
     __tablename__ = "indicador"
 
     idSesion = db.Column(db.String, primary_key=True)
-    idFormula = db.Column(db.String(20), nullable=False)
-    valor = db.Column(db.String(10), nullable=False)
+    idFormula = db.Column(db.String(40), nullable=False)
+    valor = db.Column(db.String(20), nullable=False)
     varianza = db.Column(db.String(10), nullable=False)
 
 class Parametro(db.Model):

@@ -9,20 +9,13 @@ class IndicadorMapper:
     def type(self) -> type:
         return Indicador
     
-    def _parametro_to_dto(self, entity: Parametro) -> ParametroDTO:
-        return ParametroDTO(nombre=entity.nombre, descripcion=entity.descripcion)
-    
     def entity_to_dto(self, entity:Indicador) -> IndicadorDTO:
-        parametros: list[ParametroDTO] = list()
-        for parametro in entity.parametros:
-            parametros.append(self._parametro_to_dto(parametro))
-        indice_dto = IndicadorDTO()
-        indice_dto.id = str(entity.id)
-        indice_dto.nombre = entity.nombre
-        indice_dto.descripcion = entity.descripcion
-        indice_dto.formula = entity.formula
-        indice_dto.parametros = parametros
-        return indice_dto
+        indicador_dto = IndicadorDTO()
+        indicador_dto.idSesion = entity.idSesion
+        indicador_dto.idFormula = entity.idFormula
+        indicador_dto.valor = entity.valor
+        indicador_dto.varianza = entity.varianza
+        return indicador_dto
 
     def dto_to_entity():
         pass

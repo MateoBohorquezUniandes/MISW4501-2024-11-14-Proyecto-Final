@@ -10,6 +10,7 @@ import indicadores.domain.value_objects as vo
 class Indicador(RootAggregation):
     idSesion: str = field(default_factory=str)
     idFormula : str = field(default_factory=str)
+    nombreFormula: str = field(default_factory=str)
     valor: str = field(default_factory=str)
     varianza: str = field(default_factory=str)
 

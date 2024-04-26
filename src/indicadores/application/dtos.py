@@ -33,3 +33,9 @@ class IndicadorDTO(DTO):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
     parametros: list[ValorParametroDTO] = field(default_factory=list[ValorParametroDTO])
+
+@dataclass(frozen=True)
+class ResultadoDTO(DTO):
+    nombre: str = field(default_factory=str)
+    valor: str = field(default_factory=str)
+    varianza: str = field(default_factory=str)

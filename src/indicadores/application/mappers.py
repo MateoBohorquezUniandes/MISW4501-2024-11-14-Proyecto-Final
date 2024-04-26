@@ -3,7 +3,7 @@ from uuid import UUID
 from seedwork.application.dtos import Mapper as ApplicationMapper
 from seedwork.domain.entities import Entity
 from seedwork.domain.repositories import Mapper as DomainMapper
-from indicadores.application.dtos import FormulaDTO, ParametroDTO, IndicadorDTO, ValorParametroDTO
+from indicadores.application.dtos import FormulaDTO, ParametroDTO, IndicadorDTO, ValorParametroDTO, ResultadoDTO
 from indicadores.domain.entities import Indicador, Formula
 from indicadores.domain.value_objects import Parametro
 
@@ -57,7 +57,7 @@ class IndicadoresDTODictMapper(ApplicationMapper):
             parametros_valor.append(
                 ValorParametroDTO(
                     nombre=str(parametro),
-                    simbolo=parametro_int
+                    valores=parametro_int
                 )
             )
         return parametros_valor
@@ -71,7 +71,7 @@ class IndicadoresDTODictMapper(ApplicationMapper):
             parametros=parametros,
         )
 
-    def dto_to_external(self, dto: FormulaDTO) -> dict:
+    def dto_to_external(self, dto: ResultadoDTO) -> dict:
         return dto.__dict__
 
 # #####################################################################################
@@ -123,8 +123,12 @@ class IndicadorDTOEntityMapper(DomainMapper):
     def type(self) -> type:
         return Indicador
     
-    def entity_to_dto():
-        pass
+    def entity_to_dto(self, entity: Indicador) -> ResultadoDTO:
+        return ResultadoDTO(
+            entity.nombreFormula,
+            entity.valor,
+            entity.varianza
+        )
 
     def dto_to_entity():
         pass

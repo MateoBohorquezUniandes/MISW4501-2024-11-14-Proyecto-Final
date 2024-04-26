@@ -1,5 +1,6 @@
 import uuid
 import numexpr
+import numpy as np
 
 from indicadores.application.dtos import ValorParametroDTO
 from indicadores.domain.entities import Formula, Indicador
@@ -8,7 +9,7 @@ class FormulaCalculator():
     def replace_params(self, formula: str, parametros: dict):
         pass
 
-    def simplify_values(self, formula: Formula, valores: list[ValorParametroDTO]) -> str:
+    def simplify_values(self,valores: list[ValorParametroDTO], formula: Formula) -> str:
         formula_resultante:str = formula.formula 
         for valor in valores:
             for param in formula.parametros:
@@ -37,6 +38,7 @@ class FormulaCalculator():
             _id = uuid.uuid4(),
             idSesion = sesionId,
             idFormula = str(formula.id),
-            valor = str(resultado),
+            nombreFormula=str(formula.nombre),
+            valor = str(np.round(resultado, 2)),
             varianza = str(0)
         )

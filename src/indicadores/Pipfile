@@ -20,6 +20,7 @@ pydispatcher = "*"
 google-cloud-tasks = "*"
 flask-cors = "*"
 importlib-metadata = "*"
+numexpr = "*"
 
 [dev-packages]
 pytest = "~=7.2.0"
