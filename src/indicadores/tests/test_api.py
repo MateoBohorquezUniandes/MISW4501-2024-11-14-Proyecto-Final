@@ -59,7 +59,7 @@ class TestOperations:
         )
         assert response.status_code == HTTPStatus.CREATED.value
 
-    def test_recalculate_success(self, test_client, session_token, test_sesion_dto):
+    def test_recalculate_success(self, test_client, session_token):
         """Creacion de indicador recalculando"""
         response = test_client.put(
             "/indicadores/commands/recalculate/",
