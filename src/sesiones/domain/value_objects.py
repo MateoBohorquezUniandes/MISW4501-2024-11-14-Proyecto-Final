@@ -7,3 +7,5 @@ from seedwork.domain.value_objects import ValueObject
 class Objetivo(ValueObject):
     exigencia: str = field(default=str)
     deporte: str = field(default=str)
+
+VO_MAX_KEY = "vo2max"
