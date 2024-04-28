@@ -23,13 +23,20 @@ class ObtenerSesionQueryHandler(SesionQueryBaseHandler):
     def handle(self, query: ObtenerSesion) -> QueryResult:
         try:
             repository = self.repository_factory.create(SesionDeportiva)
-            sesiones: list[SesionDeportiva] = repository.get(
+            sesion: SesionDeportiva = repository.get(
                 query.tipo_identificacion, query.identificacion, query.id
             )
 
-            mapper = SesionDeportivaDTOEntityMapper()
-            sesiones_dto = [self.sesiones_factory.create(e, mapper) for e in sesiones]
-            return QueryResult(result=sesiones_dto)
+            indicadores_external = self.indicadores_service.request(
+                "get", f"/indices/queries/?idSesion={query.id}"
+            )
+
+            sesion_dto = self.sesiones_factory.create(
+                sesion, SesionDeportivaDTOEntityMapper
+            )
+            sesion_dto.indicadores = indicadores_external.json
+
+            return QueryResult(result=sesion_dto)
 
         except NoResultFound:
             traceback.print_exc()
