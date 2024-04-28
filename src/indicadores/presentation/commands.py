@@ -12,27 +12,25 @@ bp_prefix: str = "/indicadores/commands"
 bp: Blueprint = api.create_blueprint("commands", bp_prefix)
 
 
-@bp.route("/", methods=("POST",))
+@bp.route("/formula", methods=("POST",))
 @jwt_required()
 def create_form():
     identificacion: dict = get_jwt_identity()
     data: dict = request.json
+    print("data:" + str(data))
     data["tipo_identificacion"] = identificacion.get("tipo")
     data["identificacion"] = identificacion.get("valor")
     mapper = FormulaDTODictMapper()
     formula_dto = mapper.external_to_dto(data)
-
+    print("data2:" + str(formula_dto))
     command = CreateFormula(formula_dto=formula_dto)
     execute_command(command)
     return {}, 201
 
-@bp.route("/recalculate", methods=("PUT",))
+@bp.route("/", methods=("PUT",))
 @jwt_required()
 def recalculate_index():
-    identificacion: dict = get_jwt_identity()
     data: dict = request.json
-    data["tipo_identificacion"] = identificacion.get("tipo")
-    data["identificacion"] = identificacion.get("valor")
     mapper = IndicadoresDTODictMapper()
     indicador_dto = mapper.external_to_dto(data)
     command = CalculateIndicador(indicador_dto=indicador_dto)

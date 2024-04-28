@@ -14,13 +14,12 @@ IDENTIFICACION_GLOBAL = "global"
 
 bp_prefix: str = "/indices/queries"
 bp: Blueprint = api.create_blueprint("queries", bp_prefix)
-@bp.route("/sesionid", methods=("GET",))
-@jwt_required()
+@bp.route("/", methods=("GET",))
 def get_indicador_by_session():
     idSesion = request.args.get("idSesion", None)
     mapper = IndicadoresDTODictMapper()
     query_result = execute_query(GetIndicadorSesion(session_id=idSesion))  
-    return jsonify(mapper.dto_to_external(query_result.result))
+    return jsonify([mapper.dto_to_external(e) for e in query_result.result])
 
 @bp.route("/formula", methods=("GET",))
 @jwt_required()

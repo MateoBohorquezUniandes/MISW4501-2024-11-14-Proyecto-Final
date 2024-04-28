@@ -51,9 +51,9 @@ class CalculateIndicadorHandler(IndicadorCommandBaseHandler):
         #except BusinessRuleException as bre:
         #    traceback.print_exc()
         #    raise UnprocessableEntityError(str(bre), bre.code)
-        #except IntegrityError:
-        #    traceback.print_exc()
-        #    raise BadRequestError(code="indices.create.integrity")
+        except IntegrityError:
+            traceback.print_exc()
+            raise BadRequestError(code="indices.create.integrity")
         except Exception as e:
             traceback.print_exc()
             if uowf:

@@ -22,13 +22,14 @@ class IndicadorRepositoryPostgreSQL(IndicadorRepository):
     def get():
         pass
 
-    def get_for_session_id(self, sesion_id:str) -> Indicador:
-        indicador_dto = (
+    def get_for_session_id(self, sesion_id:str) -> list[Indicador]:
+        indicadores_dto = (
             db.session.query(IndicadorDTO)
             .filter_by(idSesion = sesion_id)
-            .one()
         )
-        return self.indice_factory.create(indicador_dto, IndicadorMapper())
+        return [ self.indice_factory.create(dto, IndicadorMapper())
+        for dto in indicadores_dto
+        ]
 
     def get_last_formula_id(self, formula_id:str, tipo_identificacion:str, identificacion:str) -> Indicador:
         try:
@@ -42,7 +43,7 @@ class IndicadorRepositoryPostgreSQL(IndicadorRepository):
             return self.indice_factory.create(indicador_dto, IndicadorMapper())
         except Exception:
             return Indicador(
-                valor= str(0)
+                valor= float(0)
             )
 
     def append(self, indicador: Indicador):
@@ -90,6 +91,7 @@ class FormulaRepositoryPostgreSQL(IndicadorRepository):
         formula_dto: FormulaDTO = self.indice_factory.create(
             formula, FormulaMapper()
         )
+        print(formula_dto)
         db.session.add(formula_dto)
 
     def delete(self, id: str):

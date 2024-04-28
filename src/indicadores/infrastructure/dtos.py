@@ -27,8 +27,8 @@ class Indicador(db.Model):
     idFormula = db.Column(db.String(40), nullable=False)
     tipo_identificacion = db.Column(db.String(10), nullable=False)
     identificacion = db.Column(db.String(20), nullable=False)
-    valor = db.Column(db.String(20), nullable=False)
-    varianza = db.Column(db.String(10), nullable=False)
+    valor = db.Column(db.Float(), nullable=False)
+    varianza = db.Column(db.Float(), nullable=False)
     created_at = db.Column(db.DateTime(), default=dt.utcnow())
 
 class Parametro(db.Model):

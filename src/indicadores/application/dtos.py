@@ -37,5 +37,5 @@ class IndicadorDTO(DTO):
 @dataclass(frozen=True)
 class ResultadoDTO(DTO):
     nombre: str = field(default_factory=str)
-    valor: str = field(default_factory=str)
-    varianza: str = field(default_factory=str)
+    valor: float = field(default_factory=float)
+    varianza: float = field(default_factory=float)

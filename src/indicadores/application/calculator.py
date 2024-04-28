@@ -34,17 +34,17 @@ class FormulaCalculator():
     def calculate(self, valores: list[ValorParametroDTO], formula: Formula, sesionId:str, last_indicador:Indicador, tipo_identificacion:str, identificacion:str) -> Indicador:
         formula_resultante = self.simplify_values(valores, formula)
         resultado = numexpr.evaluate(formula_resultante)
-        resultado = str(np.round(resultado, 2))
+        resultado = float(str(np.round(resultado, 2)))
         print(resultado)
         print(last_indicador.valor)
-        varianza = abs(float(resultado) - float(last_indicador.valor))
+        varianza = abs(resultado - last_indicador.valor)
         return Indicador(
             _id = uuid.uuid4(),
             idSesion = sesionId,
             idFormula = str(formula.id),
             nombreFormula=str(formula.nombre),
             valor = resultado,
-            varianza = str(varianza),
+            varianza = varianza,
             tipo_identificacion= str(tipo_identificacion),
             identificacion = str(identificacion)
         )

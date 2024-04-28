@@ -63,6 +63,7 @@ class IndicadoresDTODictMapper(ApplicationMapper):
         return parametros_valor
 
     def external_to_dto(self, external:dict) -> IndicadorDTO:
+        print(external)
         parametros = self._external_to_valores_dto(external.get("parametros"))
         return IndicadorDTO(
             idSesion=external.get("id"),

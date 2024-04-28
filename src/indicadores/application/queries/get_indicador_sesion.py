@@ -18,14 +18,17 @@ class GetIndicadorSesionQueryHandler(IndicadorQueryBaseHandler):
 
     def handle(self, query: GetIndicadorSesion) -> QueryResult:
         try:
+            indicadores_2: list[Indicador] = list()
             repository = self.repository_factory.create(Indicador)
             repository_f = self.repository_factory.create(Formula)
-            indicador: Indicador = repository.get_for_session_id(query.session_id)
-            formula: Formula = repository_f.get_by_id(indicador.idFormula)
-            indicador.nombreFormula = formula.nombre
+            indicadores: list[Indicador] = repository.get_for_session_id(query.session_id)
+            for i in indicadores:
+                formula: Formula = repository_f.get_by_id(i.idFormula)
+                i.nombreFormula = formula.nombre
+                indicadores_2.append(i)
             mapper = IndicadorDTOEntityMapper()
-            indicador_dto = self.indices_factory.create(indicador, mapper)
-            return QueryResult(result=indicador_dto)
+            indicadores_dto = [self.indices_factory.create(indicador, mapper) for indicador in indicadores_2]
+            return QueryResult(result=indicadores_dto)
 
         except NoResultFound:
             traceback.print_exc()
