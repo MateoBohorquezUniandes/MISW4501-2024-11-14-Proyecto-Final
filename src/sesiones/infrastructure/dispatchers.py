@@ -10,6 +10,7 @@ from seedwork.infrastructure.schema.v1.messages import IntegrationMessage
 from seedwork.presentation.exceptions import APIError
 from sesiones.infrastructure.factories import IntegrationMessageFactory
 from sesiones.infrastructure.services import IndicadoresAPIService
+from sesiones.domain.value_objects import VO_MAX_KEY
 
 
 class SesionIntegrationCommandDispatcher(Dispatcher):
@@ -21,16 +22,17 @@ class SesionIntegrationCommandDispatcher(Dispatcher):
     def publish(self, url):
         if self.__bypass:
             return
-        
+
         client = IndicadoresAPIService()
         response: Response = client.request(
             "PUT", "indicadores/commands", asdict(self._message)
         )
         response.raise_for_status()
 
-
         # TODO agregar valor de vo2 max
-        self._message.payload.vo_max = response.json().get("vo_max", 0.0)
+        indicadores = response.json()
+        vomax = [i["valor"] for i in indicadores if i["nombre"] == VO_MAX_KEY]
+        self._message.payload.vo_max = vomax[0] if len(vomax) else 0.0
         client = tasks_v2.CloudTasksClient()
 
         task = tasks_v2.Task(

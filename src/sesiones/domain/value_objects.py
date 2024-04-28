@@ -9,6 +9,9 @@ class Objetivo(ValueObject):
     deporte: str = field(default=str)
 
 
+VO_MAX_KEY = "vo2max"
+
+
 @dataclass(frozen=True)
 class Indicadores(ValueObject):
     nombre: str = field(default=str)
