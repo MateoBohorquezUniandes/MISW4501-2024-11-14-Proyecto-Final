@@ -20,3 +20,4 @@ class SesionDeportivaDTO(DTO):
     completed_at: str = field(default_factory=str)
 
     objetivo: ObjetivoDTO = field(default_factory=ObjetivoDTO)
+    indicadores: list[dict] = field(default_factory=list)
