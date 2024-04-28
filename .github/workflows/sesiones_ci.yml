@@ -95,7 +95,7 @@ jobs:
         run: mkdir .evaluator
 
       - name: Start required containers
-        run: docker compose up -d deportistas-db autenticador-api
+        run: docker compose up -d deportistas-db autenticador-api indicadores-api
       
       - name: Start container for testing
         run: docker compose up -d sesiones-api
