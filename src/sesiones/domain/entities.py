@@ -15,7 +15,9 @@ class SesionDeportiva(RootAggregation):
     objetivo: vo.Objetivo = field(default_factory=vo.Objetivo)
     completed_at: datetime = field(default=None)
 
-    indicadores: list[vo.Indicadores] = field(default_factory=list)
+    indicadores: list[vo.Indicadores] = field(
+        default_factory=vo.Indicadores, init=False
+    )
 
     def create(self, correlation_id: uuid.UUID):
         pass

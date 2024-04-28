@@ -67,4 +67,5 @@ class SesionDeportivaDTOEntityMapper(DomainMapper):
             entity.identificacion,
             completed_at,
             objetivo=objetivo,
+            indicadores=entity.indicadores,
         )

@@ -31,10 +31,10 @@ class ObtenerSesionQueryHandler(SesionQueryBaseHandler):
                 "get", f"/indices/queries/?idSesion={query.id}"
             )
 
+            sesion.indicadores = indicadores_external.json()
             sesion_dto = self.sesiones_factory.create(
-                sesion, SesionDeportivaDTOEntityMapper
+                sesion, SesionDeportivaDTOEntityMapper()
             )
-            sesion_dto.indicadores = indicadores_external.json
 
             return QueryResult(result=sesion_dto)
 

@@ -13,7 +13,12 @@ class SesionAuthorizationService(HTTPService):
 
 
 class IndicadoresAPIService(HTTPService):
-    def request(self, method, path, payload) -> requests.Response:
+
+    def request(self, method, path, payload=None) -> requests.Response:
         url = f"{environ.get('INDICADORES_BASE_URL')}/{path}"
-        response = requests.request(method, url, json=payload)
+        response = None
+        if not payload:
+            response = requests.request(method, url)
+        else:
+            response = requests.request(method, url, json=payload)
         return response
