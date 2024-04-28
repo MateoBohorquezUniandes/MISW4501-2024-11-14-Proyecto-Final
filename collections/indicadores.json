@@ -21,9 +21,41 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.collectionVariables.get(\"AUTH_URL\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"TIPO_IDENTIFICACION\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"IDENTIFICACION\").replace(/['\"]+/g, '')\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"TOKEN\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -36,14 +68,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/indicadores/commands/",
+							"raw": "{{URL}}/indicadores/commands/formula",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"indicadores",
 								"commands",
-								""
+								"formula"
 							]
 						}
 					},
@@ -73,9 +105,41 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.collectionVariables.get(\"AUTH_URL\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"TIPO_IDENTIFICACION\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"IDENTIFICACION\").replace(/['\"]+/g, '')\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"TOKEN\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -112,8 +176,8 @@
 									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData).length !== 0;\r",
 									"    pm.expect(responseData[0].nombre).to.exist.and.to.be.a('string');\r",
-									"    pm.expect(responseData[0].valor).to.exist.and.to.be.a('string');\r",
-									"    pm.expect(responseData[0].varianza).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData[0].valor).to.exist.and.to.be.a('number');\r",
+									"    pm.expect(responseData[0].varianza).to.exist.and.to.be.a('number');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -122,20 +186,13 @@
 					],
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"{{ID_SESION}}\",\r\n    \"parametros\": {\r\n        \"potencia\": {{VALORES_1}},\r\n        \"ritmo_cardiaco\": {{VALORES_2}}\r\n    }\r\n}",
+							"raw": "{\r\n    \"id\": \"{{ID_SESION}}\",\r\n    \"tipo_identificacion\":\"{{TIPO_IDENTIFICACION}}\",\r\n    \"identificacion\":\"{{IDENTIFICACION}}\",\r\n    \"parametros\": {\r\n        \"potencia\": {{VALORES_1}},\r\n        \"ritmo_cardiaco\": {{VALORES_2}}\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -143,14 +200,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/indicadores/commands/recalculate",
+							"raw": "{{URL}}/indicadores/commands/",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"indicadores",
 								"commands",
-								"recalculate"
+								""
 							]
 						}
 					},
@@ -169,10 +226,10 @@
 									"\r",
 									"pm.test('Response has the required fields', function () {\r",
 									"    const responseData = pm.response.json();\r",
-									"    pm.expect(responseData).to.be.an('object');\r",
-									"    pm.expect(responseData.nombre).to.exist.and.to.be.a('string');\r",
-									"    pm.expect(responseData.valor).to.exist.and.to.be.a('string'); \r",
-									"    pm.expect(responseData.varianza).to.exist.and.to.be.a('string'); \r",
+									"    pm.expect(responseData).length !== 0;\r",
+									"    pm.expect(responseData[0].nombre).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData[0].valor).to.exist.and.to.be.a('number'); \r",
+									"    pm.expect(responseData[0].varianza).to.exist.and.to.be.a('number'); \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -181,26 +238,19 @@
 					],
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/indices/queries/sesionid?idSesion={{ID_SESION}}",
+							"raw": "{{URL}}/indices/queries/?idSesion={{ID_SESION}}",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"indices",
 								"queries",
-								"sesionid"
+								""
 							],
 							"query": [
 								{
@@ -224,20 +274,33 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Response status code is 500', function () {\r",
-									"    pm.response.to.have.status(500);\r",
-									"});"
+									"pm.test('Response status code is 400', function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"{{ID_SESION}}\",\r\n    \"parametros\": {\r\n        \"potencia\": {{VALORES_1}},\r\n        \"ritmo_cardiaco\": {{VALORES_2}}\r\n    }\r\n}",
+							"raw": "{\r\n    \"id\": \"{{ID_SESION}}\",\r\n    \"tipo_identificacion\":\"{{TIPO_IDENTIFICACION}}\",\r\n    \"identificacion\":\"{{IDENTIFICACION}}\",\r\n    \"parametros\": {\r\n        \"potencia\": {{VALORES_1}},\r\n        \"ritmo_cardiaco\": {{VALORES_2}}\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -245,14 +308,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/indicadores/commands/recalculate",
+							"raw": "{{URL}}/indicadores/commands/",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"indicadores",
 								"commands",
-								"recalculate"
+								""
 							]
 						}
 					},
@@ -276,9 +339,41 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.collectionVariables.get(\"AUTH_URL\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"TIPO_IDENTIFICACION\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"IDENTIFICACION\").replace(/['\"]+/g, '')\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"TOKEN\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -291,14 +386,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/indicadores/commands/",
+							"raw": "{{URL}}/indicadores/commands/formula",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"indicadores",
 								"commands",
-								""
+								"formula"
 							]
 						}
 					},
@@ -386,6 +481,21 @@
 		{
 			"key": "VALORES_2",
 			"value": "[132,159,165,170,173,168]",
+			"type": "default"
+		},
+		{
+			"key": "TIPO_IDENTIFICACION",
+			"value": "CC",
+			"type": "default"
+		},
+		{
+			"key": "IDENTIFICACION",
+			"value": "123456789",
+			"type": "default"
+		},
+		{
+			"key": "AUTH_URL",
+			"value": "http://127.0.0.1:3000",
 			"type": "default"
 		}
 	]

@@ -27,7 +27,6 @@ class CreateFormulaHandler(IndicadorCommandBaseHandler):
             formula: Formula = self.indices_factory.create(
                 command.formula_dto, mapper
             )
-            
             repositorio = self.repository_factory.create(formula)
             UnitOfWorkPort.register_batch(uowf, repositorio.append, formula)
             UnitOfWorkPort.commit(uowf)
@@ -36,9 +35,9 @@ class CreateFormulaHandler(IndicadorCommandBaseHandler):
         #except BusinessRuleException as bre:
         #    traceback.print_exc()
         #    raise UnprocessableEntityError(str(bre), bre.code)
-        except IntegrityError:
-            traceback.print_exc()
-            raise BadRequestError(code="indices.create.integrity")
+        #except IntegrityError:
+        #    traceback.print_exc()
+        #    raise BadRequestError(code="indices.create.integrity")
         except Exception as e:
             traceback.print_exc()
             if uowf:

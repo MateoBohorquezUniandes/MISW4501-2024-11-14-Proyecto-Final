@@ -39,7 +39,7 @@ class TestOperations:
     def test_create_formula_success(self, test_client, session_token):
         """Creacion de una formula"""
         response = test_client.post(
-            "/indicadores/commands/",
+            "/indicadores/commands/formula",
             headers={"Authorization": f"Bearer {session_token}"},
             json={
                 "nombre": "test",
@@ -62,10 +62,12 @@ class TestOperations:
     def test_recalculate_success(self, test_client, session_token):
         """Creacion de indicador recalculando"""
         response = test_client.put(
-            "/indicadores/commands/recalculate",
+            "/indicadores/commands/",
             headers={"Authorization": f"Bearer {session_token}"},
             json={
                 "id": "d7f94c6a-3e39-4d13-a7ea-614e1b94c381",
+                "tipo_identificacion":"CC",
+                "identificacion":"123456789",
                 "parametros": {
                     "potencia": [185,192,200,202,197,175],
                     "ritmo_cardiaco": [132,159,165,170,173,168]
