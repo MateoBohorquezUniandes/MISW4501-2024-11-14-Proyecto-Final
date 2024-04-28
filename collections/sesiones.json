@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "efe00251-16e5-4413-896b-c987e4e6ea09",
+		"_postman_id": "bddfa680-1fa7-453d-82fd-d97c57afd3ac",
 		"name": "sesiones",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25979776"
@@ -181,6 +181,177 @@
 							"path": [
 								"sesiones",
 								"commands"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "obtener sesiones",
+			"item": [
+				{
+					"name": "obtener sesiones",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"identificacion.tipo\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"identificacion.valor\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    let responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('array');",
+									"",
+									"    responseData = responseData[0];",
+									"    pm.expect(responseData.id).to.be.an('string');",
+									"    pm.expect(responseData.identificacion).to.be.an('string');",
+									"    pm.expect(responseData.tipo_identificacion).to.be.an('string');",
+									"    pm.expect(responseData.objetivo).to.be.an('object');",
+									"    pm.expect(responseData.objetivo.deporte).to.be.an('string');",
+									"    pm.expect(responseData.objetivo.exigencia).to.be.an('string');",
+									"    pm.expect(responseData.created_at).to.be.an('string');",
+									"    pm.expect(responseData.updated_at).to.be.an('string');",
+									"    pm.expect(responseData.completed_at).to.be.an('string');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sesiones/queries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sesiones",
+								"queries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obtener sesion",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+									"    method: 'POST',",
+									"    header: { 'content-type': 'application/json' },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"tipo\": pm.collectionVariables.get(\"identificacion.tipo\").replace(/['\"]+/g, ''),",
+									"            \"valor\": pm.collectionVariables.get(\"identificacion.valor\").replace(/['\"]+/g, '')",
+									"        })",
+									"    }",
+									"},",
+									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									");",
+									"",
+									"pm.request.addQueryParams([",
+									"  `id=${pm.collectionVariables.get(\"sesion.id\").replace(/['\"]+/g, '')}`,",
+									"])"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.id).to.be.an('string');",
+									"    pm.expect(responseData.identificacion).to.be.an('string');",
+									"    pm.expect(responseData.tipo_identificacion).to.be.an('string');",
+									"    pm.expect(responseData.objetivo).to.be.an('object');",
+									"    pm.expect(responseData.objetivo.deporte).to.be.an('string');",
+									"    pm.expect(responseData.objetivo.exigencia).to.be.an('string');",
+									"    pm.expect(responseData.created_at).to.be.an('string');",
+									"    pm.expect(responseData.updated_at).to.be.an('string');",
+									"    pm.expect(responseData.completed_at).to.be.an('string');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sesiones/queries?id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sesiones",
+								"queries"
 							]
 						}
 					},

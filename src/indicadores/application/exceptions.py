@@ -11,7 +11,6 @@ class BadRequestError(APIError):
     def __init__(self, message=HTTPStatus.BAD_REQUEST.phrase, code=""):
         super().__init__(HTTPStatus.BAD_REQUEST.value, message, code)
 
-
-class SesionNotFoundError(APIError):
+class IndicadorNotFoundError(APIError):
     def __init__(self, message=HTTPStatus.NOT_FOUND.phrase):
-        super().__init__(HTTPStatus.NOT_FOUND.value, message, "sesion.get.not_found")
+        super().__init__(HTTPStatus.NOT_FOUND.value, message, "indicador.not_found")

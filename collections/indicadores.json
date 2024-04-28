@@ -1,0 +1,502 @@
+{
+	"info": {
+		"_postman_id": "ad94bef0-9ea2-4c48-9b11-91cbbe300b04",
+		"name": "Indicadores",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Crear Formula Success",
+			"item": [
+				{
+					"name": "Crear Formula",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 201', function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.collectionVariables.get(\"AUTH_URL\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"TIPO_IDENTIFICACION\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"IDENTIFICACION\").replace(/['\"]+/g, '')\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"TOKEN\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"{{NOMBRE_FORMULA}}\",\r\n    \"descripcion\": \"{{DESCRIPCION_FORMULA}}\",\r\n    \"formula\": \"{{FORMULA}}\",\r\n    \"parametros\": {\r\n        \"potencia\": {\r\n            \"simbolo\": \"{{SIMBOLO_1}}\",\r\n            \"funcion\": \"{{FUNCION_1}}\"\r\n        },\r\n        \"ritmo_cardiaco\":{\r\n            \"simbolo\": \"{{SIMBOLO_2}}\",\r\n            \"funcion\": \"{{FUNCION_2}}\"\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/indicadores/commands/formula",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"indicadores",
+								"commands",
+								"formula"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Formulas Usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).length !== 0;\r",
+									"    pm.expect(responseData[0].id).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData[0].descripcion).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData[0].formula).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData[0].identificacion).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData[0].nombre).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData[0].parametros).length !== 0;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.collectionVariables.get(\"AUTH_URL\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"TIPO_IDENTIFICACION\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"IDENTIFICACION\").replace(/['\"]+/g, '')\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"TOKEN\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/indices/queries/formula",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"indices",
+								"queries",
+								"formula"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recalcular Success",
+			"item": [
+				{
+					"name": "Recalcular Indicadores",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).length !== 0;\r",
+									"    pm.expect(responseData[0].nombre).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData[0].valor).to.exist.and.to.be.a('number');\r",
+									"    pm.expect(responseData[0].varianza).to.exist.and.to.be.a('number');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{ID_SESION}}\",\r\n    \"tipo_identificacion\":\"{{TIPO_IDENTIFICACION}}\",\r\n    \"identificacion\":\"{{IDENTIFICACION}}\",\r\n    \"parametros\": {\r\n        \"potencia\": {{VALORES_1}},\r\n        \"ritmo_cardiaco\": {{VALORES_2}}\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/indicadores/commands/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"indicadores",
+								"commands",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Indicadores Id Sesion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).length !== 0;\r",
+									"    pm.expect(responseData[0].nombre).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData[0].valor).to.exist.and.to.be.a('number'); \r",
+									"    pm.expect(responseData[0].varianza).to.exist.and.to.be.a('number'); \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/indices/queries/?idSesion={{ID_SESION}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"indices",
+								"queries",
+								""
+							],
+							"query": [
+								{
+									"key": "idSesion",
+									"value": "{{ID_SESION}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recalcular Fail",
+			"item": [
+				{
+					"name": "Recalcular Indicador Duplicado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 400', function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{ID_SESION}}\",\r\n    \"tipo_identificacion\":\"{{TIPO_IDENTIFICACION}}\",\r\n    \"identificacion\":\"{{IDENTIFICACION}}\",\r\n    \"parametros\": {\r\n        \"potencia\": {{VALORES_1}},\r\n        \"ritmo_cardiaco\": {{VALORES_2}}\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/indicadores/commands/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"indicadores",
+								"commands",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Crear Formula Fail",
+			"item": [
+				{
+					"name": "Crear Formula sin formula",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 500', function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.collectionVariables.get(\"AUTH_URL\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"TIPO_IDENTIFICACION\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"IDENTIFICACION\").replace(/['\"]+/g, '')\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"TOKEN\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"{{NOMBRE_FORMULA}}\",\r\n    \"descripcion\": \"{{DESCRIPCION_FORMULA}}\",\r\n    \"parametros\": {\r\n        \"potencia\": {\r\n            \"simbolo\": \"{{SIMBOLO_1}}\",\r\n            \"funcion\": \"{{FUNCION_1}}\"\r\n        },\r\n        \"ritmo_cardiaco\":{\r\n            \"simbolo\": \"{{SIMBOLO_2}}\",\r\n            \"funcion\": \"{{FUNCION_2}}\"\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/indicadores/commands/formula",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"indicadores",
+								"commands",
+								"formula"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNDMxNjU2NywianRpIjoiZDljNjNjMmEtMjUzYi00NDhhLWE4OTEtOTUwYjE4ODUyMDNlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJ0aXBvIjoiQ0MiLCJ2YWxvciI6IjEyMzQ1Njc4OSJ9LCJuYmYiOjE3MTQzMTY1NjcsImNzcmYiOiI0YzQyNWRmMi0zMWNiLTQwYjEtOWRjOS02MDY3YjcyMDU5YzUiLCJleHAiOjE3MTQzNDE3Njd9.OtHgtNioXZsVDQZO5PRdjat_I3J2sUiA9I-epN4lyDE",
+			"type": "default"
+		},
+		{
+			"key": "URL",
+			"value": "http://127.0.0.1:3060",
+			"type": "default"
+		},
+		{
+			"key": "NOMBRE_FORMULA",
+			"value": "test",
+			"type": "default"
+		},
+		{
+			"key": "DESCRIPCION_FORMULA",
+			"value": "test",
+			"type": "default"
+		},
+		{
+			"key": "SIMBOLO_1",
+			"value": "x",
+			"type": "default"
+		},
+		{
+			"key": "FUNCION_1",
+			"value": "max",
+			"type": "default"
+		},
+		{
+			"key": "SIMBOLO_2",
+			"value": "y",
+			"type": "default"
+		},
+		{
+			"key": "FUNCION_2",
+			"value": "avg",
+			"type": "default"
+		},
+		{
+			"key": "FORMULA",
+			"value": "x + y**3",
+			"type": "default"
+		},
+		{
+			"key": "ID_SESION",
+			"value": "d7f94c6a-3e39-4d13-a7ea-614e1b94c385",
+			"type": "default"
+		},
+		{
+			"key": "VALORES_1",
+			"value": "[185,192,200,202,197,175]",
+			"type": "default"
+		},
+		{
+			"key": "VALORES_2",
+			"value": "[132,159,165,170,173,168]",
+			"type": "default"
+		},
+		{
+			"key": "TIPO_IDENTIFICACION",
+			"value": "CC",
+			"type": "default"
+		},
+		{
+			"key": "IDENTIFICACION",
+			"value": "123456789",
+			"type": "default"
+		},
+		{
+			"key": "AUTH_URL",
+			"value": "http://127.0.0.1:3000",
+			"type": "default"
+		}
+	]
+}

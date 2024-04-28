@@ -4,16 +4,16 @@ from flask import Flask, jsonify, Response
 from flask_swagger import swagger
 
 
-__author__ = "Santiago Cortés Fernández"
+__author__ = "Iván Mateo Bohórquez Pérez"
 __email__ = "s.cortes@uniandes.edu.co"
 
 
 def register_handlers():
-    import sesiones.application
+    import indicadores.application
 
 
 def import_alchemy_models():
-    import sesiones.infrastructure.dtos
+    import indicadores.infrastructure.dtos
 
 
 def create_app(config={}):
@@ -40,25 +40,27 @@ def create_app(config={}):
     register_handlers()
 
     with app.app_context():
-        from sesiones.infrastructure.db import db
+        from indicadores.infrastructure.db import db
 
         import_alchemy_models()
 
         db.init_app(app=app)
         db.create_all()
 
-        from sesiones.infrastructure.auth import jwt
+        from indicadores.infrastructure.auth import jwt
 
         jwt.init_app(app)
 
-    from sesiones.presentation.commands import bp as bpc, bp_prefix  as bpc_prefix
-    from sesiones.presentation.queries import bp as bpq, bp_prefix  as bpq_prefix
+    from indicadores.presentation.commands import bp as bpc, bp_prefix  as bpc_prefix
 
     app.register_blueprint(bpc, url_prefix=bpc_prefix)
-    app.register_blueprint(bpq, url_prefix=bpq_prefix)
+
+    from indicadores.presentation.queries import bp as bpc, bp_prefix  as bpc_prefix
+
+    app.register_blueprint(bpc, url_prefix=bpc_prefix)
 
     from seedwork.presentation.exceptions import APIError
-    from sesiones.presentation.handlers import api_custom_exception_handler
+    from indicadores.presentation.handlers import api_custom_exception_handler
 
     app.register_error_handler(APIError, api_custom_exception_handler)
 
