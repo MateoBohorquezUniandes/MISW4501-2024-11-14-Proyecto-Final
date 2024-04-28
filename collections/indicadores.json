@@ -162,7 +162,7 @@
 			"name": "Recalcular Success",
 			"item": [
 				{
-					"name": "Recalcular Indicador",
+					"name": "Recalcular Indicadores",
 					"event": [
 						{
 							"listen": "test",
@@ -214,7 +214,7 @@
 					"response": []
 				},
 				{
-					"name": "Obtener Indice Id Sesion",
+					"name": "Obtener Indicadores Id Sesion",
 					"event": [
 						{
 							"listen": "test",

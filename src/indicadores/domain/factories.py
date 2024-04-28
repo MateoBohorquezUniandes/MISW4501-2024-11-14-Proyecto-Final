@@ -42,3 +42,4 @@ class IndicadorFactory(Factory):
             return formula_factory.create(obj, mapper)
         else:
             raise InvalidIndicadorFactoryException()
+        
