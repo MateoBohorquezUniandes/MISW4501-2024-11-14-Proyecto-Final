@@ -62,7 +62,7 @@ class TestOperations:
     def test_recalculate_success(self, test_client, session_token):
         """Creacion de indicador recalculando"""
         response = test_client.put(
-            "/indicadores/commands/recalculate/",
+            "/indicadores/commands/recalculate",
             headers={"Authorization": f"Bearer {session_token}"},
             json={
                 "id": "d7f94c6a-3e39-4d13-a7ea-614e1b94c381",
