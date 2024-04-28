@@ -33,7 +33,7 @@ services:
     networks:
       - deportistas_net
     ports:
-      - 5433:5432
+      - 5432:5432
     restart: always
 
   usuarios-api:
