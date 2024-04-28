@@ -25,7 +25,7 @@ class SesionIntegrationCommandDispatcher(Dispatcher):
 
         client = IndicadoresAPIService()
         response: Response = client.request(
-            "PUT", "indicadores/commands/recalculate", asdict(self._message)
+            "PUT", "indicadores/commands", asdict(self._message)
         )
         response.raise_for_status()
 
