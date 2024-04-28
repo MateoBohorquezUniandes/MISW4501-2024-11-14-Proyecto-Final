@@ -103,7 +103,7 @@ jobs:
       - name: Check healthchecks
         uses: jtalk/url-health-check-action@v3
         with:
-          url: http://localhost:3070/health
+          url: http://localhost:3060/health
           follow-redirect: false
           max-attempts: 5
           retry-delay: 3s
