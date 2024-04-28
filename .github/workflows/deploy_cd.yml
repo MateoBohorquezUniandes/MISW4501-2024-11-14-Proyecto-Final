@@ -21,7 +21,7 @@ jobs:
   setup-build-publish:
     strategy:
       matrix:
-        images: [autenticador, eventos, perfiles, usuarios, planes, productos, sesiones]
+        images: [autenticador, eventos, perfiles, usuarios, planes, productos, sesiones, indicadores]
     name: Setup, Build and Publish
     runs-on: ubuntu-latest
     environment: production
