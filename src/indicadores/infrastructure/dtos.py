@@ -25,6 +25,8 @@ class Indicador(db.Model):
 
     idSesion = db.Column(db.String, primary_key=True)
     idFormula = db.Column(db.String(40), nullable=False)
+    tipo_identificacion = db.Column(db.String(10), nullable=False)
+    identificacion = db.Column(db.String(20), nullable=False)
     valor = db.Column(db.String(20), nullable=False)
     varianza = db.Column(db.String(10), nullable=False)
     created_at = db.Column(db.DateTime(), default=dt.utcnow())

@@ -29,34 +29,6 @@ class TestOperations:
             db.session.close()
 
     @pytest.fixture(scope="function")
-    def test_sesion_dto(self):
-        """
-        Function fixture for creating an initial user
-        as a precondition for some test cases
-        """
-        sesion = SesionDeportiva(
-            id=str(uuid.uuid4()),
-            tipo_identificacion=self.identificacion["tipo"],
-            identificacion=self.identificacion["valor"],
-            exigencia="Intermedio",
-            deporte="Ciclismo",
-        )
-        db.session.add(sesion)
-        db.session.commit()
-
-        return sesion
-
-    @pytest.fixture(scope="function", autouse=True)
-    def clear_tables(self):
-        """
-        Function fixture for cleaning the database tables
-        before each test case
-        """
-        yield
-        db.session.query(SesionDeportiva).delete()
-        db.session.commit()
-
-    @pytest.fixture(scope="function")
     def session_token(self):
         """
         Function fixture for creating a session token
@@ -64,32 +36,43 @@ class TestOperations:
         token = create_access_token(identity=self.identificacion)
         return token
 
-    def test_create_sesion_success(self, test_client, session_token):
-        """Creacion exitosa de un usuario deportista"""
+    def test_create_formula_success(self, test_client, session_token):
+        """Creacion de una formula"""
         response = test_client.post(
-            "/sesiones/commands/",
+            "/indicadores/commands/",
             headers={"Authorization": f"Bearer {session_token}"},
             json={
-                "objetivo": {"exigencia": "Principiante", "deporte": "Ciclismo"},
+                "nombre": "test",
+                "descripcion": "test",
+                "formula": "x + y**3",
+                "parametros": {
+                    "potencia": {
+                        "simbolo": "x",
+                        "funcion": "max"
+                    },
+                    "ritmo_cardiaco":{
+                        "simbolo": "y",
+                        "funcion": "avg"
+                    }
+                }
+            },
+        )
+        assert response.status_code == HTTPStatus.CREATED.value
+
+    def test_recalculate_success(self, test_client, session_token, test_sesion_dto):
+        """Creacion de indicador recalculando"""
+        response = test_client.put(
+            "/indicadores/commands/recalculate/",
+            headers={"Authorization": f"Bearer {session_token}"},
+            json={
+                "id": "d7f94c6a-3e39-4d13-a7ea-614e1b94c381",
+                "parametros": {
+                    "potencia": [185,192,200,202,197,175],
+                    "ritmo_cardiaco": [132,159,165,170,173,168]
+                }
             },
         )
         assert response.status_code == HTTPStatus.OK.value
-
-    def test_end_sesion_success(self, test_client, session_token, test_sesion_dto):
-        """Creacion exitosa de un usuario deportista"""
-        response = test_client.put(
-            "/sesiones/commands/",
-            headers={"Authorization": f"Bearer {session_token}"},
-            json={
-                "id": test_sesion_dto.id,
-                "objetivo": {"exigencia": "Principiante", "deporte": "Ciclismo"},
-                "parametros": {
-                    "postencia": [100, 100, 200, 300],
-                    "ritmo_cardiaco": [100, 100, 200, 300],
-                },
-            },
-        )
-        assert response.status_code == HTTPStatus.ACCEPTED.value
 
     def test_health(self, test_client):
         """Tests health check endpoint"""

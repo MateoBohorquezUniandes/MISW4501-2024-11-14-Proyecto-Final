@@ -13,6 +13,8 @@ class Indicador(RootAggregation):
     nombreFormula: str = field(default_factory=str)
     valor: str = field(default_factory=str)
     varianza: str = field(default_factory=str)
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)
 
 @dataclass
 class Formula(RootAggregation):

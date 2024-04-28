@@ -15,10 +15,20 @@ class IndicadorMapper:
         indicador_dto.idFormula = entity.idFormula
         indicador_dto.valor = entity.valor
         indicador_dto.varianza = entity.varianza
+        indicador_dto.identificacion = entity.identificacion
+        indicador_dto.tipo_identificacion = entity.tipo_identificacion
         return indicador_dto
 
-    def dto_to_entity():
-        pass
+    def dto_to_entity(self, dto:IndicadorDTO) -> Indicador:
+        return Indicador(
+            idSesion=dto.idSesion,
+            created_at=dto.created_at,
+            idFormula=dto.idFormula,
+            valor=dto.valor,
+            varianza=dto.varianza,
+            tipo_identificacion=dto.tipo_identificacion,
+            identificacion=dto.identificacion
+        )
 
 class FormulaMapper:
     def type(self) -> type:

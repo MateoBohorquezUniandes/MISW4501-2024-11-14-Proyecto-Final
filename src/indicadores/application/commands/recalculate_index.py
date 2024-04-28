@@ -40,8 +40,8 @@ class CalculateIndicadorHandler(IndicadorCommandBaseHandler):
             formulas_usuario.extend(formulas_globales)
             
             for formula in formulas_usuario:
-                last_indicador: Indicador = repositorio.get_last_formula_id(formula.id, command.indicador_dto.tipo_identificacion, command.indicador_dto.identificacion)
-                indicador: Indicador = calculator.calculate(command.indicador_dto.parametros, formula ,command.indicador_dto.idSesion, last_indicador)
+                last_indicador: Indicador = repositorio.get_last_formula_id(str(formula.id), command.indicador_dto.tipo_identificacion, command.indicador_dto.identificacion)
+                indicador: Indicador = calculator.calculate(command.indicador_dto.parametros, formula ,command.indicador_dto.idSesion, last_indicador,command.indicador_dto.tipo_identificacion, command.indicador_dto.identificacion)
                 indicadores_calculados.append(indicador)
                 UnitOfWorkPort.register_batch(uowf, repositorio.append, indicador)
 

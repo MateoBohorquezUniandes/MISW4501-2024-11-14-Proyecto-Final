@@ -22,11 +22,28 @@ class IndicadorRepositoryPostgreSQL(IndicadorRepository):
     def get():
         pass
 
-    def get_for_session_id(self, sesion_id:str) -> list[Indicador]:
-        pass
+    def get_for_session_id(self, sesion_id:str) -> Indicador:
+        indicador_dto = (
+            db.session.query(IndicadorDTO)
+            .filter_by(idSesion = sesion_id)
+            .one()
+        )
+        return self.indice_factory.create(indicador_dto, IndicadorMapper())
 
     def get_last_formula_id(self, formula_id:str, tipo_identificacion:str, identificacion:str) -> Indicador:
-        pass #para la varianza
+        try:
+            indicador_dto = (
+                db.session.query(IndicadorDTO)
+                .filter_by(tipo_identificacion=tipo_identificacion)
+                .filter_by(identificacion=identificacion)
+                .filter_by(idFormula=formula_id)
+                .one()
+            )
+            return self.indice_factory.create(indicador_dto, IndicadorMapper())
+        except Exception:
+            return Indicador(
+                valor= str(0)
+            )
 
     def append(self, indicador: Indicador):
         indicador_dto: IndicadorDTO = self.indice_factory.create(
@@ -60,6 +77,14 @@ class FormulaRepositoryPostgreSQL(IndicadorRepository):
             self.indice_factory.create(dto, FormulaMapper())
             for dto in formulas_dto
         ]
+    
+    def get_by_id(self,formula_id:str) -> Formula:
+        formula_dto = (
+            db.session.query(FormulaDTO)
+            .filter_by(id = formula_id)
+            .one()
+        )
+        return self.indice_factory.create(formula_dto, FormulaMapper())
 
     def append(self, formula: Formula):
         formula_dto: FormulaDTO = self.indice_factory.create(
