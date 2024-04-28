@@ -111,3 +111,4 @@ jobs:
           
       - name: Run the API and Postman's tests
         run: newman run "./collections/indicadores.json" --verbose --delay-request 1000
+        

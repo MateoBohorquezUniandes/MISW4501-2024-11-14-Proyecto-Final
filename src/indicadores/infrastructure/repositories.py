@@ -19,10 +19,7 @@ class IndicadorRepositoryPostgreSQL(IndicadorRepository):
     def get_all():
         pass
 
-    def get():
-        pass
-
-    def get_for_session_id(self, sesion_id:str) -> list[Indicador]:
+    def get(self, sesion_id:str) -> list[Indicador]:
         indicadores_dto = (
             db.session.query(IndicadorDTO)
             .filter_by(idSesion = sesion_id)
@@ -38,6 +35,7 @@ class IndicadorRepositoryPostgreSQL(IndicadorRepository):
                 .filter_by(tipo_identificacion=tipo_identificacion)
                 .filter_by(identificacion=identificacion)
                 .filter_by(idFormula=formula_id)
+                .order_by(IndicadorDTO.created_at.desc())
                 .one()
             )
             return self.indice_factory.create(indicador_dto, IndicadorMapper())
@@ -66,20 +64,17 @@ class FormulaRepositoryPostgreSQL(IndicadorRepository):
     def indice_factory(self):
         return self._indice_factory
 
-    def get_all():
-        pass
-
-    def get(self,tipo_identificacion:str, identificacion:str) -> list[Formula]:
+    def get_all(self,tipo_identificacion:str, identificacion:str) -> list[Formula]:
         formulas_dto = (
             db.session.query(FormulaDTO)
             .filter_by(tipo_identificacion=tipo_identificacion)
-            .filter_by(identificacion=identificacion))
+            .filter_by(identificacion=identificacion).all())
         return [
             self.indice_factory.create(dto, FormulaMapper())
             for dto in formulas_dto
         ]
     
-    def get_by_id(self,formula_id:str) -> Formula:
+    def get(self,formula_id:str) -> Formula:
         formula_dto = (
             db.session.query(FormulaDTO)
             .filter_by(id = formula_id)
@@ -91,7 +86,6 @@ class FormulaRepositoryPostgreSQL(IndicadorRepository):
         formula_dto: FormulaDTO = self.indice_factory.create(
             formula, FormulaMapper()
         )
-        print(formula_dto)
         db.session.add(formula_dto)
 
     def delete(self, id: str):

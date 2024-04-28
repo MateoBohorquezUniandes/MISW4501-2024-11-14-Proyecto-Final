@@ -18,7 +18,7 @@ class GetFormulasQueryHandler(IndicadorQueryBaseHandler):
     def handle(self, query: GetFormulas) -> QueryResult:
         try:
             repository = self.repository_factory.create(Formula)
-            formulas: list[Formula] = repository.get(query.tipo_identificacion, query.identificacion)
+            formulas: list[Formula] = repository.get_all(query.tipo_identificacion, query.identificacion)
 
             mapper = FormulaDTOEntityMapper()
             formulas_dto = [self.indices_factory.create(e, mapper) for e in formulas]

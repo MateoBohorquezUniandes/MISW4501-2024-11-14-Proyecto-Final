@@ -35,8 +35,8 @@ class CalculateIndicadorHandler(IndicadorCommandBaseHandler):
             mapper = IndicadorDTOEntityMapper()
 
             indicadores_calculados: list[Indicador] = list()
-            formulas_usuario: list[Formula] = repositorio_f.get(command.indicador_dto.tipo_identificacion, command.indicador_dto.identificacion)
-            formulas_globales: list[Formula] = repositorio_f.get(TIPO_GLOBAL, IDENTIFICACION_GLOBAL)
+            formulas_usuario: list[Formula] = repositorio_f.get_all(command.indicador_dto.tipo_identificacion, command.indicador_dto.identificacion)
+            formulas_globales: list[Formula] = repositorio_f.get_all(TIPO_GLOBAL, IDENTIFICACION_GLOBAL)
             formulas_usuario.extend(formulas_globales)
             
             for formula in formulas_usuario:

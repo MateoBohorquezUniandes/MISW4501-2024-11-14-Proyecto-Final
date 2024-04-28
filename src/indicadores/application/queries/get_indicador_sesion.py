@@ -21,9 +21,9 @@ class GetIndicadorSesionQueryHandler(IndicadorQueryBaseHandler):
             indicadores_2: list[Indicador] = list()
             repository = self.repository_factory.create(Indicador)
             repository_f = self.repository_factory.create(Formula)
-            indicadores: list[Indicador] = repository.get_for_session_id(query.session_id)
+            indicadores: list[Indicador] = repository.get(query.session_id)
             for i in indicadores:
-                formula: Formula = repository_f.get_by_id(i.idFormula)
+                formula: Formula = repository_f.get(i.idFormula)
                 i.nombreFormula = formula.nombre
                 indicadores_2.append(i)
             mapper = IndicadorDTOEntityMapper()
