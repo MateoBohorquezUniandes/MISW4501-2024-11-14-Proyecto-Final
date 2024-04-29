@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "5b68503f-aa4a-4d49-821e-8f34c23536af",
+		"_postman_id": "985e5573-20bb-49d0-af66-0c47a9b74e42",
 		"name": "Indicadores",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25979776"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -144,12 +143,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/indices/queries/formula",
+							"raw": "{{URL}}/indicadores/queries/formula",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"indices",
+								"indicadores",
 								"queries",
 								"formula"
 							]
@@ -245,12 +244,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/indices/queries/?idSesion={{ID_SESION}}",
+							"raw": "{{URL}}/indicadores/queries/?idSesion={{ID_SESION}}",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
-								"indices",
+								"indicadores",
 								"queries",
 								""
 							],
