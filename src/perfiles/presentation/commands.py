@@ -39,28 +39,26 @@ def create():
 
 
 @bp.route("/demografico/riesgo", methods=("PATCH",))
-@jwt_required()
 def actualizar_riesgo_perfil():
-    identificacion: dict = get_jwt_identity()
     mapper = PerfilDemograficoDTODictMapper()
-
-    query_result = execute_query(
-        ObtenerPerfilDemografico(
-            tipo_identificacion=identificacion.get("tipo"),
-            identificacion=identificacion.get("valor"),
-        )
-    )
-    vo_max_perfil = query_result.result.clasificacion_riesgo.vo_max.valor
-    perfil_dict = mapper.dto_to_external(query_result.result)
 
     payload = request.json
     correlation_id = (
         UUID(payload["correlation_id"]) if "correlation_id" in payload else None
     )
+
+    query_result = execute_query(
+        ObtenerPerfilDemografico(
+            tipo_identificacion=payload["payload"].get("tipo_identificacion"),
+            identificacion=payload["payload"].get("identificacion"),
+        )
+    )
+    vo_max_perfil = query_result.result.clasificacion_riesgo.vo_max.valor
+    perfil_dict = mapper.dto_to_external(query_result.result)
+
     vo_max = payload.get("payload", {}).get("vo_max", vo_max_perfil)
     perfil_dict["clasificacion_riesgo"]["vo_max"]["valor"] = vo_max
     perfil_dto = mapper.external_to_dto(perfil_dict)
-    print(perfil_dto)
 
     command = ActualizarClasificacionRiesgo(
         correlation_id=correlation_id,
