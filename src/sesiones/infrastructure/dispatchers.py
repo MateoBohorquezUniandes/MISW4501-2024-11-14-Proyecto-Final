@@ -23,16 +23,19 @@ class SesionIntegrationCommandDispatcher(Dispatcher):
         if self.__bypass:
             return
 
+        payload = asdict(self._message)
         client = IndicadoresAPIService()
         response: Response = client.request(
-            "PUT", "indicadores/commands", asdict(self._message)
+            "PUT", "indicadores/commands", payload
         )
         response.raise_for_status()
 
-        # TODO agregar valor de vo2 max
         indicadores = response.json()
+        print(indicadores)
         vomax = [i["valor"] for i in indicadores if i["nombre"] == VO_MAX_KEY]
-        self._message.payload.vo_max = vomax[0] if len(vomax) else 0.0
+        payload["payload"]["vo_max"] = vomax[0] if len(vomax) else 0.0
+        print(payload)
+
         client = tasks_v2.CloudTasksClient()
 
         task = tasks_v2.Task(
