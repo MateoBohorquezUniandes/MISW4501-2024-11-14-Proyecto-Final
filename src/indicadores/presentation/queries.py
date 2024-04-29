@@ -12,7 +12,7 @@ from indicadores.application.queries.get_indicador_sesion import GetIndicadorSes
 TIPO_GLOBAL = "global"
 IDENTIFICACION_GLOBAL = "global"
 
-bp_prefix: str = "/indices/queries"
+bp_prefix: str = "/indicadores/queries"
 bp: Blueprint = api.create_blueprint("queries", bp_prefix)
 @bp.route("/", methods=("GET",))
 def get_indicador_by_session():
