@@ -14,9 +14,16 @@ spec:
       labels:
         app: sesiones
     spec:
+      volumes:
+        - name: google-cloud-key
+          secret:
+            secretName: tasks-key      
       containers:
         - name: sesiones
           image: us-central1-docker.pkg.dev/proyecto-final-416123/misw450x-registry/sesiones-api:latest
+          volumeMounts:
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
           env:
             - name: "JWT_SECRET_KEY"
               valueFrom:
