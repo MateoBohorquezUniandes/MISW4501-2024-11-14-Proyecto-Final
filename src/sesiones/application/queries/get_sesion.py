@@ -28,7 +28,7 @@ class ObtenerSesionQueryHandler(SesionQueryBaseHandler):
             )
 
             indicadores_external = self.indicadores_service.request(
-                "get", f"/indices/queries/?idSesion={query.id}"
+                "get", f"/indicadores/queries/?idSesion={query.id}"
             )
 
             sesion.indicadores = indicadores_external.json()
