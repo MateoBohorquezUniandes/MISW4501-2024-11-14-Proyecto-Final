@@ -26,7 +26,7 @@ spec:
             - name: "AUTH_BASE_URL"
               value: http://autenticador-service/auth
             - name: "INDICADORES_BASE_URL"
-              value: http://indicadores-service/indicadores/commands
+              value: http://indicadores-service
             - name: "INTEGRATION_EVENT_URL"
               value: http://34.36.129.27/perfiles/commands/demografico/riesgo
             - name: "LOCATION_ID"
