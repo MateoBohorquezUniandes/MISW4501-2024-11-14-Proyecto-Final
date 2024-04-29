@@ -59,3 +59,10 @@ spec:
             name: sesiones-service
             port: 
               number: 80
+      - pathType: Prefix
+        path: /indicadores
+        backend:
+          service:
+            name: indicadores-service
+            port: 
+              number: 80
