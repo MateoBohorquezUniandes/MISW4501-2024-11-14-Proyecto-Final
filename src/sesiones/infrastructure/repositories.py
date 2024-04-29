@@ -1,3 +1,4 @@
+from datetime import datetime as dt
 from typing import Union
 from sesiones.domain.entities import SesionDeportiva
 from sesiones.domain.factories import SesionFactory
@@ -65,10 +66,10 @@ class SesionDeportivaRepositoryPostgreSQL(SesionDeportivaRepository):
         query.delete()
 
     def update(self, sesion: SesionDeportiva):
-        sesion_dto = self.get(
+        sesion_dto: SesionDeportivaDTO = self.get(
             sesion.tipo_identificacion,
             sesion.identificacion,
             str(sesion.id),
             as_entity=False,
         )
-        sesion_dto.completed_at = sesion.completed_at
+        sesion_dto.completedAt = sesion.completed_at or dt.utcnow()
