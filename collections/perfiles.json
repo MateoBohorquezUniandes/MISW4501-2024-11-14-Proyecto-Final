@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f24bba65-28b0-4909-b92c-9daccf8894c9",
+		"_postman_id": "3c1f62e5-cc85-443a-9bc6-5937101a35ce",
 		"name": "perfiles",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25979776"
@@ -142,20 +142,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.sendRequest({",
-									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
-									"    method: 'POST',",
-									"    header: { 'content-type': 'application/json' },",
-									"    body: {",
-									"        mode: 'raw',",
-									"        raw: JSON.stringify({",
-									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),",
-									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')",
-									"        })",
-									"    }",
-									"},",
-									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
-									");"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
