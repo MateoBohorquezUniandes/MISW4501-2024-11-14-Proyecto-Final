@@ -46,15 +46,9 @@ class TestOperations:
                 "descripcion": "test",
                 "formula": "x + y**3",
                 "parametros": {
-                    "potencia": {
-                        "simbolo": "x",
-                        "funcion": "max"
-                    },
-                    "ritmo_cardiaco":{
-                        "simbolo": "y",
-                        "funcion": "avg"
-                    }
-                }
+                    "potencia": {"simbolo": "x", "funcion": "max"},
+                    "ritmo_cardiaco": {"simbolo": "y", "funcion": "avg"},
+                },
             },
         )
         assert response.status_code == HTTPStatus.CREATED.value
@@ -65,13 +59,19 @@ class TestOperations:
             "/indicadores/commands/",
             headers={"Authorization": f"Bearer {session_token}"},
             json={
-                "id": "d7f94c6a-3e39-4d13-a7ea-614e1b94c381",
-                "tipo_identificacion":"CC",
-                "identificacion":"123456789",
-                "parametros": {
-                    "potencia": [185,192,200,202,197,175],
-                    "ritmo_cardiaco": [132,159,165,170,173,168]
-                }
+                "correlation_id": "d7f94c6a-3e39-4d13-a7ea-614e1b94c333",
+                "specversion": "v1",
+                "type": "event",
+                "datacontenttype": "application/json",
+                "payload": {
+                    "id": "",
+                    "tipo_identificacion": "CC",
+                    "identificacion": "123456789",
+                    "parametros": {
+                        "potencia": [185, 192, 200, 202, 197, 175],
+                        "ritmo_cardiaco": [132, 159, 165, 170, 173, 168],
+                    },
+                },
             },
         )
         assert response.status_code == HTTPStatus.OK.value

@@ -29,7 +29,7 @@ def create_form():
 def recalculate_index():
     data: dict = request.json
     mapper = IndicadoresDTODictMapper()
-    indicador_dto = mapper.external_to_dto(data)
+    indicador_dto = mapper.external_to_dto(data["payload"])
     command = CalculateIndicador(indicador_dto=indicador_dto)
     commandresult = execute_command(command)
     return jsonify([mapper.dto_to_external(e) for e in commandresult.result])

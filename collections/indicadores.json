@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "ad94bef0-9ea2-4c48-9b11-91cbbe300b04",
+		"_postman_id": "5b68503f-aa4a-4d49-821e-8f34c23536af",
 		"name": "Indicadores",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25979776"
 	},
 	"item": [
 		{
@@ -180,7 +181,8 @@
 									"    pm.expect(responseData[0].varianza).to.exist.and.to.be.a('number');\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -192,7 +194,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"{{ID_SESION}}\",\r\n    \"tipo_identificacion\":\"{{TIPO_IDENTIFICACION}}\",\r\n    \"identificacion\":\"{{IDENTIFICACION}}\",\r\n    \"parametros\": {\r\n        \"potencia\": {{VALORES_1}},\r\n        \"ritmo_cardiaco\": {{VALORES_2}}\r\n    }\r\n}",
+							"raw": "{\r\n    \"correlation_id\": \"{{correlation_id}}\",\r\n    \"specversion\": \"v1\",\r\n    \"type\": \"event\",\r\n    \"datacontenttype\": \"application/json\",\r\n    \"payload\": {\r\n        \"id\": \"{{ID_SESION}}\",\r\n        \"tipo_identificacion\": \"{{TIPO_IDENTIFICACION}}\",\r\n        \"identificacion\": \"{{IDENTIFICACION}}\",\r\n        \"parametros\": {\r\n            \"potencia\": {{VALORES_1}},\r\n            \"ritmo_cardiaco\": {{VALORES_2}}\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -279,7 +281,8 @@
 									"});\r",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						},
 						{
@@ -288,7 +291,8 @@
 								"exec": [
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -300,7 +304,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"{{ID_SESION}}\",\r\n    \"tipo_identificacion\":\"{{TIPO_IDENTIFICACION}}\",\r\n    \"identificacion\":\"{{IDENTIFICACION}}\",\r\n    \"parametros\": {\r\n        \"potencia\": {{VALORES_1}},\r\n        \"ritmo_cardiaco\": {{VALORES_2}}\r\n    }\r\n}",
+							"raw": "{\r\n    \"correlation_id\": \"{{correlation_id}}\",\r\n    \"specversion\": \"v1\",\r\n    \"type\": \"event\",\r\n    \"datacontenttype\": \"application/json\",\r\n    \"payload\": {\r\n        \"id\": \"{{ID_SESION}}\",\r\n        \"tipo_identificacion\": \"{{TIPO_IDENTIFICACION}}\",\r\n        \"identificacion\": \"{{IDENTIFICACION}}\",\r\n        \"parametros\": {\r\n            \"potencia\": {{VALORES_1}},\r\n            \"ritmo_cardiaco\": {{VALORES_2}}\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -425,7 +429,7 @@
 	"variable": [
 		{
 			"key": "TOKEN",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNDMxNjU2NywianRpIjoiZDljNjNjMmEtMjUzYi00NDhhLWE4OTEtOTUwYjE4ODUyMDNlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJ0aXBvIjoiQ0MiLCJ2YWxvciI6IjEyMzQ1Njc4OSJ9LCJuYmYiOjE3MTQzMTY1NjcsImNzcmYiOiI0YzQyNWRmMi0zMWNiLTQwYjEtOWRjOS02MDY3YjcyMDU5YzUiLCJleHAiOjE3MTQzNDE3Njd9.OtHgtNioXZsVDQZO5PRdjat_I3J2sUiA9I-epN4lyDE",
+			"value": "",
 			"type": "default"
 		},
 		{
@@ -470,7 +474,7 @@
 		},
 		{
 			"key": "ID_SESION",
-			"value": "d7f94c6a-3e39-4d13-a7ea-614e1b94c385",
+			"value": "",
 			"type": "default"
 		},
 		{
@@ -497,6 +501,11 @@
 			"key": "AUTH_URL",
 			"value": "http://127.0.0.1:3000",
 			"type": "default"
+		},
+		{
+			"key": "correlation_id",
+			"value": "d7f94c6a-3e39-4d13-a7ea-614e1b94c333",
+			"type": "string"
 		}
 	]
 }
