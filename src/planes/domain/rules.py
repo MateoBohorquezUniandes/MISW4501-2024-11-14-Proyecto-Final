@@ -99,7 +99,7 @@ class _ValidDeporte(BusinessRule):
         self.deporte = deporte
 
     def is_valid(self) -> bool:
-        return self.deporte in DEPORTE.list()
+        return self.deporte in DEPORTE.list() if self.deporte else True
 
 
 class ValidObjetivo(CompoundBusinessRule):

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "97d2e18a-db33-4a3f-ae4e-637aa7e570d1",
+		"_postman_id": "3033a109-e18d-4c92-843e-c7f045c31e58",
 		"name": "usuarios",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25979776"
@@ -1424,12 +1424,12 @@
 		},
 		{
 			"key": "deportista.deportes.0",
-			"value": "\"ciclismo\"",
+			"value": "\"Ciclismo\"",
 			"type": "string"
 		},
 		{
 			"key": "deportista.deportes.1",
-			"value": "\"atletistmo\"",
+			"value": "\"Atletismo\"",
 			"type": "string"
 		},
 		{
