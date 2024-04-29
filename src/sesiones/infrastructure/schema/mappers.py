@@ -17,7 +17,7 @@ class SesionEndedIntegrationEventMapper(IntegrationMapper):
             external.parametros,
         )
         return SesionEndedIntegrationEvent(
-            external.correlation_id,
+            str(external.correlation_id),
             type="command",
             datacontenttype="application/json",
             specversion="v1",
