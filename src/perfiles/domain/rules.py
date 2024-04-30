@@ -1,12 +1,14 @@
 from datetime import datetime, date
 
 from perfiles.domain.entities import (
+    Alimento,
     HabitoDeportivo,
     PerfilDemografico,
     ReporteSanguineo,
     Molestia,
 )
 from perfiles.domain.value_objects import (
+    CategoriaAlimento,
     CategoriaIMC,
     CategoriaRiesgo,
     ClasificacionRiesgo,
@@ -21,6 +23,7 @@ from perfiles.domain.value_objects import (
 from seedwork.domain.rules import (
     BusinessRule,
     CompoundBusinessRule,
+    ValidExtendedEnum,
     ValidFloat,
     ValidInteger,
     ValidString,
@@ -252,3 +255,17 @@ class ValidMolestia(CompoundBusinessRule):
         ]
 
         super().__init__(message, rules, "molestia")
+
+
+class ValidAlimento(CompoundBusinessRule):
+    alimento: Alimento
+
+    def __init__(self, alimento: Alimento, message="alimento invalido"):
+        self.alimento = alimento
+        rules = [
+            ValidString(self.alimento.nombre, 2, 120, "nombre invalido"),
+            ValidExtendedEnum(
+                self.alimento.categoria, CategoriaAlimento, "categoria invalida"
+            ),
+        ]
+        super().__init__(message, rules, "alimnto")

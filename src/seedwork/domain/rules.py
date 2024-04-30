@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 import datetime
 
+from seedwork.domain.value_objects import ExtendedEnum
+
 
 class BusinessRule(ABC):
 
@@ -17,7 +19,7 @@ class BusinessRule(ABC):
     @property
     def code(self):
         return self.__code
-    
+
     @code.setter
     def code(self, code):
         self.__code = code
@@ -89,14 +91,13 @@ class ValidString(BusinessRule):
         max_valid = len(self.valor) <= self.max if self.max else True
         return min_valid and max_valid
 
+
 class ValidFloat(BusinessRule):
     valor: float
     min: float
     max: float
 
-    def __init__(
-        self, valor, min, max, message, code="valid_float"
-    ):
+    def __init__(self, valor, min, max, message, code="valid_float"):
         super().__init__(message, code)
         self.valor = valor
         self.min = min
@@ -107,14 +108,13 @@ class ValidFloat(BusinessRule):
         max_valid = self.valor <= self.max if self.max else True
         return min_valid and max_valid
 
+
 class ValidInteger(BusinessRule):
     valor: float
     min: float
     max: float
 
-    def __init__(
-        self, valor, min, max, message, code="valid_integer"
-    ):
+    def __init__(self, valor, min, max, message, code="valid_integer"):
         super().__init__(message, code)
         self.valor = valor
         self.min = min
@@ -140,3 +140,22 @@ class ValidStrDate(BusinessRule):
             res = False
 
         return res
+
+
+class ValidExtendedEnum(BusinessRule):
+    value: any
+    enumeration: type[ExtendedEnum]
+
+    def __init__(
+        self,
+        value: any,
+        enumeration: type[ExtendedEnum],
+        message,
+        code="valid_ext_enum",
+    ):
+        super().__init__(message, code)
+        self.value = value
+        self.enumeration = enumeration
+    
+    def is_valid(self) -> bool:
+        return self.value in self.enumeration.list()

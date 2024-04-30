@@ -188,3 +188,27 @@ class MolestiaTipoEnum(ExtendedEnum):
 @dataclass(frozen=True)
 class MolestiaTipo(ValueObject):
     tipo: MolestiaTipoEnum = field(default_factory=MolestiaTipoEnum)
+
+
+class CategoriaAlimento(ExtendedEnum):
+    CARBOHIDRATO = "Carbohidrato"
+    LIPIDO = "Lipido"
+    LACTEO = "Lacteo"
+    FRUTA = "Fruta"
+    VERDURA = "Verdura"
+    PROTEINA = "Proteina"
+
+
+class CategoriaAsociacionAlimento(ExtendedEnum):
+    ALERGIA = "Alergia"
+    INTOLERANCIA = "Intolerancia"
+    PREFERENCIA = "Preferencia"
+
+
+@dataclass(frozen=True)
+class AlimentoAsociado(ValueObject):
+    id_alimento: str = field(default_factory=str)
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)
+
+    tipo: CategoriaAsociacionAlimento = field(default=None)
