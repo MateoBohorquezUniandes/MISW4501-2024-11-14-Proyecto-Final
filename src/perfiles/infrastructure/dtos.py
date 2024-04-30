@@ -153,6 +153,7 @@ class PerfilAlimenticio(db.Model):
 
     tipo_identificacion = db.Column(db.String(10), primary_key=True)
     identificacion = db.Column(db.String(20), primary_key=True)
+    tipo_alimentacion = db.Column(db.String(), nullable=True)
 
 
 class AlimentoAsociado(db.Model):

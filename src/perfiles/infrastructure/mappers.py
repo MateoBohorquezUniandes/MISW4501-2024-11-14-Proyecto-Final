@@ -173,12 +173,14 @@ class PerfilAlimenticioMapper(Mapper):
         perfil = PerfilAlimenticioDTO()
         perfil.tipo_identificacion = entity.tipo_identificacion
         perfil.identificacion = entity.identificacion
+        perfil.tipo_alimentacion = entity.tipo_alimentacion
         return perfil
 
     def dto_to_entity(self, dto: PerfilAlimenticioDTO) -> PerfilAlimenticio:
         return PerfilAlimenticio(
             tipo_identificacion=dto.tipo_identificacion,
             identificacion=dto.identificacion,
+            tipo_alimentacion=dto.tipo_alimentacion
         )
 
 

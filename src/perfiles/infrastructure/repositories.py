@@ -135,34 +135,36 @@ class PerfilDeportivoRepositoryPostgreSQL(PerfilDeportivoRepository):
 
 class PerfilAlimenticioRepositoryPostgreSQL(PerfilAlimenticioRepository):
     def __init__(self):
-        self._perfil_demografico_factory: PerfilFactory = PerfilFactory()
+        self._perfil_factory: PerfilFactory = PerfilFactory()
 
     @property
-    def fabrica_perfil_demografico(self):
-        return self._perfil_demografico_factory
+    def perfil_factory(self):
+        return self._perfil_factory
 
     def get_all(self) -> list[PerfilAlimenticio]:
         perfiles_dto = db.session.query(PerfilAlimenticioDTO).all()
         return [
-            self.fabrica_perfil_demografico.create(dto, PerfilAlimenticioMapper())
+            self.perfil_factory.create(dto, PerfilAlimenticioMapper())
             for dto in perfiles_dto
         ]
 
-    def get(self, tipo_identificacion: str, identificacion: str) -> PerfilAlimenticio:
+    def get(
+        self, tipo_identificacion: str, identificacion: str, as_entity=True
+    ) -> PerfilAlimenticio:
         perfil_dto = (
             db.session.query(PerfilAlimenticioDTO)
             .filter_by(tipo_identificacion=tipo_identificacion)
             .filter_by(identificacion=identificacion)
             .one()
         )
-        return self.fabrica_perfil_demografico.create(
-            perfil_dto, PerfilAlimenticioMapper()
+        return (
+            self.perfil_factory.create(perfil_dto, PerfilAlimenticioMapper())
+            if as_entity
+            else perfil_dto
         )
 
     def append(self, perfil: PerfilAlimenticio):
-        perfil_dto = self.fabrica_perfil_demografico.create(
-            perfil, PerfilAlimenticioMapper()
-        )
+        perfil_dto = self.perfil_factory.create(perfil, PerfilAlimenticioMapper())
         db.session.add(perfil_dto)
 
     def delete(self, tipo_identificacion: str, identificacion: str):
@@ -173,8 +175,11 @@ class PerfilAlimenticioRepositoryPostgreSQL(PerfilAlimenticioRepository):
             )
         query.delete()
 
-    def update(self):
-        pass
+    def update(self, perfil: PerfilAlimenticio):
+        perfil_dto: PerfilAlimenticioDTO = self.get(
+            perfil.tipo_identificacion, perfil.identificacion, as_entity=False
+        )
+        perfil_dto.tipo_alimentacion = perfil.tipo_alimentacion
 
 
 class HabitoDeportivoRepositoryPostgreSQL(HabitoDeportivoRepository):
