@@ -25,17 +25,18 @@ class ObtenerPerfilAlimenticioQueryHandler(PerfilQueryBaseHandler):
 
     def handle(self, query: ObtenerPerfilAlimenticio) -> QueryResult:
         try:
+            repository = self.repository_factory.create(PerfilAlimenticio)
+            perfil = repository.get(query.tipo_identificacion, query.identificacion)
+
             repository = self.repository_factory.create(AlimentoAsociado)
             alimentos = repository.get_all(
                 query.tipo_identificacion, query.identificacion
             )
+
             mapper = AlimentoDTOEntityMapper()
-            alimentos = [self.perfiles_factory.create(a, mapper) for a in alimentos]
-            perfil = PerfilAlimenticio(
-                tipo_identificacion=query.tipo_identificacion,
-                identificacion=query.identificacion,
-                alimentos=alimentos,
-            )
+            perfil.alimentos = [
+                self.perfiles_factory.create(a, mapper) for a in alimentos
+            ]
 
             return QueryResult(
                 result=self.perfiles_factory.create(
