@@ -99,6 +99,15 @@ class PerfilDeportivoDTO(DTO):
 
 
 @dataclass(frozen=True)
+class AlimentoDTO(DTO):
+    id: str = field(default_factory=str)
+    nombre: str = field(default_factory=str)
+    categoria: str = field(default_factory=str)
+    tipo: str = field(default_factory=str)
+
+
+@dataclass(frozen=True)
 class PerfilAlimenticioDTO(DTO):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
+    alimentos: list[AlimentoDTO] = field(default_factory=list)

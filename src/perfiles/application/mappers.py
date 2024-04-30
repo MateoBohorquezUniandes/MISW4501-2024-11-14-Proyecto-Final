@@ -1,10 +1,13 @@
 from dataclasses import asdict
+from uuid import UUID
 from perfiles.application.dtos import (
+    AlimentoDTO,
     ClasificacionRiesgoDTO,
     HabitoDeportivoDTO,
     IndiceMasaCorporalDTO,
     InformacionDemograficaDTO,
     InformacionFisiologicaDTO,
+    PerfilAlimenticioDTO,
     PerfilDemograficoDTO,
     PerfilDeportivoDTO,
     ReporteSanguineoDTO,
@@ -13,6 +16,7 @@ from perfiles.application.dtos import (
     VolumenMaximoOxigenoDTO,
 )
 from perfiles.domain.entities import (
+    Alimento,
     HabitoDeportivo,
     PerfilAlimenticio,
     PerfilDemografico,
@@ -21,6 +25,7 @@ from perfiles.domain.entities import (
     Molestia,
 )
 from perfiles.domain.value_objects import (
+    AlimentoAsociado,
     CategoriaVOM,
     ClasificacionRiesgo,
     InformacionDemografica,
@@ -29,6 +34,7 @@ from perfiles.domain.value_objects import (
     VolumenMaximoOxigeno,
 )
 from seedwork.application.dtos import DTO, Mapper as ApplicationMapper
+from seedwork.domain.entities import Entity
 from seedwork.domain.repositories import Mapper as DomainMapper
 from seedwork.domain.repositories import (
     UnidirectionalMapper as UnidirectionalDomainMapper,
@@ -216,6 +222,33 @@ class PerfilDeportivoDTODictMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: PerfilDeportivoDTO) -> dict:
+        return asdict(dto)
+
+
+class AlimentoDTODictMapper(ApplicationMapper):
+    def external_to_dto(self, external: dict) -> AlimentoDTO:
+        return AlimentoDTO(
+            external.get("id", ""),
+            external.get("nombre", ""),
+            external.get("categoria", ""),
+            external.get("tipo", ""),
+        )
+
+    def dto_to_external(self, dto: AlimentoDTO) -> dict:
+        return asdict(dto)
+
+
+class PerfilAlimenticioDTODictMapper(ApplicationMapper):
+    def external_to_dto(self, external: dict) -> PerfilAlimenticioDTO:
+        mapper = AlimentoDTODictMapper()
+        alimentos = mapper.external_to_dto(external.get("alimentos", []))
+        return PerfilAlimenticioDTO(
+            tipo_identificacion=external.get("tipo_identificacion", ""),
+            identificacion=external.get("identificacion", ""),
+            alimentos=alimentos,
+        )
+
+    def dto_to_external(self, dto: PerfilAlimenticioDTO) -> dict:
         return asdict(dto)
 
 
@@ -420,4 +453,63 @@ class PerfilDeportivoDTOEntityMapper(DomainMapper):
             identificacion=entity.identificacion,
             habitos=habitos,
             molestias=molestias,
+        )
+
+
+class AlimentoDTOEntityMapper(DomainMapper):
+    def type(self) -> type:
+        return Alimento
+
+    def dto_to_entity(self, dto: AlimentoDTO) -> Alimento:
+        args = [UUID(dto.id)] if dto.id else []
+        return Alimento(
+            *args, nombre=dto.nombre, categoria=dto.categoria, tipo=dto.tipo
+        )
+
+    def entity_to_dto(self, entity: Alimento) -> AlimentoDTO:
+        return AlimentoDTO(
+            id=entity.id,
+            nombre=entity,
+            categoria=entity.categoria,
+            tipo=entity.tipo,
+        )
+
+
+class AlimentoAsociadoDTOEntityMapper(UnidirectionalDomainMapper):
+    def type(self) -> type:
+        return AlimentoAsociado
+
+    def map(
+        self,
+        dto: AlimentoDTO,
+        tipo_identificacion: str = None,
+        identificacion: str = None,
+    ) -> AlimentoAsociado:
+        return AlimentoAsociado(
+            id_alimento=dto.id,
+            tipo_identificacion=tipo_identificacion,
+            identificacion=identificacion,
+            tipo=dto.tipo,
+        )
+
+
+class PerfilAlimenticioDTOEntityMapper(DomainMapper):
+    def type(self) -> type:
+        return PerfilAlimenticio
+
+    def dto_to_entity(self, dto: PerfilAlimenticioDTO) -> PerfilAlimenticio:
+
+        return PerfilAlimenticio(
+            tipo_identificacion=dto.tipo_identificacion,
+            identificacion=dto.identificacion,
+            alimentos=dto.alimentos,
+        )
+
+    def entity_to_dto(self, entity: PerfilAlimenticio) -> PerfilAlimenticioDTO:
+        mapper = AlimentoDTOEntityMapper()
+        alimentos = [mapper.entity_to_dto(h) for h in entity.alimentos]
+        return PerfilAlimenticioDTO(
+            tipo_identificacion=entity.tipo_identificacion,
+            identificacion=entity.identificacion,
+            alimentos=alimentos,
         )
