@@ -205,6 +205,13 @@ class CategoriaAsociacionAlimento(ExtendedEnum):
     PREFERENCIA = "Preferencia"
 
 
+class TipoAlimentacion(ExtendedEnum):
+    CARNIVORO = "Carnivoro"
+    OMNIVORO = "Omnivoro"
+    VEGETARIANO = "Vegetariano"
+    VEGANO = "Vegano∏"
+
+
 @dataclass(frozen=True)
 class AlimentoAsociado(ValueObject):
     id_alimento: str = field(default_factory=str)

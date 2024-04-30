@@ -100,4 +100,5 @@ class Alimento(Entity):
 class PerfilAlimenticio(RootAggregation):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
+    tipo_alimentacion: vo.TipoAlimentacion = field(default=None)
     alimentos: list[Alimento] = field(default_factory=list)
