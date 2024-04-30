@@ -470,7 +470,7 @@ class AlimentoDTOEntityMapper(DomainMapper):
     def entity_to_dto(self, entity: Alimento) -> AlimentoDTO:
         return AlimentoDTO(
             id=entity.id,
-            nombre=entity,
+            nombre=entity.nombre,
             categoria=entity.categoria,
             tipo=entity.tipo,
         )

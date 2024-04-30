@@ -3,6 +3,7 @@ from datetime import datetime, date
 from perfiles.domain.entities import (
     Alimento,
     HabitoDeportivo,
+    PerfilAlimenticio,
     PerfilDemografico,
     ReporteSanguineo,
     Molestia,
@@ -17,6 +18,7 @@ from perfiles.domain.value_objects import (
     IndiceMasaCorporal,
     InformacionDemografica,
     InformacionFisiologica,
+    TipoAlimentacion,
     UnidadExamenSanguineo,
     MolestiaTipoEnum,
 )
@@ -187,7 +189,7 @@ class ValidPerfilDemografico(CompoundBusinessRule):
             [ValidReporteSanguineo(rs) for rs in self.perfil.reportes_sanguineo]
         )
 
-        super().__init__(message, rules, "perfil")
+        super().__init__(message, rules, "perfil.demografico")
 
 
 class _ValidHabitoFrecuencia(BusinessRule):
@@ -268,4 +270,21 @@ class ValidAlimento(CompoundBusinessRule):
                 self.alimento.categoria, CategoriaAlimento, "categoria invalida"
             ),
         ]
-        super().__init__(message, rules, "alimnto")
+        super().__init__(message, rules, "alimento")
+
+
+class ValidPerfilAlimenticio(CompoundBusinessRule):
+    perfil: PerfilAlimenticio
+
+    def __init__(self, perfil: PerfilAlimenticio, message="perfil invalido"):
+        self.perfil = perfil
+        rules = [
+            ValidExtendedEnum(
+                self.perfil.tipo_alimentacion,
+                TipoAlimentacion,
+                "tipo alimentacion invalido",
+                code="tipo_alimentacion",
+                soft_check=True
+            ),
+        ]
+        super().__init__(message, rules, "perfil.alimenticio")

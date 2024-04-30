@@ -13,6 +13,7 @@ from perfiles.domain.rules import (
     ValidAlimento,
     ValidHabitoDeportivo,
     ValidMolestia,
+    ValidPerfilAlimenticio,
     ValidPerfilDemografico,
 )
 from perfiles.domain.value_objects import AlimentoAsociado
@@ -57,6 +58,7 @@ class _PerfilAlimenticioFactory(Factory):
             return mapper.map(obj, **kwargs)
 
         perfil: PerfilAlimenticio = mapper.dto_to_entity(obj, **kwargs)
+        self.validate_rule(ValidPerfilAlimenticio(perfil))
 
         return perfil
 

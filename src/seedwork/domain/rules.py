@@ -152,10 +152,16 @@ class ValidExtendedEnum(BusinessRule):
         enumeration: type[ExtendedEnum],
         message,
         code="valid_ext_enum",
+        soft_check=False,
     ):
         super().__init__(message, code)
         self.value = value
         self.enumeration = enumeration
-    
+        self.soft_check = soft_check
+
     def is_valid(self) -> bool:
-        return self.value in self.enumeration.list()
+        return (
+            self.value in self.enumeration.list()
+            if self.value and not self.soft_check
+            else True
+        )

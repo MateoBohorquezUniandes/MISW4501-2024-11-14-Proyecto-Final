@@ -209,7 +209,7 @@ class TipoAlimentacion(ExtendedEnum):
     CARNIVORO = "Carnivoro"
     OMNIVORO = "Omnivoro"
     VEGETARIANO = "Vegetariano"
-    VEGANO = "Vegano∏"
+    VEGANO = "Vegano"
 
 
 @dataclass(frozen=True)
