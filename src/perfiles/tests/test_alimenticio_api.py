@@ -5,7 +5,11 @@ import pytest
 from flask_jwt_extended import create_access_token
 
 from perfiles.app import create_app
-from perfiles.domain.value_objects import CategoriaAlimento, CategoriaAsociacionAlimento
+from perfiles.domain.value_objects import (
+    CategoriaAlimento,
+    CategoriaAsociacionAlimento,
+    TipoAlimentacion,
+)
 from perfiles.infrastructure.db import db
 from perfiles.infrastructure.dtos import Alimento, AlimentoAsociado, PerfilAlimenticio
 
@@ -114,6 +118,27 @@ class TestPerfilDeportivoAPI:
         assert response.status_code == HTTPStatus.ACCEPTED.value
         assert db.session.query(AlimentoAsociado).count() == 1
 
+    def test_actualizar_tipo_alimentacion(self, test_client, test_db_perfil):
+        payload = {
+            "tipo_alimentacion": TipoAlimentacion.CARNIVORO.value,
+        }
+        test_token = create_access_token(
+            identity={
+                "tipo": test_db_perfil.tipo_identificacion,
+                "valor": test_db_perfil.identificacion,
+            }
+        )
+        response = test_client.patch(
+            "/perfiles/commands/alimenticio/tipo",
+            headers={"Authorization": f"Bearer {test_token}"},
+            json=payload,
+        )
+        assert response.status_code == HTTPStatus.ACCEPTED.value
+
+        perfil = db.session.query(PerfilAlimenticio).first()
+        assert perfil is not None
+        assert perfil.tipo_alimentacion == TipoAlimentacion.CARNIVORO.value
+
     def test_get_perfil_alimenticio(self, test_client, test_db_asociacion):
         test_token = create_access_token(
             identity={
@@ -126,10 +151,10 @@ class TestPerfilDeportivoAPI:
             headers={"Authorization": f"Bearer {test_token}"},
         )
         assert response.status_code == HTTPStatus.OK.value
-        
+
         data = response.json["data"]
         assert "alimentos" in data
-        
+
         alimentos = data["alimentos"]
         assert len(alimentos) > 0
         assert "tipo" in alimentos[0]
