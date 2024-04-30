@@ -110,4 +110,5 @@ class AlimentoDTO(DTO):
 class PerfilAlimenticioDTO(DTO):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
+    tipo_alimentacion: str = field(default_factory=str)
     alimentos: list[AlimentoDTO] = field(default_factory=list)

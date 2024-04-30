@@ -241,10 +241,11 @@ class AlimentoDTODictMapper(ApplicationMapper):
 class PerfilAlimenticioDTODictMapper(ApplicationMapper):
     def external_to_dto(self, external: dict) -> PerfilAlimenticioDTO:
         mapper = AlimentoDTODictMapper()
-        alimentos = mapper.external_to_dto(external.get("alimentos", []))
+        alimentos = [mapper.external_to_dto(a) for a in external.get("alimentos", [])]
         return PerfilAlimenticioDTO(
             tipo_identificacion=external.get("tipo_identificacion", ""),
             identificacion=external.get("identificacion", ""),
+            tipo_alimentacion=external.get("tipo_alimentacion", None),
             alimentos=alimentos,
         )
 
@@ -498,10 +499,10 @@ class PerfilAlimenticioDTOEntityMapper(DomainMapper):
         return PerfilAlimenticio
 
     def dto_to_entity(self, dto: PerfilAlimenticioDTO) -> PerfilAlimenticio:
-
         return PerfilAlimenticio(
             tipo_identificacion=dto.tipo_identificacion,
             identificacion=dto.identificacion,
+            tipo_alimentacion=dto.tipo_alimentacion,
             alimentos=dto.alimentos,
         )
 
@@ -511,5 +512,6 @@ class PerfilAlimenticioDTOEntityMapper(DomainMapper):
         return PerfilAlimenticioDTO(
             tipo_identificacion=entity.tipo_identificacion,
             identificacion=entity.identificacion,
+            tipo_alimentacion=entity.tipo_alimentacion,
             alimentos=alimentos,
         )
