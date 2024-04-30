@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from perfiles.domain.entities import (
+    Alimento,
     HabitoDeportivo,
     PerfilAlimenticio,
     PerfilDemografico,
@@ -8,8 +9,11 @@ from perfiles.domain.entities import (
     Molestia,
 )
 from perfiles.domain.events import PerfilDemograficoModified
+from perfiles.domain.value_objects import AlimentoAsociado
 from perfiles.infrastructure.exceptions import InvalidRepositoryFactoryException
 from perfiles.infrastructure.repositories import (
+    AlimentoAsociadoRepositoryPostgreSQL,
+    AlimentoRepositoryPostgreSQL,
     HabitoDeportivoRepositoryPostgreSQL,
     PerfilAlimenticioRepositoryPostgreSQL,
     PerfilDemograficoRepositoryPostgreSQL,
@@ -35,6 +39,10 @@ class RepositoryFactory(Factory):
             return HabitoDeportivoRepositoryPostgreSQL()
         elif isinstance(obj, Molestia) or obj == Molestia:
             return MolestiaRepositoryPostgreSQL()
+        elif isinstance(obj, Alimento) or obj == Alimento:
+            return AlimentoRepositoryPostgreSQL()
+        elif isinstance(obj, AlimentoAsociado) or obj == AlimentoAsociado:
+            return AlimentoAsociadoRepositoryPostgreSQL()
         else:
             raise InvalidRepositoryFactoryException()
 
