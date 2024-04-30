@@ -1,11 +1,11 @@
-from uuid import UUID
-
 from flask import Blueprint, Response, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
+from perfiles.application.queries.get_perfil_alimenticio import ObtenerPerfilAlimenticio
 from perfiles.application.queries.get_perfil_deportivo import ObtenerPerfilDeportivo
 import seedwork.presentation.api as api
 from perfiles.application.mappers import (
+    PerfilAlimenticioDTODictMapper,
     PerfilDemograficoDTODictMapper,
     PerfilDeportivoDTODictMapper,
 )
@@ -41,7 +41,7 @@ def get_perfiles_deportivos():
 
 @bp.route("/deportivo", methods=("GET",))
 @jwt_required()
-def get_perfil_deportivo(id=None):
+def get_perfil_alimenticio():
     identificacion: dict = get_jwt_identity()
     query_result = execute_query(
         ObtenerPerfilDeportivo(
@@ -49,7 +49,21 @@ def get_perfil_deportivo(id=None):
             identificacion=identificacion.get("valor"),
         )
     )
-    print(query_result.result)
     mapper = PerfilDeportivoDTODictMapper()
+
+    return jsonify(mapper.dto_to_external(query_result.result))
+
+
+@bp.route("/alimenticio", methods=("GET",))
+@jwt_required()
+def get_perfil_deportivo():
+    identificacion: dict = get_jwt_identity()
+    query_result = execute_query(
+        ObtenerPerfilAlimenticio(
+            tipo_identificacion=identificacion.get("tipo"),
+            identificacion=identificacion.get("valor"),
+        )
+    )
+    mapper = PerfilAlimenticioDTODictMapper()
 
     return jsonify(mapper.dto_to_external(query_result.result))
