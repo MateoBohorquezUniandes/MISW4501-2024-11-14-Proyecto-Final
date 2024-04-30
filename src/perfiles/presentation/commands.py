@@ -3,6 +3,8 @@ from uuid import UUID
 from flask import Blueprint, Response, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
+from perfiles.application.commands.associate_alimento import AssociateAlimento
+from perfiles.application.commands.create_alimento import CreateAlimento
 from perfiles.application.commands.update_clasificacion_riesgo import (
     ActualizarClasificacionRiesgo,
 )
@@ -11,6 +13,7 @@ from perfiles.application.commands.crear_habito_deportivo import CrearHabitoDepo
 from perfiles.application.commands.crear_molestia import CrearMolestia
 from perfiles.application.commands.create_perfil_inicial import PerfilamientoInicial
 from perfiles.application.mappers import (
+    AlimentoDTODictMapper,
     HabitoDTODictMapper,
     MolestiaDTODictMapper,
     PerfilDemograficoDTODictMapper,
@@ -97,6 +100,31 @@ def crear_molestias():
     molestia_dto = mapper.external_to_dto(payload)
 
     command = CrearMolestia(molestia_dto=molestia_dto)
+
+    execute_command(command)
+    return {}, 202
+
+
+@bp.route("/alimentos", methods=("POST",))
+def crear_alimento():
+    alimento_dto = AlimentoDTODictMapper().external_to_dto(request.json)
+    command = CreateAlimento(alimento_dto=alimento_dto)
+
+    execute_command(command)
+    return {}, 202
+
+
+@bp.route("/alimenticio/alimentos", methods=("POST",))
+@jwt_required()
+def asociar_alimento():
+    identificacion: dict = get_jwt_identity()
+    alimento_dto = AlimentoDTODictMapper().external_to_dto(request.json)
+
+    command = AssociateAlimento(
+        alimento_dto=alimento_dto,
+        tipo_identificacion=identificacion.get("tipo"),
+        identificacion=identificacion.get("valor"),
+    )
 
     execute_command(command)
     return {}, 202

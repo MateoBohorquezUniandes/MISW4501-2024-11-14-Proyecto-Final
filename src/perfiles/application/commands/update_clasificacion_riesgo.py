@@ -3,12 +3,12 @@ from dataclasses import dataclass, field
 
 from sqlalchemy.exc import IntegrityError
 
+from perfiles.application.commands.base import PerfilCommandBaseHandler
 from perfiles.application.dtos import PerfilDemograficoDTO
 from perfiles.application.exceptions import BadRequestError, UnprocessableEntityError
 from perfiles.application.mappers import (
     PerfilDemograficoDTOEntityMapper,
 )
-from perfiles.application.queries.base import PerfilQueryBaseHandler
 from perfiles.domain.entities import (
     PerfilDemografico,
 )
@@ -24,7 +24,7 @@ class ActualizarClasificacionRiesgo(Command):
     perfil_dto: PerfilDemograficoDTO = field(default_factory=PerfilDemograficoDTO)
 
 
-class ActualizarClasificacionRiesgoHandler(PerfilQueryBaseHandler):
+class ActualizarClasificacionRiesgoHandler(PerfilCommandBaseHandler):
 
     def handle(self, command: ActualizarClasificacionRiesgo):
         uowf = None
