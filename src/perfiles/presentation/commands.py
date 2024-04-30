@@ -8,6 +8,9 @@ from perfiles.application.commands.create_alimento import CreateAlimento
 from perfiles.application.commands.update_clasificacion_riesgo import (
     ActualizarClasificacionRiesgo,
 )
+from perfiles.application.commands.update_tipo_alimentacion import (
+    ActualizarTipoAlimentacion,
+)
 import seedwork.presentation.api as api
 from perfiles.application.commands.crear_habito_deportivo import CrearHabitoDeportivo
 from perfiles.application.commands.crear_molestia import CrearMolestia
@@ -16,6 +19,7 @@ from perfiles.application.mappers import (
     AlimentoDTODictMapper,
     HabitoDTODictMapper,
     MolestiaDTODictMapper,
+    PerfilAlimenticioDTODictMapper,
     PerfilDemograficoDTODictMapper,
     PerfilamientoInicialDTODictMapper,
 )
@@ -126,5 +130,20 @@ def asociar_alimento():
         identificacion=identificacion.get("valor"),
     )
 
+    execute_command(command)
+    return {}, 202
+
+
+@bp.route("/alimenticio/tipo", methods=("PATCH",))
+@jwt_required()
+def actualizar_tipo_alimentacion():
+    identificacion: dict = get_jwt_identity()
+    payload = request.json
+
+    payload["identificacion"] = identificacion.get("valor")
+    payload["tipo_identificacion"] = identificacion.get("tipo")
+    perfil_dto = PerfilAlimenticioDTODictMapper().external_to_dto(payload)
+
+    command = ActualizarTipoAlimentacion(perfil_dto=perfil_dto)
     execute_command(command)
     return {}, 202
