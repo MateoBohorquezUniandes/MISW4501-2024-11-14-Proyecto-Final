@@ -1,10 +1,12 @@
 from flask import Blueprint, Response, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
+from perfiles.application.queries.get_alimentos import ObtenerAlimentos
 from perfiles.application.queries.get_perfil_alimenticio import ObtenerPerfilAlimenticio
 from perfiles.application.queries.get_perfil_deportivo import ObtenerPerfilDeportivo
 import seedwork.presentation.api as api
 from perfiles.application.mappers import (
+    AlimentoDTODictMapper,
     PerfilAlimenticioDTODictMapper,
     PerfilDemograficoDTODictMapper,
     PerfilDeportivoDTODictMapper,
@@ -32,8 +34,7 @@ def get_perfil_demografico(id=None):
 
 
 @bp.route("/deportivos", methods=("GET",))
-def get_perfiles_deportivos():
-
+def get_perfiles_deportivo():
     mapper = PerfilDeportivoDTODictMapper()
     query_result = execute_query(GetPerfilesDeportivos())
     return jsonify([mapper.dto_to_external(e) for e in query_result.result])
@@ -41,7 +42,7 @@ def get_perfiles_deportivos():
 
 @bp.route("/deportivo", methods=("GET",))
 @jwt_required()
-def get_perfil_alimenticio():
+def get_perfil_deportivo():
     identificacion: dict = get_jwt_identity()
     query_result = execute_query(
         ObtenerPerfilDeportivo(
@@ -50,13 +51,12 @@ def get_perfil_alimenticio():
         )
     )
     mapper = PerfilDeportivoDTODictMapper()
-
     return jsonify(mapper.dto_to_external(query_result.result))
 
 
 @bp.route("/alimenticio", methods=("GET",))
 @jwt_required()
-def get_perfil_deportivo():
+def get_perfil_alimenticio():
     identificacion: dict = get_jwt_identity()
     query_result = execute_query(
         ObtenerPerfilAlimenticio(
@@ -65,5 +65,12 @@ def get_perfil_deportivo():
         )
     )
     mapper = PerfilAlimenticioDTODictMapper()
-
     return jsonify(mapper.dto_to_external(query_result.result))
+
+
+@bp.route("/alimentos", methods=("GET",))
+@jwt_required()
+def get_alimentos():
+    query_result = execute_query(ObtenerAlimentos())
+    mapper = AlimentoDTODictMapper()
+    return jsonify([mapper.dto_to_external(e) for e in query_result.result])
