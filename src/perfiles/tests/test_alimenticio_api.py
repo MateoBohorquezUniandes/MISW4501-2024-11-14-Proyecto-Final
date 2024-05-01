@@ -97,6 +97,20 @@ class TestPerfilDeportivoAPI:
         )
         assert response.status_code == HTTPStatus.ACCEPTED.value
 
+    def test_get_alimentos(self, test_client, test_db_alimento):
+        test_token = create_access_token(
+            identity={
+                "tipo": "fake",
+                "valor": "token",
+            }
+        )
+        response = test_client.get(
+            "/perfiles/queries/alimentos",
+            headers={"Authorization": f"Bearer {test_token}"},
+        )
+        assert response.status_code == HTTPStatus.OK.value
+        data = response.json["data"]
+
     def test_associate_alimento(self, test_client, test_db_perfil, test_db_alimento):
         payload = {
             "id": test_db_alimento.id,
