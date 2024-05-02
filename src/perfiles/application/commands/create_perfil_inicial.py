@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 
 from sqlalchemy.exc import IntegrityError
 
+from perfiles.application.commands.base import PerfilCommandBaseHandler
 from perfiles.application.dtos import PerfilDemograficoDTO
 from perfiles.application.exceptions import BadRequestError, UnprocessableEntityError
 from perfiles.application.mappers import (
@@ -10,7 +11,6 @@ from perfiles.application.mappers import (
     PerfilDemograficoDTOEntityMapper,
     PerfilDeportivoInitialEntityMapper,
 )
-from perfiles.application.queries.base import PerfilQueryBaseHandler
 from perfiles.domain.entities import (
     PerfilAlimenticio,
     PerfilDemografico,
@@ -30,7 +30,7 @@ class PerfilamientoInicial(Command):
     )
 
 
-class CreatePerfilInicialHandler(PerfilQueryBaseHandler):
+class CreatePerfilInicialHandler(PerfilCommandBaseHandler):
 
     def handle(self, command: PerfilamientoInicial):
         uowf = None

@@ -185,7 +185,7 @@ class RutinaAlimentacion(db.Model):
 
 
 class Alimento(db.Model):
-    __tablename__ = "alimento"
+    __tablename__ = "alimentos_rutinas"
 
     id = db.Column(db.String, primary_key=True)
     nombre = db.Column(db.String(120), nullable=False)

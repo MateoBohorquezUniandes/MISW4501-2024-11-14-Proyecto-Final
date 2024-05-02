@@ -1,4 +1,5 @@
 from perfiles.domain.entities import (
+    Alimento,
     HabitoDeportivo,
     PerfilAlimenticio,
     PerfilDemografico,
@@ -7,17 +8,24 @@ from perfiles.domain.entities import (
 )
 from perfiles.domain.factories import PerfilFactory
 from perfiles.domain.repositories import (
+    AlimentoAsociadoRepository,
+    AlimentoRepository,
     HabitoDeportivoRepository,
     PerfilAlimenticioRepository,
     PerfilDemograficoRepository,
     PerfilDeportivoRepository,
     MolestiaRepository,
 )
+from perfiles.domain.value_objects import AlimentoAsociado
 from perfiles.infrastructure.db import db
 from perfiles.infrastructure.dtos import PerfilAlimenticio as PerfilAlimenticioDTO
 from perfiles.infrastructure.dtos import PerfilDemografico as PerfilDemograficoDTO
 from perfiles.infrastructure.dtos import PerfilDeportivo as PerfilDeportivoDTO
+from perfiles.infrastructure.dtos import Alimento as AlimentoDTO
+from perfiles.infrastructure.dtos import AlimentoAsociado as AlimentoAsociadoDTO
 from perfiles.infrastructure.mappers import (
+    AlimentoAsociadoMapper,
+    AlimentoMapper,
     HabitoDeportivoMapper,
     PerfilAlimenticioMapper,
     PerfilDemograficoMapper,
@@ -73,7 +81,9 @@ class PerfilDemograficoRepositoryPostgreSQL(PerfilDemograficoRepository):
         query.delete()
 
     def update(self, perfil: PerfilDemografico):
-        perfil_dto = self.get(perfil.tipo_identificacion, perfil.identificacion, as_entity=False)
+        perfil_dto = self.get(
+            perfil.tipo_identificacion, perfil.identificacion, as_entity=False
+        )
         perfil_dto = self.fabrica_perfil_demografico.create(
             perfil, PerfilDemograficoMapper(), perfil_dto=perfil_dto
         )
@@ -125,34 +135,36 @@ class PerfilDeportivoRepositoryPostgreSQL(PerfilDeportivoRepository):
 
 class PerfilAlimenticioRepositoryPostgreSQL(PerfilAlimenticioRepository):
     def __init__(self):
-        self._perfil_demografico_factory: PerfilFactory = PerfilFactory()
+        self._perfil_factory: PerfilFactory = PerfilFactory()
 
     @property
-    def fabrica_perfil_demografico(self):
-        return self._perfil_demografico_factory
+    def perfil_factory(self):
+        return self._perfil_factory
 
     def get_all(self) -> list[PerfilAlimenticio]:
         perfiles_dto = db.session.query(PerfilAlimenticioDTO).all()
         return [
-            self.fabrica_perfil_demografico.create(dto, PerfilAlimenticioMapper())
+            self.perfil_factory.create(dto, PerfilAlimenticioMapper())
             for dto in perfiles_dto
         ]
 
-    def get(self, tipo_identificacion: str, identificacion: str) -> PerfilAlimenticio:
+    def get(
+        self, tipo_identificacion: str, identificacion: str, as_entity=True
+    ) -> PerfilAlimenticio:
         perfil_dto = (
             db.session.query(PerfilAlimenticioDTO)
             .filter_by(tipo_identificacion=tipo_identificacion)
             .filter_by(identificacion=identificacion)
             .one()
         )
-        return self.fabrica_perfil_demografico.create(
-            perfil_dto, PerfilAlimenticioMapper()
+        return (
+            self.perfil_factory.create(perfil_dto, PerfilAlimenticioMapper())
+            if as_entity
+            else perfil_dto
         )
 
     def append(self, perfil: PerfilAlimenticio):
-        perfil_dto = self.fabrica_perfil_demografico.create(
-            perfil, PerfilAlimenticioMapper()
-        )
+        perfil_dto = self.perfil_factory.create(perfil, PerfilAlimenticioMapper())
         db.session.add(perfil_dto)
 
     def delete(self, tipo_identificacion: str, identificacion: str):
@@ -163,8 +175,11 @@ class PerfilAlimenticioRepositoryPostgreSQL(PerfilAlimenticioRepository):
             )
         query.delete()
 
-    def update(self):
-        pass
+    def update(self, perfil: PerfilAlimenticio):
+        perfil_dto: PerfilAlimenticioDTO = self.get(
+            perfil.tipo_identificacion, perfil.identificacion, as_entity=False
+        )
+        perfil_dto.tipo_alimentacion = perfil.tipo_alimentacion
 
 
 class HabitoDeportivoRepositoryPostgreSQL(HabitoDeportivoRepository):
@@ -216,4 +231,87 @@ class MolestiaRepositoryPostgreSQL(MolestiaRepository):
         pass
 
     def update(self):
+        pass
+
+
+class AlimentoRepositoryPostgreSQL(AlimentoRepository):
+    def __init__(self):
+        self._perfil_factory: PerfilFactory = PerfilFactory()
+
+    @property
+    def perfil_factory(self):
+        return self._perfil_factory
+
+    def get_all(self) -> list[Alimento]:
+        alimentos_dto = db.session.query(AlimentoDTO).all()
+        mapper = AlimentoMapper()
+        return [self.perfil_factory.create(dto, mapper) for dto in alimentos_dto]
+
+    def get(self, id: str) -> Alimento:
+        alimento_dto = db.session.query(AlimentoDTO).filter_by(id=id).one()
+        return self.perfil_factory.create(alimento_dto, AlimentoMapper())
+
+    def append(self, alimento: Alimento):
+        alimento_dto = self.perfil_factory.create(alimento, AlimentoMapper())
+        db.session.add(alimento_dto)
+
+    def associate(self, asociacion: AlimentoAsociado):
+        asociacion_dto = self.perfil_factory.create(
+            asociacion, AlimentoAsociadoMapper()
+        )
+        db.session.add(asociacion_dto)
+
+    def delete(self, id: str):
+        query = db.session.query(AlimentoDTO)
+        if id:
+            query = query.filter_by(id=id)
+        query.delete()
+
+    def update(self, alimento: Alimento):
+        pass
+
+
+class AlimentoAsociadoRepositoryPostgreSQL(AlimentoAsociadoRepository):
+    def __init__(self):
+        self._perfil_factory: PerfilFactory = PerfilFactory()
+
+    @property
+    def perfil_factory(self):
+        return self._perfil_factory
+
+    def get_all(self, tipo_identificacion: str, identificacion: str) -> list[Alimento]:
+        asociaciones_dto = (
+            db.session.query(AlimentoAsociadoDTO)
+            .filter_by(tipo_identificacion=tipo_identificacion)
+            .filter_by(identificacion=identificacion)
+            .all()
+        )
+        alimentos, mapper = [], AlimentoMapper()
+        for pos, dto in enumerate(asociaciones_dto):
+            alimentos.append(self.perfil_factory.create(dto.alimento, mapper))
+            alimentos[pos].tipo = dto.tipo
+
+        return alimentos
+
+    def get(self, id: str) -> AlimentoAsociado:
+        asociacion_dto = (
+            db.session.query(AlimentoAsociadoDTO).filter_by(id_alimento=id).one()
+        )
+        alimento = self.perfil_factory.create(asociacion_dto.alimento, AlimentoMapper())
+        alimento.tipo = asociacion_dto.tipo
+        return alimento
+
+    def append(self, asociacion: AlimentoAsociado):
+        asociacion_dto = self.perfil_factory.create(
+            asociacion, AlimentoAsociadoMapper()
+        )
+        db.session.add(asociacion_dto)
+
+    def delete(self, id: str):
+        query = db.session.query(AlimentoAsociadoDTO)
+        if id:
+            query = query.filter_by(id=id)
+        query.delete()
+
+    def update(self, asociacion: AlimentoAsociado):
         pass

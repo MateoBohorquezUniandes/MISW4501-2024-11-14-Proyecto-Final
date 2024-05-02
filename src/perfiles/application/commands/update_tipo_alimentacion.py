@@ -4,13 +4,13 @@ from dataclasses import dataclass, field
 from sqlalchemy.exc import IntegrityError
 
 from perfiles.application.commands.base import PerfilCommandBaseHandler
-from perfiles.application.dtos import PerfilDemograficoDTO
+from perfiles.application.dtos import PerfilAlimenticioDTO
 from perfiles.application.exceptions import BadRequestError, UnprocessableEntityError
 from perfiles.application.mappers import (
-    PerfilDemograficoDTOEntityMapper,
+    PerfilAlimenticioDTOEntityMapper,
 )
 from perfiles.domain.entities import (
-    PerfilDemografico,
+    PerfilAlimenticio,
 )
 from perfiles.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 from seedwork.application.commands import Command, execute_command
@@ -20,24 +20,23 @@ from seedwork.presentation.exceptions import APIError
 
 
 @dataclass
-class ActualizarClasificacionRiesgo(Command):
-    perfil_dto: PerfilDemograficoDTO = field(default_factory=PerfilDemograficoDTO)
+class ActualizarTipoAlimentacion(Command):
+    perfil_dto: PerfilAlimenticioDTO = field(default_factory=PerfilAlimenticioDTO)
 
 
-class ActualizarClasificacionRiesgoHandler(PerfilCommandBaseHandler):
+class ActualizarTipoAlimentacionHandler(PerfilCommandBaseHandler):
 
-    def handle(self, command: ActualizarClasificacionRiesgo):
+    def handle(self, command: ActualizarTipoAlimentacion):
         uowf = None
         try:
-            perfil_demografico: PerfilDemografico = self.perfiles_factory.create(
-                command.perfil_dto, PerfilDemograficoDTOEntityMapper()
+            perfil: PerfilAlimenticio = self.perfiles_factory.create(
+                command.perfil_dto, PerfilAlimenticioDTOEntityMapper()
             )
-            perfil_demografico.update(command.correlation_id)
 
-            repository = self.repository_factory.create(PerfilDemografico)
+            repository = self.repository_factory.create(PerfilAlimenticio)
             uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
 
-            UnitOfWorkPort.register_batch(uowf, repository.update, perfil_demografico)
+            UnitOfWorkPort.register_batch(uowf, repository.update, perfil)
             UnitOfWorkPort.commit(uowf)
 
         except BusinessRuleException as bre:
@@ -45,14 +44,14 @@ class ActualizarClasificacionRiesgoHandler(PerfilCommandBaseHandler):
             raise UnprocessableEntityError(str(bre), bre.code)
         except IntegrityError:
             traceback.print_exc()
-            raise BadRequestError(code="perfiles.init.integrity")
+            raise BadRequestError(code="perfiles.alimenticio.update.integrity")
         except Exception as e:
             traceback.print_exc()
             if uowf:
                 UnitOfWorkPort.rollback(uowf)
-            raise APIError(message=str(e), code="perfiles.error.internal")
+            raise APIError(message=str(e), code="perfiles.alimenticio.error.internal")
 
 
-@execute_command.register(ActualizarClasificacionRiesgo)
-def command_crear_perfil_demografico(command: ActualizarClasificacionRiesgo):
-    ActualizarClasificacionRiesgoHandler().handle(command)
+@execute_command.register(ActualizarTipoAlimentacion)
+def command_crear_perfil_demografico(command: ActualizarTipoAlimentacion):
+    ActualizarTipoAlimentacionHandler().handle(command)

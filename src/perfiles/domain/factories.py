@@ -1,22 +1,27 @@
 from dataclasses import dataclass
 
 from perfiles.domain.entities import (
+    Alimento,
     HabitoDeportivo,
+    Molestia,
     PerfilAlimenticio,
     PerfilDemografico,
     PerfilDeportivo,
-    Molestia,
 )
 from perfiles.domain.exceptions import InvalidPerfilDemograficoFactoryException
 from perfiles.domain.rules import (
+    ValidAlimento,
     ValidHabitoDeportivo,
-    ValidPerfilDemografico,
     ValidMolestia,
+    ValidPerfilAlimenticio,
+    ValidPerfilDemografico,
 )
+from perfiles.domain.value_objects import AlimentoAsociado
 from seedwork.domain.entities import Entity
 from seedwork.domain.events import DomainEvent
 from seedwork.domain.factories import Factory
 from seedwork.domain.repositories import Mapper, UnidirectionalMapper
+from seedwork.domain.value_objects import ValueObject
 
 
 @dataclass
@@ -40,7 +45,6 @@ class _PerfilDeportivoFactory(Factory):
             return mapper.map(obj, **kwargs)
 
         perfil: PerfilDeportivo = mapper.dto_to_entity(obj, **kwargs)
-        # self.validate_rule(ValidPerfilDeportivo(perfil))
 
         return perfil
 
@@ -54,7 +58,7 @@ class _PerfilAlimenticioFactory(Factory):
             return mapper.map(obj, **kwargs)
 
         perfil: PerfilAlimenticio = mapper.dto_to_entity(obj, **kwargs)
-        # self.validate_rule(ValidPerfilAlimenticio(perfil))
+        self.validate_rule(ValidPerfilAlimenticio(perfil))
 
         return perfil
 
@@ -82,6 +86,29 @@ class _MolestiaFactory(Factory):
 
 
 @dataclass
+class _AlimentoFactory(Factory):
+    def create(self, obj: any, mapper: Mapper = None, **kwargs) -> Alimento:
+        if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
+            return mapper.entity_to_dto(obj, **kwargs)
+        alimento: Alimento = mapper.dto_to_entity(obj, **kwargs)
+        self.validate_rule(ValidAlimento(alimento))
+
+        return alimento
+
+
+@dataclass
+class _AlimentoAsociadoFactory(Factory):
+    def create(self, obj: any, mapper: Mapper = None, **kwargs) -> AlimentoAsociado:
+        if isinstance(mapper, UnidirectionalMapper):
+            return mapper.map(obj, **kwargs)
+        elif isinstance(obj, ValueObject):
+            return mapper.entity_to_dto(obj, **kwargs)
+        asociacion: AlimentoAsociado = mapper.dto_to_entity(obj, **kwargs)
+
+        return asociacion
+
+
+@dataclass
 class PerfilFactory(Factory):
     def create(self, obj: any, mapper: Mapper, **kwargs):
         if mapper.type() == PerfilDemografico:
@@ -99,5 +126,11 @@ class PerfilFactory(Factory):
         elif mapper.type() == Molestia:
             perfil_factory = _MolestiaFactory()
             return perfil_factory.create(obj, mapper, **kwargs)
+        elif mapper.type() == Alimento:
+            alimento_factory = _AlimentoFactory()
+            return alimento_factory.create(obj, mapper, **kwargs)
+        elif mapper.type() == AlimentoAsociado:
+            asociacion_factory = _AlimentoAsociadoFactory()
+            return asociacion_factory.create(obj, mapper, **kwargs)
         else:
             raise InvalidPerfilDemograficoFactoryException()

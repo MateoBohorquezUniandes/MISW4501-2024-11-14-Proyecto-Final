@@ -130,8 +130,49 @@ class Molestia(db.Model):
     )
 
 
+class Alimento(db.Model):
+    __tablename__ = "alimentos_perfil"
+
+    id = db.Column(db.String(), primary_key=True)
+    nombre = db.Column(db.String(120), nullable=False, unique=True)
+    categoria = db.Column(db.String(50), nullable=False)
+
+    createdAt = db.Column(
+        db.DateTime(),
+        default=datetime.utcnow(),
+    )
+    updateAt = db.Column(
+        db.DateTime(),
+        default=datetime.utcnow(),
+        onupdate=datetime.now,
+    )
+
+
 class PerfilAlimenticio(db.Model):
     __tablename__ = "perfil_alimenticio"
 
     tipo_identificacion = db.Column(db.String(10), primary_key=True)
     identificacion = db.Column(db.String(20), primary_key=True)
+    tipo_alimentacion = db.Column(db.String(), nullable=True)
+
+
+class AlimentoAsociado(db.Model):
+    __tablename__ = "perfil_alimentos_asociados"
+    id_alimento = db.Column(db.String(), primary_key=True)
+    tipo_identificacion = db.Column(db.String(10), primary_key=True)
+    identificacion = db.Column(db.String(20), primary_key=True)
+
+    tipo = db.Column(db.String(100), primary_key=True)
+    alimento = db.relationship(Alimento, backref="asociaciones")
+    perfil = db.relationship(PerfilAlimenticio, backref="asociaciones")
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(
+            [tipo_identificacion, identificacion],
+            [
+                PerfilAlimenticio.tipo_identificacion,
+                PerfilAlimenticio.identificacion,
+            ],
+        ),
+        db.ForeignKeyConstraint([id_alimento], [Alimento.id]),
+    )

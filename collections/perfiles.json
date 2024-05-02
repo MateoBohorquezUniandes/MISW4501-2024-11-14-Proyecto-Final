@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3c1f62e5-cc85-443a-9bc6-5937101a35ce",
+		"_postman_id": "d1c6833f-418a-4ef3-ac36-71cad9bb89d6",
 		"name": "perfiles",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25979776"
@@ -65,20 +65,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.sendRequest({",
-									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
-									"    method: 'POST',",
-									"    header: { 'content-type': 'application/json' },",
-									"    body: {",
-									"        mode: 'raw',",
-									"        raw: JSON.stringify({",
-									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),",
-									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')",
-									"        })",
-									"    }",
-									"},",
-									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
-									");"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -211,20 +198,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.sendRequest({",
-									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
-									"    method: 'POST',",
-									"    header: { 'content-type': 'application/json' },",
-									"    body: {",
-									"        mode: 'raw',",
-									"        raw: JSON.stringify({",
-									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),",
-									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')",
-									"        })",
-									"    }",
-									"},",
-									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
-									");"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -290,20 +264,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.sendRequest({\r",
-									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,\r",
-									"    method: 'POST',\r",
-									"    header: { 'content-type': 'application/json' },\r",
-									"    body: {\r",
-									"        mode: 'raw',\r",
-									"        raw: JSON.stringify({\r",
-									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),\r",
-									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')\r",
-									"        })\r",
-									"    }\r",
-									"},\r",
-									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
-									");"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -371,20 +332,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.sendRequest({\r",
-									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,\r",
-									"    method: 'POST',\r",
-									"    header: { 'content-type': 'application/json' },\r",
-									"    body: {\r",
-									"        mode: 'raw',\r",
-									"        raw: JSON.stringify({\r",
-									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),\r",
-									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')\r",
-									"        })\r",
-									"    }\r",
-									"},\r",
-									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
-									");"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -452,20 +400,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.sendRequest({\r",
-									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,\r",
-									"    method: 'POST',\r",
-									"    header: { 'content-type': 'application/json' },\r",
-									"    body: {\r",
-									"        mode: 'raw',\r",
-									"        raw: JSON.stringify({\r",
-									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),\r",
-									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')\r",
-									"        })\r",
-									"    }\r",
-									"},\r",
-									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
-									");"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -535,20 +470,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.sendRequest({",
-									"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
-									"    method: 'POST',",
-									"    header: { 'content-type': 'application/json' },",
-									"    body: {",
-									"        mode: 'raw',",
-									"        raw: JSON.stringify({",
-									"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),",
-									"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')",
-									"        })",
-									"    }",
-									"},",
-									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
-									");"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -598,6 +520,284 @@
 								"perfiles",
 								"queries",
 								"deportivo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "alimenticio success",
+			"item": [
+				{
+					"name": "Crear alimentos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});",
+									"",
+									"var currentCount = parseInt(pm.collectionVariables.get(\"alimenticio.count\"));",
+									"var categorias = JSON.parse(pm.collectionVariables.get(\"alimenticio.alimentos.categorias\")); ",
+									"if (currentCount < categorias.length - 1) {",
+									"    pm.collectionVariables.set(\"alimenticio.count\", currentCount + 1);",
+									"    postman.setNextRequest(pm.info.requestName);",
+									"} else {",
+									"    postman.setNextRequest(\"alimentos\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var currentCount = parseInt(pm.collectionVariables.get(\"alimenticio.count\"));",
+									"var categorias = JSON.parse(pm.collectionVariables.get(\"alimenticio.alimentos.categorias\"));",
+									"var nombres = JSON.parse(pm.collectionVariables.get(\"alimenticio.alimentos.nombres\"));",
+									"",
+									"if (currentCount < categorias.length) {",
+									"    console.log(currentCount, nombres[currentCount], categorias[currentCount])",
+									"",
+									"    pm.collectionVariables.set(\"alimenticio.alimento.nombre\", `\"${nombres[currentCount]}\"`);",
+									"    pm.collectionVariables.set(\"alimenticio.alimento.categoria\", `\"${categorias[currentCount]}\"`);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": {{alimenticio.alimento.nombre}},\n    \"categoria\": {{alimenticio.alimento.categoria}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/perfiles/commands/alimentos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"commands",
+								"alimentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alimentos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data).to.be.an('array');",
+									"",
+									"    const asociacion = pm.collectionVariables.get(\"alimenticio.alimento.nombre\").replace(/['\"]+/g, '');",
+									"    let ids = responseData.data",
+									"            .filter(a => a.nombre === asociacion)",
+									"            .map(alimento => `\"${alimento.id}\"`);",
+									"    console.log(ids)",
+									"    pm.collectionVariables.set(\"alimenticio.alimento.id\", ids);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/perfiles/queries/alimentos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"queries",
+								"alimentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "asociar alimento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{alimenticio.alimento.id}},\n    \"nombre\": {{alimenticio.alimento.nombre}},\n    \"categoria\": {{alimenticio.alimento.categoria}},\n    \"tipo\": {{alimenticio.alimento.tipo}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/perfiles/commands/alimenticio/alimentos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"commands",
+								"alimenticio",
+								"alimentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alimenticio.alimento.tipo_alimentacion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tipo_alimentacion\": {{alimenticio.alimento.tipo_alimentacion}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/perfiles/commands/alimenticio/tipo",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"commands",
+								"alimenticio",
+								"tipo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "perfil alimenticio",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json().data;",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.tipo_identificacion).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.identificacion).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.tipo_alimentacion).to.be.an('string');",
+									"    pm.expect(responseData.alimentos).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/perfiles/queries/alimenticio",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"queries",
+								"alimenticio"
 							]
 						}
 					},
@@ -719,7 +919,7 @@
 									"        })",
 									"    }",
 									"},",
-									"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+									"    (_err, response) => pm.collectionVariables.set(\"token_failure\", response.json().token)",
 									");"
 								],
 								"type": "text/javascript",
@@ -746,7 +946,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{token}}",
+									"value": "{{token_failure}}",
 									"type": "string"
 								}
 							]
@@ -773,7 +973,7 @@
 			"name": "deportivo fail",
 			"item": [
 				{
-					"name": "añadir habito sin token",
+					"name": "habito sin token",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -839,6 +1039,20 @@
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
+					"pm.sendRequest({",
+					"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+					"    method: 'POST',",
+					"    header: { 'content-type': 'application/json' },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: JSON.stringify({",
+					"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),",
+					"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')",
+					"        })",
+					"    }",
+					"},",
+					"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+					");",
 					""
 				]
 			}
@@ -958,6 +1172,50 @@
 		{
 			"key": "demografico.deportes",
 			"value": "[\"Ciclismo\"]",
+			"type": "string"
+		},
+		{
+			"key": "alimenticio.alimentos.categorias",
+			"value": "[\"Carbohidrato\", \"Lipido\", \"Lacteo\", \"Fruta\", \"Verdura\", \"Proteina\"]",
+			"type": "string"
+		},
+		{
+			"key": "alimenticio.alimentos.nombres",
+			"value": "[\"Arroz\", \"Aceite de Oliva\", \"Queso\", \"Fresa\", \"Tomate\", \"Pollo\"]",
+			"type": "string"
+		},
+		{
+			"key": "alimenticio.count",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "alimenticio.alimento.nombre",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "alimenticio.alimento.categoria",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "token_failure",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "alimenticio.alimento.tipo",
+			"value": "\"Preferencia\"",
+			"type": "string"
+		},
+		{
+			"key": "alimenticio.alimento.id",
+			"value": ""
+		},
+		{
+			"key": "alimenticio.alimento.tipo_alimentacion",
+			"value": "\"Vegetariano\"",
 			"type": "string"
 		}
 	]

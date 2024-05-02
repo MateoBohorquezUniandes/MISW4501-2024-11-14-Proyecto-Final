@@ -44,7 +44,7 @@ class PerfilDemografico(RootAggregation):
                 deportes=deportes,
             )
         )
-    
+
     def update(self, correlation_id: uuid.UUID):
         self.append_event(
             PerfilDemograficoModified(
@@ -72,7 +72,7 @@ class HabitoDeportivo(RootAggregation):
 
 
 @dataclass
-class Molestia(RootAggregation):
+class Molestia(Entity):
     titulo: str = field(default_factory=str)
     descripcion: str = field(default_factory=str)
     tipo: vo.MolestiaTipo = field(default_factory=vo.MolestiaTipo)
@@ -90,6 +90,15 @@ class PerfilDeportivo(RootAggregation):
 
 
 @dataclass
+class Alimento(Entity):
+    nombre: str = field(default_factory=str)
+    categoria: vo.CategoriaAlimento = field(default=None)
+    tipo: vo.CategoriaAsociacionAlimento = field(default=None)
+
+
+@dataclass
 class PerfilAlimenticio(RootAggregation):
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
+    tipo_alimentacion: vo.TipoAlimentacion = field(default=None)
+    alimentos: list[Alimento] = field(default_factory=list)
