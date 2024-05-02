@@ -7,7 +7,7 @@ from planes.application.commands.base import PlanCommandBaseHandler
 from planes.application.dtos import PlanEntrenamientoDTO
 from planes.application.exceptions import BadRequestError, UnprocessableEntityError
 from planes.application.mappers import PlanEntrenamientoDTOEntityMapper
-from planes.domain.entities import PlanEntrenamiento
+from planes.domain.entities import Entrenamiento, PlanEntrenamiento
 from planes.infrastructure.uwo import UnitOfWorkASQLAlchemyFactory
 from seedwork.application.commands import Command, execute_command
 from seedwork.domain.exceptions import BusinessRuleException
@@ -35,20 +35,15 @@ class CreatePlanEntrenamientoHandler(PlanCommandBaseHandler):
             repository_p = self.repository_factory.create(plan_entrenamiento)
 
             UnitOfWorkPort.register_batch(uowf, repository_p.append, plan_entrenamiento)
-            UnitOfWorkPort.commit(uowf)
 
-            if plan_entrenamiento.entrenamientos:
-                repository_e = self.repository_factory.create(
-                    plan_entrenamiento.entrenamientos[0]
-                )
-                entrenamientos_dto = repository_e.get_all(
-                    ids=[e.id for e in plan_entrenamiento.entrenamientos],
-                    as_entity=False,
-                )
+            uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
+
+            repository_e = self.repository_factory.create(Entrenamiento)
+            for entrenamiento in plan_entrenamiento.entrenamientos:
                 UnitOfWorkPort.register_batch(
-                    uowf, repository_p.update, plan_entrenamiento, entrenamientos_dto
+                    uowf, repository_e.append, entrenamiento, str(plan_entrenamiento.id)
                 )
-                UnitOfWorkPort.commit(uowf)
+            UnitOfWorkPort.commit(uowf)
 
         except BusinessRuleException as bre:
             traceback.print_exc()

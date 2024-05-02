@@ -1,13 +1,22 @@
+from dataclasses import asdict
 from uuid import UUID
 
 from planes.application.dtos import (
     DuracionDTO,
     EntrenamientoDTO,
+    GrupoAlimenticioDTO,
     ObjetivoEntrenamientoDTO,
     PlanEntrenamientoDTO,
+    RutinaAlimentacionDTO,
     UsuarioPlanDTO,
 )
-from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
+from planes.domain.entities import (
+    Entrenamiento,
+    GrupoAlimenticio,
+    PlanEntrenamiento,
+    RutinaAlimentacion,
+    UsuarioPlan,
+)
 from planes.domain.value_objects import (
     EXIGENCIA,
     Duracion,
@@ -42,7 +51,7 @@ class EntrenamientoDTODictMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: EntrenamientoDTO) -> dict:
-        return dto.__dict__
+        return asdict(dto)
 
 
 class ObjetivoEntrenamientoDTODictMapper(ApplicationMapper):
@@ -56,7 +65,7 @@ class ObjetivoEntrenamientoDTODictMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: ObjetivoEntrenamientoDTO) -> dict:
-        return dto.__dict__
+        return asdict(dto)
 
 
 class PlanEntrenamientoDTODictMapper(ApplicationMapper):
@@ -84,12 +93,11 @@ class PlanEntrenamientoDTODictMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: PlanEntrenamientoDTO) -> dict:
-        return dto.__dict__
+        return asdict(dto)
 
 
 class UsuarioPlanDTODictMapper(ApplicationMapper):
     def external_to_dto(self, external: dict) -> UsuarioPlanDTO:
-
         return UsuarioPlanDTO(
             tipo_identificacion=external.get("tipo_identificacion", ""),
             identificacion=external.get("identificacion", ""),
@@ -97,7 +105,42 @@ class UsuarioPlanDTODictMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: PlanEntrenamientoDTO) -> dict:
-        return dto.__dict__
+        return asdict(dto)
+
+
+class GrupoAlimenticioDTODictMapper(ApplicationMapper):
+    def external_to_dto(self, external: dict) -> GrupoAlimenticioDTO:
+        return GrupoAlimenticioDTO(
+            id=external.get("", ""),
+            grupo=external.get("grupo", ""),
+            porcion=float(external.get("porcion", "")),
+            unidad=external.get("unidad", ""),
+            calorias=float(external.get("calorias", "")),
+        )
+
+    def dto_to_external(self, dto: GrupoAlimenticioDTO) -> dict:
+        return asdict(dto)
+
+
+class RutinaAlimentacionDTODictMapper(ApplicationMapper):
+    def external_to_dto(self, external: dict) -> RutinaAlimentacionDTO:
+        mapper = GrupoAlimenticioDTODictMapper()
+        grupos = [
+            mapper.external_to_dto(g) for g in external.get("grupos_alimenticios", [])
+        ]
+        return RutinaAlimentacionDTO(
+            id=external.get("", ""),
+            nombre=external.get("nombre", ""),
+            descripcion=external.get("descripcion", ""),
+            imagen=external.get("imagen", ""),
+            tipo_alimentacion=external.get("tipo_alimentacion", ""),
+            deporte=external.get("deporte", ""),
+            grupos_alimenticios=grupos,
+        )
+
+    def dto_to_external(self, dto: RutinaAlimentacionDTO) -> dict:
+        print(dto)
+        return asdict(dto)
 
 
 # #####################################################################################
@@ -212,9 +255,72 @@ class UsuarioPlanDTOEntityMapper(DomainMapper):
         mapper = PlanEntrenamientoDTOEntityMapper()
         planes = [mapper.entity_to_dto(p) for p in entity.planes_entrenamiento]
         return UsuarioPlanDTO(
-            entity.created_at,
-            entity.updated_at,
+            entity.created_at.strftime(self.DATE_FORMAT),
+            entity.updated_at.strftime(self.DATE_FORMAT),
             entity.tipo_identificacion,
             entity.identificacion,
             planes_entrenamiento=planes,
+        )
+
+
+class GrupoAlimenticioDTOEntityMapper(DomainMapper):
+    DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+
+    def type(self) -> type:
+        return GrupoAlimenticio
+
+    def dto_to_entity(self, dto: GrupoAlimenticioDTO) -> GrupoAlimenticio:
+        args = [UUID(dto.id)] if dto.id else []
+        return GrupoAlimenticio(
+            *args,
+            grupo=dto.grupo,
+            porcion=dto.porcion,
+            unidad=dto.unidad,
+            calorias=dto.calorias,
+        )
+
+    def entity_to_dto(self, entity: GrupoAlimenticio) -> GrupoAlimenticioDTO:
+        return GrupoAlimenticioDTO(
+            entity.created_at.strftime(self.DATE_FORMAT),
+            entity.updated_at.strftime(self.DATE_FORMAT),
+            entity.id,
+            grupo=entity.grupo,
+            porcion=entity.porcion,
+            unidad=entity.unidad,
+            calorias=entity.calorias,
+        )
+
+
+class RutinaAlimentacionDTOEntityMapper(DomainMapper):
+    DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+
+    def type(self) -> type:
+        return RutinaAlimentacion
+
+    def dto_to_entity(self, dto: RutinaAlimentacionDTO) -> RutinaAlimentacion:
+        args = [UUID(dto.id)] if dto.id else []
+        mapper = GrupoAlimenticioDTOEntityMapper()
+        grupos = [mapper.dto_to_entity(g) for g in dto.grupos_alimenticios]
+        return RutinaAlimentacion(
+            *args,
+            nombre=dto.nombre,
+            descripcion=dto.descripcion,
+            imagen=dto.imagen,
+            tipo_alimentacion=dto.tipo_alimentacion,
+            grupos_alimenticios=grupos,
+            deporte=dto.deporte,
+        )
+
+    def entity_to_dto(self, entity: RutinaAlimentacion) -> RutinaAlimentacionDTO:
+        mapper = GrupoAlimenticioDTOEntityMapper()
+        grupos = [mapper.entity_to_dto(g) for g in entity.grupos_alimenticios]
+        return RutinaAlimentacionDTO(
+            entity.created_at.strftime(self.DATE_FORMAT),
+            entity.updated_at.strftime(self.DATE_FORMAT),
+            entity.id,
+            nombre=entity.nombre,
+            descripcion=entity.descripcion,
+            imagen=entity.imagen,
+            tipo_alimentacion=entity.tipo_alimentacion,
+            grupos_alimenticios=grupos,
         )

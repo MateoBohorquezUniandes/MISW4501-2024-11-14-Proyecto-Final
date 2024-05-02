@@ -2,12 +2,13 @@ from uuid import UUID
 
 from flask import Blueprint, Response, jsonify, request
 
+from planes.application.commands.create_rutina_alimentacion import (
+    CreateRutinaAlimentacion,
+)
 import seedwork.presentation.api as api
-from planes.application.commands.asociar_entrenamiento import AsociarEntrenamientos
 from planes.application.commands.asociar_plan_entrenamiento import (
     CreateRecomendacionPlan,
 )
-from planes.application.commands.create_entrenamiento import CreateEntrenamiento
 from planes.application.commands.create_plan_entrenamiento import (
     CreatePlanEntrenamiento,
 )
@@ -15,6 +16,7 @@ from planes.application.mappers import (
     EntrenamientoDTODictMapper,
     ObjetivoEntrenamientoDTODictMapper,
     PlanEntrenamientoDTODictMapper,
+    RutinaAlimentacionDTODictMapper,
     UsuarioPlanDTODictMapper,
 )
 from seedwork.application.commands import execute_command
@@ -39,33 +41,15 @@ def create_plan_entrenamiento():
     return {}, 202
 
 
-@bp.route("/entrenamientos", methods=("POST",))
-def create_entrenamiento():
+@bp.route("/rutinas", methods=("POST",))
+def create_rutina_alimentacion():
     data: dict = request.json
-    correlation_id = None
-    if "correlation_id" in data:
-        correlation_id = UUID(data.get("correlation_id"))
+    correlation_id = data.pop("correlation_id", None)
 
-    mapper = EntrenamientoDTODictMapper()
-    entrenamiento_dto = mapper.external_to_dto(data)
+    mapper = RutinaAlimentacionDTODictMapper()
+    rutina_dto = mapper.external_to_dto(data)
 
-    command = CreateEntrenamiento(correlation_id, entrenamiento_dto)
-    execute_command(command)
-
-    return {}, 202
-
-
-@bp.route("/", methods=("PATCH",))
-def asociar_entrenamientos():
-    data: dict = request.json
-    correlation_id = None
-    if "correlation_id" in data:
-        correlation_id = UUID(data.get("correlation_id"))
-
-    plan_id = data.get("id", "")
-    entrenamientos = [e.get("id", "") for e in data.get("entrenamientos", [])]
-
-    command = AsociarEntrenamientos(correlation_id, plan_id, entrenamientos)
+    command = CreateRutinaAlimentacion(correlation_id, rutina_dto)
     execute_command(command)
 
     return {}, 202

@@ -15,13 +15,6 @@ recomendacion_table = db.Table(
     db.Column("plan_id", db.ForeignKey("plan_entrenamiento.id"), primary_key=True),
 )
 
-entrenamientos_asociados_table = db.Table(
-    "entrenamientos_asociados",
-    db.Model.metadata,
-    db.Column("entrenamiento_id", db.ForeignKey("entrenamiento.id"), primary_key=True),
-    db.Column("plan_id", db.ForeignKey("plan_entrenamiento.id"), primary_key=True),
-)
-
 
 class UsuarioPlan(db.Model):
     __tablename__ = "usuario_plan"
@@ -54,43 +47,6 @@ class UsuarioPlan(db.Model):
     )
 
 
-class PlanEntrenamiento(db.Model):
-    __tablename__ = "plan_entrenamiento"
-
-    id = db.Column(db.String, primary_key=True)
-
-    nombre = db.Column(db.String(120), nullable=False, unique=True)
-    categoria = db.Column(db.String(120), nullable=False)
-    descripcion = db.Column(db.String(400), nullable=False)
-
-    nivel_exigencia = db.Column(db.String(50), nullable=False)
-    deporte_objetivo = db.Column(db.String(50), nullable=False)
-
-    createdAt = db.Column(
-        db.DateTime(),
-        default=datetime.utcnow(),
-    )
-    updateAt = db.Column(
-        db.DateTime(),
-        default=datetime.utcnow(),
-        onupdate=datetime.now,
-    )
-
-    usuarios = db.relationship(
-        "UsuarioPlan",
-        secondary=recomendacion_table,
-        back_populates="planes",
-        lazy="dynamic",
-    )
-
-    entrenamientos = db.relationship(
-        "Entrenamiento",
-        secondary=entrenamientos_asociados_table,
-        back_populates="planes",
-        lazy="select",
-    )
-
-
 class Entrenamiento(db.Model):
     __tablename__ = "entrenamiento"
 
@@ -105,6 +61,8 @@ class Entrenamiento(db.Model):
     duracion_unidad = db.Column(db.String(50), nullable=False)
     series = db.Column(db.Integer, nullable=False)
 
+    plan_id = db.Column(db.String, db.ForeignKey("plan_entrenamiento.id"))
+
     createdAt = db.Column(
         db.DateTime(),
         default=datetime.utcnow(),
@@ -115,15 +73,9 @@ class Entrenamiento(db.Model):
         onupdate=datetime.now,
     )
 
-    planes = db.relationship(
-        "PlanEntrenamiento",
-        secondary=entrenamientos_asociados_table,
-        back_populates="entrenamientos",
-        lazy="dynamic",
-    )
-
     __table_args__ = (
         db.UniqueConstraint(
+            "plan_id",
             "nombre",
             "grupo_muscular",
             "duracion",
@@ -131,6 +83,40 @@ class Entrenamiento(db.Model):
             "series",
             name="entrenamiento_unique",
         ),
+    )
+
+
+class PlanEntrenamiento(db.Model):
+    __tablename__ = "plan_entrenamiento"
+
+    id = db.Column(db.String, primary_key=True)
+
+    nombre = db.Column(db.String(120), nullable=False, unique=True)
+    categoria = db.Column(db.String(120), nullable=False)
+    descripcion = db.Column(db.String(400), nullable=False)
+
+    nivel_exigencia = db.Column(db.String(50), nullable=False)
+    deporte_objetivo = db.Column(db.String(50), nullable=False)
+
+    entrenamientos = db.relationship(
+        Entrenamiento, cascade="all,delete", backref="plan"
+    )
+
+    usuarios = db.relationship(
+        "UsuarioPlan",
+        secondary=recomendacion_table,
+        back_populates="planes",
+        lazy="dynamic",
+    )
+
+    createdAt = db.Column(
+        db.DateTime(),
+        default=datetime.utcnow(),
+    )
+    updateAt = db.Column(
+        db.DateTime(),
+        default=datetime.utcnow(),
+        onupdate=datetime.now,
     )
 
 
@@ -161,17 +147,43 @@ class RutinaRecuperacion(db.Model):
     )
 
 
+class GrupoAlimenticio(db.Model):
+    __tablename__ = "grupo_alimenticio"
+
+    id = db.Column(db.String, primary_key=True)
+    grupo = db.Column(db.String(120), nullable=False)
+
+    porcion = db.Column(db.Float, nullable=False)
+    porcion_unidad = db.Column(db.String(50), nullable=False)
+    calorias = db.Column(db.Float, nullable=False)
+
+    rutina_id = db.Column(db.String, db.ForeignKey("rutina_alimentacion.id"))
+
+    createdAt = db.Column(
+        db.DateTime(),
+        default=datetime.utcnow(),
+    )
+    updateAt = db.Column(
+        db.DateTime(),
+        default=datetime.utcnow(),
+        onupdate=datetime.now,
+    )
+
+
 class RutinaAlimentacion(db.Model):
     __tablename__ = "rutina_alimentacion"
 
     id = db.Column(db.String, primary_key=True)
     nombre = db.Column(db.String(120), nullable=False)
 
-    tipo = db.Column(db.String(50), nullable=False)
     descripcion = db.Column(db.String(400), nullable=False)
     imagen = db.Column(db.String(400), nullable=True)
+    tipo_alimentacion = db.Column(db.String(), nullable=False)
+    deporte = db.Column(db.String(), nullable=False)
 
-    alimentos = db.relationship("Alimento", back_populates="rutina")
+    grupos_alimenticios = db.relationship(
+        GrupoAlimenticio, cascade="all,delete", backref="rutina"
+    )
 
     createdAt = db.Column(
         db.DateTime(),
@@ -182,30 +194,3 @@ class RutinaAlimentacion(db.Model):
         default=datetime.utcnow(),
         onupdate=datetime.now,
     )
-
-
-class Alimento(db.Model):
-    __tablename__ = "alimentos_rutinas"
-
-    id = db.Column(db.String, primary_key=True)
-    nombre = db.Column(db.String(120), nullable=False)
-
-    tipo = db.Column(db.String(50), nullable=False)
-    porcion = db.Column(db.Float, nullable=False)
-    porcion_unidad = db.Column(db.String(50), nullable=False)
-    calorias = db.Column(db.Float, nullable=False)
-
-    createdAt = db.Column(
-        db.DateTime(),
-        default=datetime.utcnow(),
-    )
-    updateAt = db.Column(
-        db.DateTime(),
-        default=datetime.utcnow(),
-        onupdate=datetime.now,
-    )
-
-    rutina_id = db.Column(
-        db.String, db.ForeignKey("rutina_alimentacion.id"), nullable=False
-    )
-    rutina = db.relationship("RutinaAlimentacion", back_populates="alimentos")

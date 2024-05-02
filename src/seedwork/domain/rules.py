@@ -162,6 +162,6 @@ class ValidExtendedEnum(BusinessRule):
     def is_valid(self) -> bool:
         return (
             self.value in self.enumeration.list()
-            if self.value and not self.soft_check
+            if not self.soft_check
             else True
         )

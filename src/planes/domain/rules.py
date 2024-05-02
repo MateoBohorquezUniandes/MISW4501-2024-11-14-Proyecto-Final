@@ -1,28 +1,27 @@
-from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
+from planes.domain.entities import (
+    Entrenamiento,
+    GrupoAlimenticio,
+    PlanEntrenamiento,
+    RutinaAlimentacion,
+    UsuarioPlan,
+)
 from planes.domain.value_objects import (
     DEPORTE,
     DURACION_UNIDAD,
     EXIGENCIA,
     PLAN_CATEGORIA,
+    PORCION_UNIDAD,
     ObjetivoEntrenamiento,
 )
 from seedwork.domain.rules import (
     BusinessRule,
     CompoundBusinessRule,
+    ValidExtendedEnum,
+    ValidFloat,
     ValidInteger,
     ValidString,
 )
-
-
-class _ValidDuracionunidad(BusinessRule):
-    unidad: str
-
-    def __init__(self, unidad, message="El unidad no es una opcion valida"):
-        super().__init__(message, "unidad")
-        self.unidad = unidad
-
-    def is_valid(self) -> bool:
-        return self.unidad in DURACION_UNIDAD.list()
+from seedwork.domain.value_objects import CATEGORIA_ALIMENTO, TIPO_ALIMENTACION
 
 
 class ValidEntrenamiento(CompoundBusinessRule):
@@ -54,7 +53,12 @@ class ValidEntrenamiento(CompoundBusinessRule):
                 "duracion invalida",
                 "duracion",
             ),
-            _ValidDuracionunidad(self.entrenamiento.duracion.unidad),
+            ValidExtendedEnum(
+                self.entrenamiento.duracion.unidad,
+                DURACION_UNIDAD,
+                "duracion invalida",
+                "duracion",
+            ),
             ValidInteger(
                 self.entrenamiento.duracion.series,
                 1,
@@ -67,41 +71,6 @@ class ValidEntrenamiento(CompoundBusinessRule):
         super().__init__(message, rules, "entrenamiento")
 
 
-class _ValidCategoria(BusinessRule):
-    categoria: str
-
-    def __init__(self, categoria, message="La categoria no es una opcion valida"):
-        super().__init__(message, "categoria")
-        self.categoria = categoria
-
-    def is_valid(self) -> bool:
-        return self.categoria in PLAN_CATEGORIA.list()
-
-
-class _ValidExigencia(BusinessRule):
-    exigencia: str
-
-    def __init__(
-        self, exigencia, message="El nivel de exigencia no es una opcion valida"
-    ):
-        super().__init__(message, "exigencia")
-        self.exigencia = exigencia
-
-    def is_valid(self) -> bool:
-        return self.exigencia in EXIGENCIA.list()
-
-
-class _ValidDeporte(BusinessRule):
-    deporte: str
-
-    def __init__(self, deporte, message="El deporte no es una opcion valida"):
-        super().__init__(message, "deporte")
-        self.deporte = deporte
-
-    def is_valid(self) -> bool:
-        return self.deporte in DEPORTE.list() if self.deporte else True
-
-
 class ValidObjetivo(CompoundBusinessRule):
     objetivo: ObjetivoEntrenamiento
 
@@ -109,8 +78,12 @@ class ValidObjetivo(CompoundBusinessRule):
         self.objetivo: ObjetivoEntrenamiento = objetivo
 
         rules = [
-            _ValidExigencia(self.objetivo.exigencia),
-            _ValidDeporte(self.objetivo.deporte),
+            ValidExtendedEnum(
+                self.objetivo.exigencia, EXIGENCIA, "exigencia invalida", "exigencia"
+            ),
+            ValidExtendedEnum(
+                self.objetivo.deporte, DEPORTE, "deporte invalido", "deporte"
+            ),
         ]
 
         super().__init__(message, rules, "plan")
@@ -127,7 +100,9 @@ class ValidPlanEntrenamiento(CompoundBusinessRule):
             ValidString(
                 self.plan.descripcion, 2, 400, "descripcion invalida", "descripcion"
             ),
-            _ValidCategoria(self.plan.categoria),
+            ValidExtendedEnum(
+                self.plan.categoria, PLAN_CATEGORIA, "categoria invalida", "categoria"
+            ),
             ValidObjetivo(self.plan.objetivo),
         ]
 
@@ -158,3 +133,64 @@ class ValidUsuarioPlan(CompoundBusinessRule):
         ]
 
         super().__init__(message, rules, "usuario_plan")
+
+
+class ValidGrupoAlimenticio(CompoundBusinessRule):
+    grupo: GrupoAlimenticio
+
+    def __init__(self, grupo: GrupoAlimenticio, message="usuario invalido"):
+        self.grupo: GrupoAlimenticio = grupo
+
+        rules = [
+            ValidExtendedEnum(
+                self.grupo.grupo, CATEGORIA_ALIMENTO, "grupo invalido", "grupo"
+            ),
+            ValidFloat(
+                self.grupo.porcion,
+                1,
+                None,
+                "porcion fuera de rango invalida",
+                "porcion",
+            ),
+            ValidFloat(
+                self.grupo.calorias,
+                1,
+                None,
+                "calorias fuera de rango invalida",
+                "calorias",
+            ),
+            ValidExtendedEnum(
+                self.grupo.unidad, PORCION_UNIDAD, "unidad invalida", "unidad"
+            ),
+        ]
+
+        super().__init__(message, rules, "grupo_alimenticio")
+
+
+class ValidRutinaAlimentacion(CompoundBusinessRule):
+    rutina: RutinaAlimentacion
+
+    def __init__(self, rutina: RutinaAlimentacion, message="usuario invalido"):
+        self.rutina: RutinaAlimentacion = rutina
+
+        rules = [
+            ValidString(self.rutina.nombre, 2, 120, "nombre invalido", "nombre"),
+            ValidString(
+                self.rutina.descripcion, 2, 120, "descripcion invalida", "descripcion"
+            ),
+            ValidString(self.rutina.imagen, 2, 400, "imagen invalida", "imagen"),
+            ValidExtendedEnum(
+                self.rutina.deporte, DEPORTE, "deporte invalido", "deporte"
+            ),
+            ValidExtendedEnum(
+                self.rutina.tipo_alimentacion,
+                TIPO_ALIMENTACION,
+                "tipo invalido",
+                "tipo",
+            ),
+        ]
+        rules.extend(
+            [ValidGrupoAlimenticio(g) for g in self.rutina.grupos_alimenticios]
+        )
+
+        super().__init__(message, rules, "rutina.alimentacion")
