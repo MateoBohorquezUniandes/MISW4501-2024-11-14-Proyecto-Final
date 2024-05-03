@@ -22,8 +22,8 @@ class FormulaDTODictMapper(ApplicationMapper):
             parametros.append(
                 ParametroDTO(
                     id=parametro_int.get("id",""),
-                    nombre=str(parametro),
-                    simbolo=parametro_int.get("simbolo"),
+                    nombre=parametro_int.get("simbolo"),
+                    simbolo=str(parametro),
                     funcion=parametro_int.get("funcion"))
             )
         return parametros

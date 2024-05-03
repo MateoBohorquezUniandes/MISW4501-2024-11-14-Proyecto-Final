@@ -24,6 +24,7 @@ class CreateFormulaHandler(IndicadorCommandBaseHandler):
         try:
             uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
             mapper = FormulaDTOEntityMapper()
+            print(command.formula_dto)
             formula: Formula = self.indices_factory.create(
                 command.formula_dto, mapper
             )

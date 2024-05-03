@@ -5,7 +5,6 @@ import seedwork.presentation.api as api
 from seedwork.application.commands import execute_command
 from indicadores.application.commands.add_form import CreateFormula
 from indicadores.application.commands.recalculate_index import CalculateIndicador
-#from sesiones.application.commands.end_sesion import EndSesionDeportiva
 from indicadores.application.mappers import FormulaDTODictMapper, IndicadoresDTODictMapper
 
 bp_prefix: str = "/indicadores/commands"
@@ -17,6 +16,7 @@ bp: Blueprint = api.create_blueprint("commands", bp_prefix)
 def create_form():
     identificacion: dict = get_jwt_identity()
     data: dict = request.json
+    print(data)
     data["tipo_identificacion"] = identificacion.get("tipo")
     data["identificacion"] = identificacion.get("valor")
     mapper = FormulaDTODictMapper()
