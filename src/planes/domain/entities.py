@@ -2,6 +2,7 @@ import uuid
 from dataclasses import dataclass, field
 
 import planes.domain.value_objects as vo
+import seedwork.domain.value_objects as svo
 from planes.domain.events import (
     EntrenamientoCreated,
     PlanEntrenamientoCreated,
@@ -99,3 +100,23 @@ class RutinaRecuperacion(Entity):
 
     duracion: vo.Duracion = field(default_factory=vo.Duracion)
     frecuencia: vo.Frecuencia = field(default_factory=vo.Frecuencia)
+
+
+@dataclass
+class GrupoAlimenticio(Entity):
+    grupo: svo.CATEGORIA_ALIMENTO = field(default="")
+    porcion: float = field(default_factory=float)
+    unidad: vo.PORCION_UNIDAD = field(default="")
+    calorias: float = field(default_factory=float)
+
+
+@dataclass
+class RutinaAlimentacion(RootAggregation):
+    nombre: str = field(default_factory=str)
+    descripcion: str = field(default_factory=str)
+    imagen: str = field(default_factory=str)
+
+    tipo_alimentacion: svo.TIPO_ALIMENTACION = field(default_factory=str)
+    deporte: vo.DEPORTE = field(default_factory=str)
+
+    grupos_alimenticios: list[GrupoAlimenticio] = field(default_factory=list)

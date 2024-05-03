@@ -1,9 +1,17 @@
 from uuid import UUID
 
-from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
+from planes.domain.entities import (
+    Entrenamiento,
+    GrupoAlimenticio,
+    PlanEntrenamiento,
+    RutinaAlimentacion,
+    UsuarioPlan,
+)
 from planes.domain.value_objects import Duracion, Imagen, ObjetivoEntrenamiento
 from planes.infrastructure.dtos import Entrenamiento as EntrenamientoDTO
+from planes.infrastructure.dtos import GrupoAlimenticio as GrupoAlimenticioDTO
 from planes.infrastructure.dtos import PlanEntrenamiento as PlanEntrenamientoDTO
+from planes.infrastructure.dtos import RutinaAlimentacion as RutinaAlimentacionDTO
 from planes.infrastructure.dtos import UsuarioPlan as UsuarioPlanDTO
 from seedwork.domain.repositories import Mapper
 
@@ -92,4 +100,61 @@ class UsuarioPlanMapper(Mapper):
             tipo_identificacion=dto.tipo_identificacion,
             identificacion=dto.identificacion,
             planes_entrenamiento=planes,
+        )
+
+
+class GrupoAlimenticioMapper(Mapper):
+    def type(self) -> type:
+        return GrupoAlimenticio
+
+    def entity_to_dto(self, entity: GrupoAlimenticio) -> GrupoAlimenticioDTO:
+        grupo_dto = GrupoAlimenticioDTO()
+        grupo_dto.id = str(entity.id)
+        grupo_dto.grupo = entity.grupo
+        grupo_dto.porcion = entity.porcion
+        grupo_dto.porcion_unidad = entity.unidad
+        grupo_dto.calorias = entity.calorias
+
+        return grupo_dto
+
+    def dto_to_entity(self, dto: GrupoAlimenticioDTO) -> GrupoAlimenticio:
+        return GrupoAlimenticio(
+            UUID(dto.id),
+            created_at=dto.createdAt,
+            updated_at=dto.updateAt,
+            grupo=dto.grupo,
+            porcion=dto.porcion,
+            unidad=dto.porcion_unidad,
+            calorias=dto.calorias,
+        )
+
+
+class RutinaAlimentacionMapper(Mapper):
+    def type(self) -> type:
+        return RutinaAlimentacion
+
+    def entity_to_dto(self, entity: RutinaAlimentacion) -> RutinaAlimentacionDTO:
+        rutina_dto = RutinaAlimentacionDTO()
+        rutina_dto.id = str(entity.id)
+        rutina_dto.nombre = entity.nombre
+        rutina_dto.descripcion = entity.descripcion
+        rutina_dto.imagen = entity.imagen
+        rutina_dto.tipo_alimentacion = entity.tipo_alimentacion
+        rutina_dto.deporte = entity.deporte
+
+        return rutina_dto
+
+    def dto_to_entity(self, dto: RutinaAlimentacionDTO) -> RutinaAlimentacion:
+        mapper = GrupoAlimenticioMapper()
+        grupos = [mapper.dto_to_entity(g) for g in dto.grupos_alimenticios]
+        return RutinaAlimentacion(
+            UUID(dto.id),
+            created_at=dto.createdAt,
+            updated_at=dto.updateAt,
+            nombre=dto.nombre,
+            descripcion=dto.descripcion,
+            imagen=dto.imagen,
+            tipo_alimentacion=dto.tipo_alimentacion,
+            deporte=dto.deporte,
+            grupos_alimenticios=grupos,
         )

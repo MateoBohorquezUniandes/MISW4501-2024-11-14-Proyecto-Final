@@ -1,11 +1,19 @@
 from dataclasses import dataclass
 
-from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
+from planes.domain.entities import (
+    Entrenamiento,
+    GrupoAlimenticio,
+    PlanEntrenamiento,
+    RutinaAlimentacion,
+    UsuarioPlan,
+)
 from planes.domain.exceptions import InvalidPlanesFactoryException
 from planes.domain.rules import (
     ValidEntrenamiento,
+    ValidGrupoAlimenticio,
     ValidObjetivo,
     ValidPlanEntrenamiento,
+    ValidRutinaAlimentacion,
     ValidUsuarioPlan,
 )
 from planes.domain.value_objects import ObjetivoEntrenamiento
@@ -18,7 +26,7 @@ from seedwork.domain.value_objects import ValueObject
 
 @dataclass
 class _EntrenamientoFactory(Factory):
-    def create(self, obj: any, mapper: Mapper = None) -> Entrenamiento:
+    def create(self, obj: any, mapper: Mapper = None):
         if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
             return mapper.entity_to_dto(obj)
 
@@ -30,7 +38,7 @@ class _EntrenamientoFactory(Factory):
 
 @dataclass
 class _ObjetivoEntrenamientoFactory(Factory):
-    def create(self, obj: any, mapper: Mapper = None) -> ObjetivoEntrenamiento:
+    def create(self, obj: any, mapper: Mapper = None):
         if isinstance(obj, ValueObject):
             return mapper.entity_to_dto(obj)
 
@@ -42,7 +50,7 @@ class _ObjetivoEntrenamientoFactory(Factory):
 
 @dataclass
 class _PlanEntrenamientoFactory(Factory):
-    def create(self, obj: any, mapper: Mapper = None) -> PlanEntrenamiento:
+    def create(self, obj: any, mapper: Mapper = None):
         if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
             return mapper.entity_to_dto(obj)
 
@@ -54,7 +62,7 @@ class _PlanEntrenamientoFactory(Factory):
 
 @dataclass
 class _UsuarioPlanFactory(Factory):
-    def create(self, obj: any, mapper: Mapper = None) -> UsuarioPlan:
+    def create(self, obj: any, mapper: Mapper = None):
         if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
             return mapper.entity_to_dto(obj)
 
@@ -62,6 +70,30 @@ class _UsuarioPlanFactory(Factory):
         self.validate_rule(ValidUsuarioPlan(usuario))
 
         return usuario
+
+
+@dataclass
+class _GrupoAlimentacioFactory(Factory):
+    def create(self, obj: any, mapper: Mapper = None):
+        if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
+            return mapper.entity_to_dto(obj)
+
+        rutina: GrupoAlimenticio = mapper.dto_to_entity(obj)
+        self.validate_rule(ValidGrupoAlimenticio(rutina))
+
+        return rutina
+
+
+@dataclass
+class _RutinaAlimentacionFactory(Factory):
+    def create(self, obj: any, mapper: Mapper = None):
+        if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
+            return mapper.entity_to_dto(obj)
+
+        rutina: RutinaAlimentacion = mapper.dto_to_entity(obj)
+        self.validate_rule(ValidRutinaAlimentacion(rutina))
+
+        return rutina
 
 
 @dataclass
@@ -77,7 +109,13 @@ class PlanFactory(Factory):
             plan_factory = _PlanEntrenamientoFactory()
             return plan_factory.create(obj, mapper)
         elif mapper.type() == UsuarioPlan:
-            usuario_facotry = _UsuarioPlanFactory()
-            return usuario_facotry.create(obj, mapper)
+            usuario_factory = _UsuarioPlanFactory()
+            return usuario_factory.create(obj, mapper)
+        elif mapper.type() == GrupoAlimenticio:
+            grupo_factory = _GrupoAlimentacioFactory()
+            return grupo_factory.create(obj, mapper)
+        elif mapper.type() == RutinaAlimentacion:
+            rutina_factory = _RutinaAlimentacionFactory()
+            return rutina_factory.create(obj, mapper)
         else:
             raise InvalidPlanesFactoryException()

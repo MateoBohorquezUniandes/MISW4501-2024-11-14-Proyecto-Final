@@ -1,19 +1,31 @@
 from typing import Union
 
-from planes.domain.entities import Entrenamiento, PlanEntrenamiento, UsuarioPlan
+from planes.domain.entities import (
+    Entrenamiento,
+    GrupoAlimenticio,
+    PlanEntrenamiento,
+    RutinaAlimentacion,
+    UsuarioPlan,
+)
 from planes.domain.factories import PlanFactory
 from planes.domain.repositories import (
     EntrenamientoRepository,
+    GrupoAlimenticioRepository,
     PlanEntrenamientoRepository,
+    RutinaAlimentacionRepository,
     UsuarioPlanRepository,
 )
 from planes.infrastructure.db import db
 from planes.infrastructure.dtos import Entrenamiento as EntrenamientoDTO
+from planes.infrastructure.dtos import GrupoAlimenticio as GrupoAlimenticioDTO
 from planes.infrastructure.dtos import PlanEntrenamiento as PlanEntrenamientoDTO
+from planes.infrastructure.dtos import RutinaAlimentacion as RutinaAlimentacionDTO
 from planes.infrastructure.dtos import UsuarioPlan as UsuarioPlanDTO
 from planes.infrastructure.mappers import (
     EntrenamientoMapper,
+    GrupoAlimenticioMapper,
     PlanEntrenamientoMapper,
+    RutinaAlimentacionMapper,
     UsuarioPlanMapper,
 )
 
@@ -26,22 +38,14 @@ class EntrenamientoRepositoryPostgreSQL(EntrenamientoRepository):
     def plan_factory(self):
         return self._plan_factory
 
-    def get_all(
-        self, ids: list[str] = [], as_entity=True
-    ) -> Union[list[Entrenamiento], list[EntrenamientoDTO]]:
+    def get_all(self, plan_id: str = None) -> list[Entrenamiento]:
         query = db.session.query(EntrenamientoDTO)
-        if ids:
-            query = query.filter(EntrenamientoDTO.id.in_(ids))
+        if plan_id:
+            query = query.filter_by(plan_id=plan_id)
 
-        entrenamientos_dto = query.all()
-        return (
-            [
-                self.plan_factory.create(dto, EntrenamientoMapper())
-                for dto in entrenamientos_dto
-            ]
-            if as_entity
-            else entrenamientos_dto
-        )
+        return [
+            self.plan_factory.create(dto, EntrenamientoMapper()) for dto in query.all()
+        ]
 
     def get(self, id: str, as_entity=True) -> Union[Entrenamiento, EntrenamientoDTO]:
         entrenamiento_dto = db.session.query(EntrenamientoDTO).filter_by(id=id).one()
@@ -50,10 +54,11 @@ class EntrenamientoRepositoryPostgreSQL(EntrenamientoRepository):
         else:
             return entrenamiento_dto
 
-    def append(self, entrenamiento: Entrenamiento):
+    def append(self, entrenamiento: Entrenamiento, plan_id: str):
         entrenamiento_dto: EntrenamientoDTO = self.plan_factory.create(
             entrenamiento, EntrenamientoMapper()
         )
+        entrenamiento_dto.plan_id = plan_id
         db.session.add(entrenamiento_dto)
 
     def delete(self, id: str):
@@ -112,12 +117,8 @@ class PlanEntrenamientoRepositoryPostgreSQL(PlanEntrenamientoRepository):
             query = query.filter_by(id=id)
         query.delete()
 
-    def update(self, plan_id: str, entrenamientos: list[str]):
-        plan_dto: PlanEntrenamientoDTO = self.get(plan_id, as_entity=False)
-        entrenamientos_dto = EntrenamientoRepositoryPostgreSQL().get_all(
-            ids=entrenamientos, as_entity=False
-        )
-        plan_dto.entrenamientos.extend(entrenamientos_dto)
+    def update(self, plan: PlanEntrenamiento):
+        pass
 
 
 class UsuarioPlanRepositoryPostgreSQL(UsuarioPlanRepository):
@@ -191,3 +192,90 @@ class UsuarioPlanRepositoryPostgreSQL(UsuarioPlanRepository):
         usuario_dto.planes.extend(
             [p for p in planes_dto if p.id not in planes_asociados]
         )
+
+
+class GrupoAlimenticioRepositoryPostgreSQL(GrupoAlimenticioRepository):
+    def __init__(self):
+        self._plan_factory: PlanFactory = PlanFactory()
+
+    @property
+    def plan_factory(self):
+        return self._plan_factory
+
+    def get_all(self, rutina_id: str) -> list[GrupoAlimenticioDTO]:
+        query = db.session.query(GrupoAlimenticioDTO).filter_by(rutina_id=rutina_id)
+        return [
+            self.plan_factory.create(dto, GrupoAlimenticioMapper())
+            for dto in query.all()
+        ]
+
+    def get(
+        self, id: str, as_entity=True
+    ) -> Union[GrupoAlimenticio, GrupoAlimenticioDTO]:
+        grupo_dto = db.session.query(GrupoAlimenticioDTO).filter_by(id=id).one()
+        if as_entity:
+            return self.plan_factory.create(grupo_dto, GrupoAlimenticioMapper())
+        else:
+            return grupo_dto
+
+    def append(self, grupo: GrupoAlimenticio, rutina_id: str):
+        grupo_dto: GrupoAlimenticioDTO = self.plan_factory.create(
+            grupo, GrupoAlimenticioMapper()
+        )
+        grupo_dto.rutina_id = rutina_id
+        db.session.add(grupo_dto)
+
+    def delete(self, id: str):
+        query = db.session.query(GrupoAlimenticioDTO)
+        if id:
+            query = query.filter_by(id=id)
+        query.delete()
+
+    def update(self, grupo: GrupoAlimenticio):
+        pass
+
+
+class RutinaAlimentacionRepositoryPostgreSQL(RutinaAlimentacionRepository):
+    def __init__(self):
+        self._plan_factory: PlanFactory = PlanFactory()
+
+    @property
+    def plan_factory(self):
+        return self._plan_factory
+
+    def get_all(
+        self, tipo_alimentacion: str = None, deporte: str = None
+    ) -> list[RutinaAlimentacion]:
+        query = db.session.query(RutinaAlimentacionDTO)
+
+        if tipo_alimentacion:
+            query = query.filter_by(tipo_alimentacion=tipo_alimentacion)
+        if deporte:
+            query = query.filter_by(deporte=deporte)
+
+        return [
+            self.plan_factory.create(dto, RutinaAlimentacionMapper())
+            for dto in query.all()
+        ]
+
+    def get(
+        self, id: str, as_entity=True
+    ) -> Union[RutinaAlimentacion, RutinaAlimentacionDTO]:
+        rutina_dto = db.session.query(RutinaAlimentacionDTO).filter_by(id=id).one()
+        if as_entity:
+            return self.plan_factory.create(rutina_dto, RutinaAlimentacionMapper())
+        else:
+            return rutina_dto
+
+    def append(self, plan: RutinaAlimentacion):
+        rutina_dto = self.plan_factory.create(plan, RutinaAlimentacionMapper())
+        db.session.add(rutina_dto)
+
+    def delete(self, id: str):
+        query = db.session.query(RutinaAlimentacionDTO)
+        if id:
+            query = query.filter_by(id=id)
+        query.delete()
+
+    def update(self, rutina: RutinaAlimentacion):
+        pass

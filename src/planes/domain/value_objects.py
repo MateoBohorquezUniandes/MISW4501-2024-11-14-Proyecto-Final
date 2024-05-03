@@ -72,3 +72,9 @@ class Porcion(ValueObject):
 class Frecuencia(ValueObject):
     valor: int = field(default_factory=int)
     unidad: int = field(default_factory=int)
+
+
+class PORCION_UNIDAD(ExtendedEnum):
+    TAZA = "Taza"
+    CUCHARA = "Cuchara"
+    CUCHARADITA = "Cucharadita"

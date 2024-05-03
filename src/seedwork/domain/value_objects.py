@@ -12,7 +12,23 @@ class ExtendedEnum(Enum):
     def list(cls):
         return list(map(lambda c: c.value, cls))
 
+
 class GENERO(ExtendedEnum):
     MASCULINO = "M"
     FEMENINO = "F"
     OTRO = "O"
+
+
+class TIPO_ALIMENTACION(ExtendedEnum):
+    CARNIVORO = "Carnivoro"
+    OMNIVORO = "Omnivoro"
+    VEGETARIANO = "Vegetariano"
+    VEGANO = "Vegano"
+
+class CATEGORIA_ALIMENTO(ExtendedEnum):
+    CARBOHIDRATO = "Carbohidrato"
+    LIPIDO = "Lipido"
+    LACTEO = "Lacteo"
+    FRUTA = "Fruta"
+    VERDURA = "Verdura"
+    PROTEINA = "Proteina"

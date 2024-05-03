@@ -17,11 +17,12 @@ class GetPlanesEnternamientoQueryHandler(PlanQueryBaseHandler):
     def handle(self, query: GetPlanesEnternamiento) -> QueryResult:
         try:
             repository = self.repository_factory.create(PlanEntrenamiento)
-            entrenamientos: list[PlanEntrenamiento] = repository.get_all()
+            planes: list[PlanEntrenamiento] = repository.get_all()
 
             mapper = PlanEntrenamientoDTOEntityMapper()
-            planes_dto = [self.planes_factory.create(e, mapper) for e in entrenamientos]
-            return QueryResult(result=planes_dto)
+            return QueryResult(
+                result=[self.planes_factory.create(e, mapper) for e in planes]
+            )
 
         except Exception as e:
             traceback.print_exc()
