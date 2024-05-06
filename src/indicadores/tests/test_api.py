@@ -46,9 +46,15 @@ class TestOperations:
                 "descripcion": "test",
                 "formula": "x + y**3",
                 "parametros": {
-                    "potencia": {"simbolo": "x", "funcion": "max"},
-                    "ritmo_cardiaco": {"simbolo": "y", "funcion": "avg"},
-                },
+                    "x": {
+                        "simbolo": "potencia",
+                        "funcion": "max"
+                    },
+                    "y":{
+                        "simbolo": "ritmo_cardiaco",
+                        "funcion": "avg"
+                    }
+                }
             },
         )
         assert response.status_code == HTTPStatus.CREATED.value
