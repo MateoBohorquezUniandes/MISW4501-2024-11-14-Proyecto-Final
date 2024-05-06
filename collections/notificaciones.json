@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "2cd92f49-7a47-41c6-9b70-c2e1c19e4e86",
+		"name": "notificaciones",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3833174"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3050/notificaciones/commands/enviar-topico",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"topic\": \"evento-deportivo\",\r\n    \"titulo\": \"notificacion de salud\",\r\n    \"body\": \"este es el cuerpo de la notificacion\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3050/notificaciones/commands/enviar-topico",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3050",
+					"path": [
+						"notificaciones",
+						"commands",
+						"enviar-topico"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
