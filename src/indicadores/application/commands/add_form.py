@@ -24,7 +24,6 @@ class CreateFormulaHandler(IndicadorCommandBaseHandler):
         try:
             uowf: UnitOfWorkASQLAlchemyFactory = UnitOfWorkASQLAlchemyFactory()
             mapper = FormulaDTOEntityMapper()
-            print(command.formula_dto)
             formula: Formula = self.indices_factory.create(
                 command.formula_dto, mapper
             )
@@ -33,12 +32,12 @@ class CreateFormulaHandler(IndicadorCommandBaseHandler):
             UnitOfWorkPort.commit(uowf)
 
             return CommandResult(self.indices_factory.create(formula, mapper))
-        #except BusinessRuleException as bre:
-        #    traceback.print_exc()
-        #    raise UnprocessableEntityError(str(bre), bre.code)
-        #except IntegrityError:
-        #    traceback.print_exc()
-        #    raise BadRequestError(code="indices.create.integrity")
+        except BusinessRuleException as bre:
+            traceback.print_exc()
+            raise UnprocessableEntityError(str(bre), bre.code)
+        except IntegrityError:
+            traceback.print_exc()
+            raise BadRequestError(code="indices.create.integrity")
         except Exception as e:
             traceback.print_exc()
             if uowf:

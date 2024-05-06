@@ -16,7 +16,6 @@ bp: Blueprint = api.create_blueprint("commands", bp_prefix)
 def create_form():
     identificacion: dict = get_jwt_identity()
     data: dict = request.json
-    print(data)
     data["tipo_identificacion"] = identificacion.get("tipo")
     data["identificacion"] = identificacion.get("valor")
     mapper = FormulaDTODictMapper()

@@ -6,8 +6,6 @@ from seedwork.application.queries import execute_query
 from indicadores.application.mappers import FormulaDTODictMapper, IndicadoresDTODictMapper
 from indicadores.application.queries.get_form_user import GetFormulas
 from indicadores.application.queries.get_indicador_sesion import GetIndicadorSesion
-#from sesiones.application.commands.create_sesion import CreateSesionDeportiva
-#from sesiones.application.commands.end_sesion import EndSesionDeportiva
 
 TIPO_GLOBAL = "global"
 IDENTIFICACION_GLOBAL = "global"
