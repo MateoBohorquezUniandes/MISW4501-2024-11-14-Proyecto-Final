@@ -70,7 +70,7 @@ class TestOperations:
                 "type": "event",
                 "datacontenttype": "application/json",
                 "payload": {
-                    "id": "",
+                    "id": "f142cde2-7e4b-476a-8c30-1b4c068b9d72",
                     "tipo_identificacion": "CC",
                     "identificacion": "123456789",
                     "parametros": {
