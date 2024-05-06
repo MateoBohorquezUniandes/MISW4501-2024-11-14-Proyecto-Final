@@ -19,6 +19,7 @@ requests = "*"
 pydispatcher = "*"
 google-cloud-tasks = "*"
 flask-cors = "*"
+firebase-admin = "*"
 
 [dev-packages]
 pytest = "~=7.2.0"
