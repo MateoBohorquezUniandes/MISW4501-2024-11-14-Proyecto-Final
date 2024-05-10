@@ -3,6 +3,7 @@ from planes.domain.entities import (
     GrupoAlimenticio,
     PlanEntrenamiento,
     RutinaAlimentacion,
+    RutinaRecuperacion,
     UsuarioPlan,
 )
 from planes.domain.value_objects import (
@@ -194,3 +195,36 @@ class ValidRutinaAlimentacion(CompoundBusinessRule):
         )
 
         super().__init__(message, rules, "rutina.alimentacion")
+
+
+class ValidRutinaRecuperacion(CompoundBusinessRule):
+    rutina: RutinaRecuperacion
+
+    def __init__(self, rutina: RutinaRecuperacion, message="usuario invalido"):
+        self.rutina: RutinaRecuperacion = rutina
+
+        rules = [
+            ValidString(self.rutina.nombre, 2, 120, "nombre invalido", "nombre"),
+            ValidString(
+                self.rutina.descripcion, 2, 120, "descripcion invalida", "descripcion"
+            ),
+            ValidString(self.rutina.imagen, 2, 400, "imagen invalida", "imagen"),
+            ValidExtendedEnum(
+                self.rutina.deporte, DEPORTE, "deporte invalido", "deporte"
+            ),
+            ValidInteger(
+                self.rutina.frecuencia.valor,
+                1,
+                None,
+                "duracion invalida",
+                "duracion",
+            ),
+            ValidExtendedEnum(
+                self.rutina.frecuencia.unidad,
+                DURACION_UNIDAD,
+                "duracion invalida",
+                "duracion",
+            ),
+        ]
+
+        super().__init__(message, rules, "rutina.recuperacion")

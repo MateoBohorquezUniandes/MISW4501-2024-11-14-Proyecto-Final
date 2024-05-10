@@ -98,7 +98,7 @@ class RutinaRecuperacion(Entity):
     descripcion: str = field(default_factory=str)
     imagen: vo.Imagen = field(default_factory=vo.Imagen)
 
-    duracion: vo.Duracion = field(default_factory=vo.Duracion)
+    deporte: vo.DEPORTE = field(default_factory=str)
     frecuencia: vo.Frecuencia = field(default_factory=vo.Frecuencia)
 
 
