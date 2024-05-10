@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from enum import Enum
 
-from seedwork.domain.value_objects import ExtendedEnum, ValueObject
+from seedwork.domain.value_objects import DEPORTE, ExtendedEnum, ValueObject
 
 
 class EXIGENCIA(ExtendedEnum):
@@ -12,16 +12,17 @@ class EXIGENCIA(ExtendedEnum):
     ALTO_RENDIMIENTO = "Alto rendimiento"
 
 
-class EventoTipoEnum(str, ExtendedEnum):
-    CICLISMO = "ciclismo"
-    ATLETISMO = "Atletismo"
-
-
 @dataclass(frozen=True)
 class EventoTipo(ValueObject):
-    tipo: EventoTipoEnum = field(default_factory=EventoTipoEnum)
+    tipo: DEPORTE = field(default_factory=DEPORTE)
 
 
 @dataclass(frozen=True)
 class EventoNivel(ValueObject):
     nivel: EXIGENCIA = field(default_factory=EXIGENCIA)
+
+@dataclass(frozen=True)
+class EventoAsociado(ValueObject):
+    id: str = field(default_factory=str)
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)

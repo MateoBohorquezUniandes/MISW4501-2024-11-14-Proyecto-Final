@@ -32,3 +32,7 @@ class CATEGORIA_ALIMENTO(ExtendedEnum):
     FRUTA = "Fruta"
     VERDURA = "Verdura"
     PROTEINA = "Proteina"
+
+class DEPORTE(ExtendedEnum):
+    CILICMO = "Ciclismo"
+    ATLETISMO = "Atletismo"
