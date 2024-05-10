@@ -126,13 +126,10 @@ class RutinaRecuperacion(db.Model):
     id = db.Column(db.String, primary_key=True)
     nombre = db.Column(db.String(120), nullable=False)
 
-    tipo = db.Column(db.String(50), nullable=False)
     descripcion = db.Column(db.String(400), nullable=False)
     imagen = db.Column(db.String(400), nullable=True)
 
-    duracion = db.Column(db.Integer, nullable=False)
-    duracion_unidad = db.Column(db.String(50), nullable=False)
-
+    deporte = db.Column(db.String(), nullable=False)
     frecuencia = db.Column(db.Integer, nullable=False)
     frecuencia_unidad = db.Column(db.String(50), nullable=False)
 

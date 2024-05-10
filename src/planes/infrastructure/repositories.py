@@ -5,6 +5,7 @@ from planes.domain.entities import (
     GrupoAlimenticio,
     PlanEntrenamiento,
     RutinaAlimentacion,
+    RutinaRecuperacion,
     UsuarioPlan,
 )
 from planes.domain.factories import PlanFactory
@@ -13,6 +14,7 @@ from planes.domain.repositories import (
     GrupoAlimenticioRepository,
     PlanEntrenamientoRepository,
     RutinaAlimentacionRepository,
+    RutinaRecuperacionRepository,
     UsuarioPlanRepository,
 )
 from planes.infrastructure.db import db
@@ -20,12 +22,14 @@ from planes.infrastructure.dtos import Entrenamiento as EntrenamientoDTO
 from planes.infrastructure.dtos import GrupoAlimenticio as GrupoAlimenticioDTO
 from planes.infrastructure.dtos import PlanEntrenamiento as PlanEntrenamientoDTO
 from planes.infrastructure.dtos import RutinaAlimentacion as RutinaAlimentacionDTO
+from planes.infrastructure.dtos import RutinaRecuperacion as RutinaRecuperacionDTO
 from planes.infrastructure.dtos import UsuarioPlan as UsuarioPlanDTO
 from planes.infrastructure.mappers import (
     EntrenamientoMapper,
     GrupoAlimenticioMapper,
     PlanEntrenamientoMapper,
     RutinaAlimentacionMapper,
+    RutinaRecuperacionMapper,
     UsuarioPlanMapper,
 )
 
@@ -278,4 +282,46 @@ class RutinaAlimentacionRepositoryPostgreSQL(RutinaAlimentacionRepository):
         query.delete()
 
     def update(self, rutina: RutinaAlimentacion):
+        pass
+
+
+class RutinaRecuperacionRepositoryPostgreSQL(RutinaRecuperacionRepository):
+    def __init__(self):
+        self._plan_factory: PlanFactory = PlanFactory()
+
+    @property
+    def plan_factory(self):
+        return self._plan_factory
+
+    def get_all(self, deporte: str = None) -> list[RutinaRecuperacion]:
+        query = db.session.query(RutinaRecuperacionDTO)
+
+        if deporte:
+            query = query.filter_by(deporte=deporte)
+
+        return [
+            self.plan_factory.create(dto, RutinaRecuperacionMapper())
+            for dto in query.all()
+        ]
+
+    def get(
+        self, id: str, as_entity=True
+    ) -> Union[RutinaRecuperacion, RutinaRecuperacionDTO]:
+        rutina_dto = db.session.query(RutinaRecuperacionDTO).filter_by(id=id).one()
+        if as_entity:
+            return self.plan_factory.create(rutina_dto, RutinaRecuperacionMapper())
+        else:
+            return rutina_dto
+
+    def append(self, plan: RutinaRecuperacion):
+        rutina_dto = self.plan_factory.create(plan, RutinaRecuperacionMapper())
+        db.session.add(rutina_dto)
+
+    def delete(self, id: str):
+        query = db.session.query(RutinaRecuperacionDTO)
+        if id:
+            query = query.filter_by(id=id)
+        query.delete()
+
+    def update(self, rutina: RutinaRecuperacion):
         pass
