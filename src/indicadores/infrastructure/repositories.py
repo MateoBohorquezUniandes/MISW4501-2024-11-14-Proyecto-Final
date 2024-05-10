@@ -52,6 +52,7 @@ class IndicadorRepositoryPostgreSQL(IndicadorRepository):
                     .filter_by(identificacion=identificacion)
                     .filter_by(idFormula=formula_id)
                     .filter_by(idSesion=sesionId)
+                    .order_by(IndicadorDTO.created_at.desc())
                     .one()
                 )
             return self.indice_factory.create(indicador_dto, IndicadorMapper())

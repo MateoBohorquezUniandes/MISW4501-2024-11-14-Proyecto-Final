@@ -37,12 +37,12 @@ class CreateFormulaHandler(IndicadorCommandBaseHandler):
             raise UnprocessableEntityError(str(bre), bre.code)
         except IntegrityError:
             traceback.print_exc()
-            raise BadRequestError(code="indices.create.integrity")
+            raise BadRequestError(code="indicadores.create.integrity")
         except Exception as e:
             traceback.print_exc()
             if uowf:
                 UnitOfWorkPort.rollback(uowf)
-            raise APIError(message=str(e), code="indices.error.internal")
+            raise APIError(message=str(e), code="indicadores.error.internal")
 
 @execute_command.register(CreateFormula)
 def command_crear_indice(command: CreateFormula) -> CommandResult:
