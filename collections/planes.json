@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3599ef61-0b01-4fe0-8228-5a00ed122469",
+		"_postman_id": "8f55403b-7c17-41f4-ab76-4a6024593d25",
 		"name": "planes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25979776"
@@ -330,21 +330,22 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/planes/commands/rutinas",
+							"raw": "{{base_url}}/planes/commands/rutinas/alimentacion",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
 								"commands",
-								"rutinas"
+								"rutinas",
+								"alimentacion"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "obtener rutinas",
+					"name": "obtener rutinas alimentacion",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -395,14 +396,156 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/planes/queries/rutinas",
+							"raw": "{{base_url}}/planes/queries/rutinas/alimentacion",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"planes",
 								"queries",
-								"rutinas"
+								"rutinas",
+								"alimentacion"
+							],
+							"query": [
+								{
+									"key": "deporte",
+									"value": "Atletismo",
+									"disabled": true
+								},
+								{
+									"key": "tipo",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "rutinas recuperacion success",
+			"item": [
+				{
+					"name": "crear rutina recuperacion",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": {{recuperacion.nombre}},\n    \"descripcion\": {{recuperacion.descripcion}},\n    \"imagen\": \"https://fake.image.com\",\n    \"deporte\": {{recuperacion.deporte}},\n    \"frecuencia\": {\n        \"valor\": {{recuperacion.frecuencia.valor}},\n        \"unidad\": {{recuperacion.frecuencia.unidad}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planes/commands/rutinas/recuperacion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"commands",
+								"rutinas",
+								"recuperacion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obtener rutinasrecuperacion",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify data types for response fields\", function () {\r",
+									"    const response = pm.response.json()[0];\r",
+									"    pm.expect(response.created_at).to.be.a(\"string\");\r",
+									"    pm.expect(response.id).to.be.a(\"string\");\r",
+									"    pm.expect(response.nombre).to.be.a(\"string\");\r",
+									"    pm.expect(response.descripcion).to.be.a(\"string\");\r",
+									"    pm.expect(response.imagen).to.be.a(\"string\");\r",
+									"    pm.expect(response.deporte).to.be.a(\"string\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/planes/queries/rutinas/recuperacion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planes",
+								"queries",
+								"rutinas",
+								"recuperacion"
 							],
 							"query": [
 								{
@@ -917,6 +1060,31 @@
 		{
 			"key": "alimento.grupo.unidad",
 			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "recuperacion.nombre",
+			"value": "\"Rutina de Relajacion\"",
+			"type": "string"
+		},
+		{
+			"key": "recuperacion.descripcion",
+			"value": "\"Realizar inhalaciones, pausas, y exhalacions cada 5 segundos para bajar el nivel de estres\"",
+			"type": "string"
+		},
+		{
+			"key": "recuperacion.deporte",
+			"value": "\"Ciclismo\"",
+			"type": "string"
+		},
+		{
+			"key": "recuperacion.frecuencia.valor",
+			"value": "5.0",
+			"type": "string"
+		},
+		{
+			"key": "recuperacion.frecuencia.unidad",
+			"value": "\"mins\"",
 			"type": "string"
 		}
 	]

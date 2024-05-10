@@ -49,7 +49,7 @@ def get_rutinas_alimentacion():
 
 
 @bp.route("/rutinas/recuperacion", methods=("GET",))
-def get_rutinas_alimentacion():
+def get_rutinas_recuperacion():
     args = request.args
     deporte = args.get("deporte", None)
     mapper = RutinaAlimentacionDTODictMapper()
