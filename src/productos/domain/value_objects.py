@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from enum import Enum
 
 from seedwork.domain.value_objects import ExtendedEnum, ValueObject
 
@@ -13,6 +12,7 @@ class ProductoTipoEnum(str, ExtendedEnum):
     ELEMENTOS_DEPORTIVOS = "Elementos Deportivos"
     MANTENIMIENTO = "Mantenimiento"
     LAVADO = "Lavado"
+    RECUPERACION = "Recuperacion"
 
 
 class DEPORTE(ExtendedEnum):
