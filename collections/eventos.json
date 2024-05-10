@@ -1,155 +1,296 @@
 {
 	"info": {
-		"_postman_id": "fbbd827c-238e-4867-a4f2-3486e1fdc37f",
+		"_postman_id": "1d564828-8248-4fa2-97a8-f104bf7551c2",
 		"name": "eventos",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "3833174"
+		"_exporter_id": "25979776"
 	},
 	"item": [
 		{
-			"name": "crear evento",
+			"name": "gestionar eventos success",
+			"item": [
+				{
+					"name": "crear evento",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {\r",
+									"    pm.response.to.have.status(202);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": {\r\n        \"tipo\": {{tipo}},\r\n        \"fecha\": {{fecha}},\r\n        \"lugar\": {{lugar}},\r\n        \"distancia\": {{distancia}},\r\n        \"nivel\": {{nivel}},\r\n        \"nombre\": {{nombre}}\r\n\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/eventos/commands",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eventos",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "obtener eventos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response has the required fields', function () {\r",
+									"    const responseData = pm.response.json()[0];\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.be.an('string');\r",
+									"    pm.expect(responseData.nombre).to.be.an('string');\r",
+									"    pm.expect(responseData.fecha).to.be.an('string');\r",
+									"    pm.expect(responseData.nivel).to.be.an('string');\r",
+									"    pm.expect(responseData.tipo).to.be.an('string');\r",
+									"    pm.expect(responseData.lugar).to.be.an('string');\r",
+									"\r",
+									"    pm.collectionVariables.set(`\"${responseData.id}\"`)\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/eventos/queries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eventos",
+								"queries"
+							],
+							"query": [
+								{
+									"key": "lugar",
+									"value": "Manizales",
+									"disabled": true
+								},
+								{
+									"key": "fecha",
+									"value": "2024-10-05",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"exec": [
-							"pm.sendRequest({\r",
-							"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,\r",
-							"    method: 'POST',\r",
-							"    header: { 'content-type': 'application/json' },\r",
-							"    body: {\r",
-							"        mode: 'raw',\r",
-							"        raw: JSON.stringify({\r",
-							"            \"tipo\": pm.collectionVariables.get(\"demografico.tipo_identificacion\").replace(/['\"]+/g, ''),\r",
-							"            \"valor\": pm.collectionVariables.get(\"demografico.identificacion\").replace(/['\"]+/g, '')\r",
-							"        })\r",
-							"    }\r",
-							"},\r",
-							"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)\r",
-							");"
-						],
 						"type": "text/javascript",
-						"packages": {}
+						"packages": {},
+						"exec": [
+							"pm.sendRequest({",
+							"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+							"    method: 'POST',",
+							"    header: { 'content-type': 'application/json' },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            \"tipo\": pm.collectionVariables.get(\"tipo_identificacion\").replace(/['\"]+/g, ''),",
+							"            \"valor\": pm.collectionVariables.get(\"identificacion\").replace(/['\"]+/g, '')",
+							"        })",
+							"    }",
+							"},",
+							"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+							");"
+						]
 					}
 				},
 				{
 					"listen": "test",
 					"script": {
-						"exec": [
-							"pm.test('Response status code is 202', function () {\r",
-							"    pm.response.to.have.status(202);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response has the required fields', function () {\r",
-							"    const responseData = pm.response.json();\r",
-							"    pm.expect(responseData).to.be.an('object');\r",
-							"});"
-						],
 						"type": "text/javascript",
-						"packages": {}
+						"packages": {},
+						"exec": [
+							""
+						]
 					}
 				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"payload\": {\r\n        \"tipo\": {{tipo}},\r\n        \"fecha\": {{fecha}},\r\n        \"lugar\": {{lugar}},\r\n        \"distancia\": {{distancia}},\r\n        \"nivel\": {{nivel}},\r\n        \"nombre\": {{nombre}}\r\n\r\n    }\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/eventos/commands",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"eventos",
-						"commands"
-					]
-				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "obtener eventos",
-			"event": [
+			"name": "asociar eventos",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test('Response status code is 200', function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response has the required fields', function () {\r",
-							"    const responseData = pm.response.json()[0];\r",
-							"    pm.expect(responseData).to.be.an('object');\r",
-							"    pm.expect(responseData.id).to.be.an('string');\r",
-							"    pm.expect(responseData.nombre).to.be.an('string');\r",
-							"    pm.expect(responseData.fecha).to.be.an('string');\r",
-							"    pm.expect(responseData.nivel).to.be.an('string');\r",
-							"    pm.expect(responseData.tipo).to.be.an('string');\r",
-							"    pm.expect(responseData.lugar).to.be.an('string');\r",
-							"\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/eventos/queries",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"eventos",
-						"queries"
-					],
-					"query": [
-						{
-							"key": "lugar",
-							"value": "Manizales",
-							"disabled": true
+					"name": "asociar eventos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
 						},
-						{
-							"key": "fecha",
-							"value": "2024-10-05",
-							"disabled": true
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{id}},\n    \"tipo\": {{tipo}},\n    \"fecha\": {{fecha}},\n    \"lugar\": {{lugar}},\n    \"distancia\": {{distancia}},\n    \"nivel\": {{nivel}},\n    \"nombre\": {{nombre}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/eventos/commands/asociar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eventos",
+								"commands",
+								"asociar"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "obtener eventos asociados",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json()[0];",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.id).to.be.an('string');",
+									"    pm.expect(responseData.nombre).to.be.an('string');",
+									"    pm.expect(responseData.fecha).to.be.an('string');",
+									"    pm.expect(responseData.nivel).to.be.an('string');",
+									"    pm.expect(responseData.tipo).to.be.an('string');",
+									"    pm.expect(responseData.lugar).to.be.an('string');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/eventos/queries/asociados?programado=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eventos",
+								"queries",
+								"asociados"
+							],
+							"query": [
+								{
+									"key": "programado",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	],
 	"event": [
@@ -159,7 +300,20 @@
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
-					""
+					"pm.sendRequest({",
+					"    url: `${pm.collectionVariables.get(\"auth_url\")}/auth`,",
+					"    method: 'POST',",
+					"    header: { 'content-type': 'application/json' },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: JSON.stringify({",
+					"            \"tipo\": pm.collectionVariables.get(\"tipo_identificacion\"),",
+					"            \"valor\": pm.collectionVariables.get(\"identificacion\")",
+					"        })",
+					"    }",
+					"},",
+					"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
+					");"
 				]
 			}
 		},
@@ -187,12 +341,12 @@
 		},
 		{
 			"key": "tipo",
-			"value": "\"ciclismo\"",
+			"value": "\"Ciclismo\"",
 			"type": "string"
 		},
 		{
 			"key": "fecha",
-			"value": "\"2024-10-05\"",
+			"value": "\"2025-10-05\"",
 			"type": "string"
 		},
 		{
@@ -221,13 +375,18 @@
 			"type": "string"
 		},
 		{
-			"key": "demografico.tipo_identificacion",
+			"key": "tipo_identificacion",
 			"value": "\"CC\"",
 			"type": "string"
 		},
 		{
-			"key": "demografico.identificacion",
+			"key": "identificacion",
 			"value": "\"123456789\"",
+			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": "",
 			"type": "string"
 		}
 	]
