@@ -5,6 +5,9 @@ from flask import Blueprint, Response, jsonify, request
 from planes.application.commands.create_rutina_alimentacion import (
     CreateRutinaAlimentacion,
 )
+from planes.application.commands.create_rutina_recuperacion import (
+    CreateRutinaRecuperacion,
+)
 import seedwork.presentation.api as api
 from planes.application.commands.asociar_plan_entrenamiento import (
     CreateRecomendacionPlan,
@@ -17,6 +20,7 @@ from planes.application.mappers import (
     ObjetivoEntrenamientoDTODictMapper,
     PlanEntrenamientoDTODictMapper,
     RutinaAlimentacionDTODictMapper,
+    RutinaRecuperacionDTODictMapper,
     UsuarioPlanDTODictMapper,
 )
 from seedwork.application.commands import execute_command
@@ -41,7 +45,7 @@ def create_plan_entrenamiento():
     return {}, 202
 
 
-@bp.route("/rutinas", methods=("POST",))
+@bp.route("/rutinas/alimentacion", methods=("POST",))
 def create_rutina_alimentacion():
     data: dict = request.json
     correlation_id = data.pop("correlation_id", None)
@@ -50,6 +54,20 @@ def create_rutina_alimentacion():
     rutina_dto = mapper.external_to_dto(data)
 
     command = CreateRutinaAlimentacion(correlation_id, rutina_dto)
+    execute_command(command)
+
+    return {}, 202
+
+
+@bp.route("/rutinas/recuperacion", methods=("POST",))
+def create_rutina_recuperacion():
+    data: dict = request.json
+    correlation_id = data.pop("correlation_id", None)
+
+    mapper = RutinaRecuperacionDTODictMapper()
+    rutina_dto = mapper.external_to_dto(data)
+
+    command = CreateRutinaRecuperacion(correlation_id, rutina_dto)
     execute_command(command)
 
     return {}, 202

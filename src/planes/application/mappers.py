@@ -4,10 +4,12 @@ from uuid import UUID
 from planes.application.dtos import (
     DuracionDTO,
     EntrenamientoDTO,
+    FrecuenciaDTO,
     GrupoAlimenticioDTO,
     ObjetivoEntrenamientoDTO,
     PlanEntrenamientoDTO,
     RutinaAlimentacionDTO,
+    RutinaRecuperacionDTO,
     UsuarioPlanDTO,
 )
 from planes.domain.entities import (
@@ -15,11 +17,13 @@ from planes.domain.entities import (
     GrupoAlimenticio,
     PlanEntrenamiento,
     RutinaAlimentacion,
+    RutinaRecuperacion,
     UsuarioPlan,
 )
 from planes.domain.value_objects import (
     EXIGENCIA,
     Duracion,
+    Frecuencia,
     Imagen,
     ObjetivoEntrenamiento,
 )
@@ -139,7 +143,28 @@ class RutinaAlimentacionDTODictMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: RutinaAlimentacionDTO) -> dict:
-        print(dto)
+        return asdict(dto)
+
+
+class RutinaRecuperacionDTODictMapper(ApplicationMapper):
+    def _external_to_frecuencia_dto(self, external: dict) -> DuracionDTO:
+        return FrecuenciaDTO(
+            int(external.get("valor", "0")),
+            external.get("unidad", ""),
+        )
+
+    def external_to_dto(self, external: dict) -> RutinaRecuperacionDTO:
+        frecuencia = self._external_to_frecuencia_dto(external.get("frecuencia", {}))
+        return RutinaRecuperacionDTO(
+            id=external.get("", ""),
+            nombre=external.get("nombre", ""),
+            descripcion=external.get("descripcion", ""),
+            imagen=external.get("imagen", ""),
+            deporte=external.get("deporte", ""),
+            frecuencia=frecuencia,
+        )
+
+    def dto_to_external(self, dto: RutinaRecuperacionDTO) -> dict:
         return asdict(dto)
 
 
@@ -323,4 +348,36 @@ class RutinaAlimentacionDTOEntityMapper(DomainMapper):
             imagen=entity.imagen,
             tipo_alimentacion=entity.tipo_alimentacion,
             grupos_alimenticios=grupos,
+        )
+
+
+class RutinaRecuperacionDTOEntityMapper(DomainMapper):
+    DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+
+    def type(self) -> type:
+        return RutinaRecuperacion
+
+    def dto_to_entity(self, dto: RutinaRecuperacionDTO) -> RutinaRecuperacion:
+        args = [UUID(dto.id)] if dto.id else []
+        frecuencia = Frecuencia(dto.frecuencia.valor, dto.frecuencia.unidad)
+        return RutinaRecuperacion(
+            *args,
+            nombre=dto.nombre,
+            descripcion=dto.descripcion,
+            imagen=dto.imagen,
+            deporte=dto.deporte,
+            frecuencia=frecuencia,
+        )
+
+    def entity_to_dto(self, entity: RutinaRecuperacion) -> RutinaRecuperacionDTO:
+        frecuencia = FrecuenciaDTO(entity.frecuencia.valor, entity.frecuencia.unidad)
+        return RutinaRecuperacionDTO(
+            entity.created_at.strftime(self.DATE_FORMAT),
+            entity.updated_at.strftime(self.DATE_FORMAT),
+            entity.id,
+            nombre=entity.nombre,
+            descripcion=entity.descripcion,
+            imagen=entity.imagen,
+            deporte=entity.deporte,
+            frecuencia=frecuencia,
         )
