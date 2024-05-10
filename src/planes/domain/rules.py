@@ -7,7 +7,6 @@ from planes.domain.entities import (
     UsuarioPlan,
 )
 from planes.domain.value_objects import (
-    DEPORTE,
     DURACION_UNIDAD,
     EXIGENCIA,
     PLAN_CATEGORIA,
@@ -15,14 +14,13 @@ from planes.domain.value_objects import (
     ObjetivoEntrenamiento,
 )
 from seedwork.domain.rules import (
-    BusinessRule,
     CompoundBusinessRule,
     ValidExtendedEnum,
     ValidFloat,
     ValidInteger,
     ValidString,
 )
-from seedwork.domain.value_objects import CATEGORIA_ALIMENTO, TIPO_ALIMENTACION
+from seedwork.domain.value_objects import CATEGORIA_ALIMENTO, DEPORTE, TIPO_ALIMENTACION
 
 
 class ValidEntrenamiento(CompoundBusinessRule):

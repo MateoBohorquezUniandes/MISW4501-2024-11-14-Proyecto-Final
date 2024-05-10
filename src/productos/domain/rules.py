@@ -1,14 +1,7 @@
 from productos.domain.entities import Producto
-
-from productos.domain.value_objects import ProductoTipoEnum, DEPORTE
-
-from seedwork.domain.rules import (
-    BusinessRule,
-    CompoundBusinessRule,
-    ValidFloat,
-    ValidInteger,
-    ValidString,
-)
+from productos.domain.value_objects import ProductoTipoEnum
+from seedwork.domain.rules import BusinessRule, CompoundBusinessRule, ValidString
+from seedwork.domain.value_objects import DEPORTE
 
 
 class _ValidProductoTipo(BusinessRule):

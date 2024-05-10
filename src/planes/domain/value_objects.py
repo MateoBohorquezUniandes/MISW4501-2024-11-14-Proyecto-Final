@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from seedwork.domain.value_objects import ExtendedEnum, ValueObject
+from seedwork.domain.value_objects import ExtendedEnum, ValueObject, DEPORTE
 
 
 class PLAN_CATEGORIA(ExtendedEnum):
@@ -8,11 +8,6 @@ class PLAN_CATEGORIA(ExtendedEnum):
     FORTALECIMIENTO = "Fortalecimiento"
     EQUILIBRIO = "Equilibrio"
     FLEXIBILIDAD = "Flexibilidad"
-
-
-class DEPORTE(ExtendedEnum):
-    CILICMO = "Ciclismo"
-    ATLETISMO = "Atletismo"
 
 
 class _CategoriaRiesgo(ExtendedEnum):
