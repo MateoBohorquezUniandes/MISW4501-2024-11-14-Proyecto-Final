@@ -24,7 +24,7 @@ class CreateEventoHandler(EventoCommandBaseHandler):
     def handle(self, command: CreateEvento):
         uowf = None
         try:
-            evento: Evento = self._eventos_factory.create(
+            evento: Evento = self.eventos_factory.create(
                 command.evento_dto, EventoDTOEntityMapper()
             )
 

@@ -14,5 +14,5 @@ class EventoCommandBaseHandler(CommandHandler):
         return self._repository_factory
 
     @property
-    def perfiles_factory(self):
+    def eventos_factory(self):
         return self._eventos_factory

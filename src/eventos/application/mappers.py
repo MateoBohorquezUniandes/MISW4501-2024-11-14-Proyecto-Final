@@ -1,11 +1,14 @@
+from dataclasses import asdict
 from uuid import UUID
 
 from eventos.application.dtos import EventoDTO
 from eventos.domain.entities import Evento
-
+from eventos.domain.value_objects import EventoAsociado
 from seedwork.application.dtos import Mapper as ApplicationMapper
 from seedwork.domain.repositories import Mapper as DomainMapper
-
+from seedwork.domain.repositories import (
+    UnidirectionalMapper as UnidirectionalDomainMapper,
+)
 
 # #####################################################################################
 # Application Mappers
@@ -16,6 +19,7 @@ class EventoDTODictMapper(ApplicationMapper):
     def external_to_dto(self, external: dict) -> EventoDTO:
 
         return EventoDTO(
+            id=external.get("id", ""),
             tipo=external.get("tipo", ""),
             fecha=external.get("fecha", ""),
             lugar=external.get("lugar", ""),
@@ -25,7 +29,7 @@ class EventoDTODictMapper(ApplicationMapper):
         )
 
     def dto_to_external(self, dto: EventoDTO) -> dict:
-        return dto.__dict__
+        return asdict(dto)
 
 
 # #####################################################################################
@@ -40,7 +44,6 @@ class EventoDTOEntityMapper(DomainMapper):
         return Evento
 
     def dto_to_entity(self, dto: EventoDTO) -> Evento:
-
         args = [UUID(dto.id)] if dto.id else []
         evento = Evento(
             *args,
@@ -54,7 +57,6 @@ class EventoDTOEntityMapper(DomainMapper):
         return evento
 
     def entity_to_dto(self, entity: Evento) -> EventoDTO:
-
         return EventoDTO(
             entity.id,
             entity.tipo,
@@ -63,4 +65,21 @@ class EventoDTOEntityMapper(DomainMapper):
             entity.distancia,
             entity.nivel,
             entity.nombre,
+        )
+
+
+class EventoAsociadoDTOEntityMapper(UnidirectionalDomainMapper):
+    def type(self) -> type:
+        return EventoAsociado
+
+    def map(
+        self,
+        dto: EventoDTO,
+        tipo_identificacion: str = None,
+        identificacion: str = None,
+    ) -> EventoAsociado:
+        return EventoAsociado(
+            id=dto.id,
+            tipo_identificacion=tipo_identificacion,
+            identificacion=identificacion,
         )
