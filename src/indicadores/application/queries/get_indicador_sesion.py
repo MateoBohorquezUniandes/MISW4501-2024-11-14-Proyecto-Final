@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from sqlalchemy.exc import NoResultFound
 
 from indicadores.application.exceptions import IndicadorNotFoundError
-from indicadores.application.mappers import IndicadorDTOEntityMapper
+from indicadores.application.mappers import ResultadoDTOEntityMapper
 from indicadores.application.queries.base import IndicadorQueryBaseHandler
 from indicadores.domain.entities import Indicador, Formula
 from seedwork.application.queries import Query, QueryResult, execute_query
@@ -26,7 +26,9 @@ class GetIndicadorSesionQueryHandler(IndicadorQueryBaseHandler):
                 formula: Formula = repository_f.get(i.idFormula)
                 i.nombreFormula = formula.nombre
                 indicadores_2.append(i)
-            mapper = IndicadorDTOEntityMapper()
+            mapper = ResultadoDTOEntityMapper()
+            print(indicadores)
+            print(indicadores_2)
             indicadores_dto = [self.indices_factory.create(indicador, mapper) for indicador in indicadores_2]
             return QueryResult(result=indicadores_dto)
 

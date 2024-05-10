@@ -5,7 +5,6 @@ import seedwork.presentation.api as api
 from seedwork.application.commands import execute_command
 from indicadores.application.commands.add_form import CreateFormula
 from indicadores.application.commands.recalculate_index import CalculateIndicador
-#from sesiones.application.commands.end_sesion import EndSesionDeportiva
 from indicadores.application.mappers import FormulaDTODictMapper, IndicadoresDTODictMapper
 
 bp_prefix: str = "/indicadores/commands"

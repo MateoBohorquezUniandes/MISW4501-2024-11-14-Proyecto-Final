@@ -32,17 +32,17 @@ class CreateFormulaHandler(IndicadorCommandBaseHandler):
             UnitOfWorkPort.commit(uowf)
 
             return CommandResult(self.indices_factory.create(formula, mapper))
-        #except BusinessRuleException as bre:
-        #    traceback.print_exc()
-        #    raise UnprocessableEntityError(str(bre), bre.code)
-        #except IntegrityError:
-        #    traceback.print_exc()
-        #    raise BadRequestError(code="indices.create.integrity")
+        except BusinessRuleException as bre:
+            traceback.print_exc()
+            raise UnprocessableEntityError(str(bre), bre.code)
+        except IntegrityError:
+            traceback.print_exc()
+            raise BadRequestError(code="indicadores.create.integrity")
         except Exception as e:
             traceback.print_exc()
             if uowf:
                 UnitOfWorkPort.rollback(uowf)
-            raise APIError(message=str(e), code="indices.error.internal")
+            raise APIError(message=str(e), code="indicadores.error.internal")
 
 @execute_command.register(CreateFormula)
 def command_crear_indice(command: CreateFormula) -> CommandResult:

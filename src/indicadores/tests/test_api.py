@@ -46,9 +46,15 @@ class TestOperations:
                 "descripcion": "test",
                 "formula": "x + y**3",
                 "parametros": {
-                    "potencia": {"simbolo": "x", "funcion": "max"},
-                    "ritmo_cardiaco": {"simbolo": "y", "funcion": "avg"},
-                },
+                    "x": {
+                        "simbolo": "potencia",
+                        "funcion": "max"
+                    },
+                    "y":{
+                        "simbolo": "ritmo_cardiaco",
+                        "funcion": "avg"
+                    }
+                }
             },
         )
         assert response.status_code == HTTPStatus.CREATED.value
@@ -64,7 +70,7 @@ class TestOperations:
                 "type": "event",
                 "datacontenttype": "application/json",
                 "payload": {
-                    "id": "",
+                    "id": "f142cde2-7e4b-476a-8c30-1b4c068b9d72",
                     "tipo_identificacion": "CC",
                     "identificacion": "123456789",
                     "parametros": {

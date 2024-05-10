@@ -43,6 +43,21 @@ class IndicadorRepositoryPostgreSQL(IndicadorRepository):
             return Indicador(
                 valor= float(0)
             )
+    
+    def get_last_indicador(self, formula_id:str, tipo_identificacion:str, identificacion:str, sesionId:str) -> Indicador:
+        try:
+            indicador_dto = (
+                    db.session.query(IndicadorDTO)
+                    .filter_by(tipo_identificacion=tipo_identificacion)
+                    .filter_by(identificacion=identificacion)
+                    .filter_by(idFormula=formula_id)
+                    .filter_by(idSesion=sesionId)
+                    .order_by(IndicadorDTO.created_at.desc())
+                    .one()
+                )
+            return self.indice_factory.create(indicador_dto, IndicadorMapper())
+        except:
+            return Indicador()
 
     def append(self, indicador: Indicador):
         indicador_dto: IndicadorDTO = self.indice_factory.create(
@@ -54,7 +69,16 @@ class IndicadorRepositoryPostgreSQL(IndicadorRepository):
         pass
 
     def update(self, indice: Indicador):
-        pass
+        indicador_dto: IndicadorDTO = (
+            db.session.query(IndicadorDTO)
+            .filter_by(tipo_identificacion=indice.tipo_identificacion)
+            .filter_by(identificacion=indice.identificacion)
+            .filter_by(idFormula=indice.idFormula)
+            .filter_by(idSesion=indice.idSesion)
+            .one()
+        )
+        indicador_dto.valor = indice.valor
+        indicador_dto.varianza = indice.varianza
 
 class FormulaRepositoryPostgreSQL(IndicadorRepository): 
     def __init__(self):

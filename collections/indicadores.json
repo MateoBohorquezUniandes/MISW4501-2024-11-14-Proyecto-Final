@@ -60,7 +60,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"{{NOMBRE_FORMULA}}\",\r\n    \"descripcion\": \"{{DESCRIPCION_FORMULA}}\",\r\n    \"formula\": \"{{FORMULA}}\",\r\n    \"parametros\": {\r\n        \"potencia\": {\r\n            \"simbolo\": \"{{SIMBOLO_1}}\",\r\n            \"funcion\": \"{{FUNCION_1}}\"\r\n        },\r\n        \"ritmo_cardiaco\":{\r\n            \"simbolo\": \"{{SIMBOLO_2}}\",\r\n            \"funcion\": \"{{FUNCION_2}}\"\r\n        }\r\n    }\r\n}",
+							"raw": "{\r\n    \"nombre\": \"{{NOMBRE_FORMULA}}\",\r\n    \"descripcion\": \"{{DESCRIPCION_FORMULA}}\",\r\n    \"formula\": \"{{FORMULA}}\",\r\n    \"parametros\": {\r\n        \"x\": {\r\n            \"simbolo\": \"{{NOMBRE_1}}\",\r\n            \"funcion\": \"{{FUNCION_1}}\"\r\n        },\r\n        \"y\":{\r\n            \"simbolo\": \"{{NOMBRE_2}}\",\r\n            \"funcion\": \"{{FUNCION_2}}\"\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -269,19 +269,18 @@
 			"name": "Recalcular Fail",
 			"item": [
 				{
-					"name": "Recalcular Indicador Duplicado",
+					"name": "Recalcular Indicador id sesion invalido",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Response status code is 400', function () {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test('Response status code is 422', function () {\r",
+									"    pm.response.to.have.status(422);\r",
 									"});\r",
 									""
 								],
-								"type": "text/javascript",
-								"packages": {}
+								"type": "text/javascript"
 							}
 						},
 						{
@@ -290,8 +289,7 @@
 								"exec": [
 									""
 								],
-								"type": "text/javascript",
-								"packages": {}
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -303,7 +301,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"correlation_id\": \"{{correlation_id}}\",\r\n    \"specversion\": \"v1\",\r\n    \"type\": \"event\",\r\n    \"datacontenttype\": \"application/json\",\r\n    \"payload\": {\r\n        \"id\": \"{{ID_SESION}}\",\r\n        \"tipo_identificacion\": \"{{TIPO_IDENTIFICACION}}\",\r\n        \"identificacion\": \"{{IDENTIFICACION}}\",\r\n        \"parametros\": {\r\n            \"potencia\": {{VALORES_1}},\r\n            \"ritmo_cardiaco\": {{VALORES_2}}\r\n        }\r\n    }\r\n}",
+							"raw": "{\r\n    \"correlation_id\": \"{{correlation_id}}\",\r\n    \"specversion\": \"v1\",\r\n    \"type\": \"event\",\r\n    \"datacontenttype\": \"application/json\",\r\n    \"payload\": {\r\n        \"id\": \"12345\",\r\n        \"tipo_identificacion\": \"{{TIPO_IDENTIFICACION}}\",\r\n        \"identificacion\": \"{{IDENTIFICACION}}\",\r\n        \"parametros\": {\r\n            \"potencia\": {{VALORES_1}},\r\n            \"ritmo_cardiaco\": {{VALORES_2}}\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -329,6 +327,79 @@
 		{
 			"name": "Crear Formula Fail",
 			"item": [
+				{
+					"name": "Crear Formula sin un parametro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 422', function () {\r",
+									"    pm.response.to.have.status(422);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: `${pm.collectionVariables.get(\"AUTH_URL\")}/auth`,\r",
+									"    method: 'POST',\r",
+									"    header: { 'content-type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"tipo\": pm.collectionVariables.get(\"TIPO_IDENTIFICACION\").replace(/['\"]+/g, ''),\r",
+									"            \"valor\": pm.collectionVariables.get(\"IDENTIFICACION\").replace(/['\"]+/g, '')\r",
+									"        })\r",
+									"    }\r",
+									"},\r",
+									"    (_err, response) => pm.collectionVariables.set(\"TOKEN\", response.json().token)\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"{{NOMBRE_FORMULA}}\",\r\n    \"descripcion\": \"{{DESCRIPCION_FORMULA}}\",\r\n    \"formula\": \"{{FORMULA}}\",\r\n    \"parametros\": {\r\n        \"x\": {\r\n            \"simbolo\": \"{{NOMBRE_1}}\",\r\n            \"funcion\": \"{{FUNCION_1}}\"\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/indicadores/commands/formula",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"indicadores",
+								"commands",
+								"formula"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Crear Formula sin formula",
 					"event": [
@@ -447,8 +518,8 @@
 			"type": "default"
 		},
 		{
-			"key": "SIMBOLO_1",
-			"value": "x",
+			"key": "NOMBRE_1",
+			"value": "potencia",
 			"type": "default"
 		},
 		{
@@ -457,8 +528,8 @@
 			"type": "default"
 		},
 		{
-			"key": "SIMBOLO_2",
-			"value": "y",
+			"key": "NOMBRE_2",
+			"value": "ritmo_cardiaco",
 			"type": "default"
 		},
 		{
@@ -473,7 +544,7 @@
 		},
 		{
 			"key": "ID_SESION",
-			"value": "",
+			"value": "f142cde2-7e4b-476a-8c30-1b4c068b9d72",
 			"type": "default"
 		},
 		{
