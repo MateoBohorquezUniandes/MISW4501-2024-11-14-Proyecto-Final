@@ -9,19 +9,16 @@ from seedwork.presentation.exceptions import APIError
 
 
 @dataclass(frozen=True)
-class GetRutinasAlimentacion(Query):
-    tipo_alimentacion: str = field(default=None)
+class GetRutinasRecuperacion(Query):
     deporte: str = field(default=None)
 
 
-class GetRutinasAlimentacionQueryHandler(PlanQueryBaseHandler):
+class GetRutinasRecuperacionQueryHandler(PlanQueryBaseHandler):
 
-    def handle(self, query: GetRutinasAlimentacion) -> QueryResult:
+    def handle(self, query: GetRutinasRecuperacion) -> QueryResult:
         try:
             repository = self.repository_factory.create(RutinaAlimentacion)
-            rutinas: list[RutinaAlimentacion] = repository.get_all(
-                query.tipo_alimentacion, query.deporte
-            )
+            rutinas: list[RutinaAlimentacion] = repository.get_all(query.deporte)
 
             mapper = RutinaAlimentacionDTOEntityMapper()
             planes_dto = [self.planes_factory.create(e, mapper) for e in rutinas]
@@ -33,6 +30,6 @@ class GetRutinasAlimentacionQueryHandler(PlanQueryBaseHandler):
             raise APIError(message=str(e), code="rutinas.get.error.internal")
 
 
-@execute_query.register(GetRutinasAlimentacion)
-def execute_query_rtuinas_alimentacion(query: GetRutinasAlimentacion):
-    return GetRutinasAlimentacionQueryHandler().handle(query)
+@execute_query.register(GetRutinasRecuperacion)
+def execute_query_rutinas_recuperacion(query: GetRutinasRecuperacion):
+    return GetRutinasRecuperacionQueryHandler().handle(query)

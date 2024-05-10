@@ -2,6 +2,7 @@ from flask import Blueprint, Response, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from planes.application.queries.get_rutinas_alimentacion import GetRutinasAlimentacion
+from planes.application.queries.get_rutinas_recuperacion import GetRutinasRecuperacion
 import seedwork.presentation.api as api
 from planes.application.mappers import (
     EntrenamientoDTODictMapper,
@@ -35,7 +36,7 @@ def get_entrenamientos():
     return jsonify([mapper.dto_to_external(e) for e in query_result.result])
 
 
-@bp.route("/rutinas", methods=("GET",))
+@bp.route("/rutinas/alimentacion", methods=("GET",))
 def get_rutinas_alimentacion():
     args = request.args
     deporte = args.get("deporte", None)
@@ -44,6 +45,15 @@ def get_rutinas_alimentacion():
     query_result = execute_query(
         GetRutinasAlimentacion(deporte=deporte, tipo_alimentacion=tipo)
     )
+    return jsonify([mapper.dto_to_external(e) for e in query_result.result])
+
+
+@bp.route("/rutinas/recuperacion", methods=("GET",))
+def get_rutinas_alimentacion():
+    args = request.args
+    deporte = args.get("deporte", None)
+    mapper = RutinaAlimentacionDTODictMapper()
+    query_result = execute_query(GetRutinasRecuperacion(deporte=deporte))
     return jsonify([mapper.dto_to_external(e) for e in query_result.result])
 
 
