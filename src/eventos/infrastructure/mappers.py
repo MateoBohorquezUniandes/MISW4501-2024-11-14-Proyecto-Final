@@ -1,11 +1,10 @@
 import datetime
-
 from uuid import UUID
 
 from eventos.domain.entities import Evento
-from eventos.domain.value_objects import EventoTipo, EventoNivel
+from eventos.domain.value_objects import EventoAsociado, EventoNivel, EventoTipo
 from eventos.infrastructure.dtos import Evento as EventoDto
-
+from eventos.infrastructure.dtos import EventoAsociado as EventoAsociadoDTO
 from seedwork.domain.repositories import Mapper
 
 
@@ -37,3 +36,22 @@ class EventoMapper(Mapper):
         evento_dto.nombre = entity.nombre
 
         return evento_dto
+
+
+class EventoAsociadoMapper(Mapper):
+    def type(self) -> type:
+        return EventoAsociado
+
+    def entity_to_dto(self, entity: EventoAsociado) -> EventoAsociadoDTO:
+        asociacion = EventoAsociadoDTO()
+        asociacion.id = entity.id
+        asociacion.tipo_identificacion = entity.tipo_identificacion
+        asociacion.identificacion = entity.identificacion
+        return asociacion
+
+    def dto_to_entity(self, dto: EventoAsociadoDTO) -> EventoAsociado:
+        return EventoAsociado(
+            dto.id,
+            dto.tipo_identificacion,
+            dto.identificacion,
+        )
