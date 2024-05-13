@@ -96,7 +96,7 @@
 									"    pm.expect(responseData.tipo).to.be.an('string');\r",
 									"    pm.expect(responseData.lugar).to.be.an('string');\r",
 									"\r",
-									"    pm.collectionVariables.set(`\"${responseData.id}\"`)\r",
+									"    pm.collectionVariables.set(\"id\", `\"${responseData.id}\"`)\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -235,6 +235,16 @@
 					"event": [
 						{
 							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test('Response status code is 200', function () {",
@@ -388,6 +398,10 @@
 			"key": "id",
 			"value": "",
 			"type": "string"
+		},
+		{
+			"key": "\"6fc9fb35-8c80-47f9-990c-112f9d1ff5e7\"",
+			"value": ""
 		}
 	]
 }
