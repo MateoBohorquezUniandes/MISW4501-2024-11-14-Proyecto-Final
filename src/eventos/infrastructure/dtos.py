@@ -27,3 +27,13 @@ class Evento(db.Model):
         default=datetime.utcnow(),
         onupdate=datetime.now,
     )
+
+
+class EventoAsociado(db.Model):
+    __tablename__ = "evento_agendado"
+    id = db.Column(db.String, db.ForeignKey("evento.id"), primary_key=True)
+    tipo_identificacion = db.Column(db.String(10), nullable=False)
+    identificacion = db.Column(db.String(20), nullable=False)
+    fecha = db.Column(db.DateTime(), default=datetime.utcnow())
+
+    evento = db.relationship(Evento, backref="eventos_agendados")

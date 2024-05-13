@@ -117,6 +117,6 @@ class RutinaAlimentacion(RootAggregation):
     imagen: str = field(default_factory=str)
 
     tipo_alimentacion: svo.TIPO_ALIMENTACION = field(default_factory=str)
-    deporte: vo.DEPORTE = field(default_factory=str)
+    deporte: svo.DEPORTE = field(default_factory=str)
 
     grupos_alimenticios: list[GrupoAlimenticio] = field(default_factory=list)

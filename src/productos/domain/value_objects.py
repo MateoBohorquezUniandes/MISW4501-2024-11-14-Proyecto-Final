@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from seedwork.domain.value_objects import ExtendedEnum, ValueObject
+from seedwork.domain.value_objects import DEPORTE, ExtendedEnum, ValueObject
 
 
 class ProductoTipoEnum(str, ExtendedEnum):
@@ -13,11 +13,6 @@ class ProductoTipoEnum(str, ExtendedEnum):
     MANTENIMIENTO = "Mantenimiento"
     LAVADO = "Lavado"
     RECUPERACION = "Recuperacion"
-
-
-class DEPORTE(ExtendedEnum):
-    CILICMO = "Ciclismo"
-    ATLETISMO = "Atletismo"
 
 
 @dataclass(frozen=True)

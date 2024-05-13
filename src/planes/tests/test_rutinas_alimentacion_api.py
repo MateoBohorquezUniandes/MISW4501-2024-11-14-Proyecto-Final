@@ -1,14 +1,14 @@
 import uuid
 from http import HTTPStatus
 
-from planes.domain.value_objects import DEPORTE, PORCION_UNIDAD
 import pytest
 from flask_jwt_extended import create_access_token
 
 from planes.app import create_app
+from planes.domain.value_objects import PORCION_UNIDAD
 from planes.infrastructure.db import db
 from planes.infrastructure.dtos import GrupoAlimenticio, RutinaAlimentacion
-from seedwork.domain.value_objects import CATEGORIA_ALIMENTO, TIPO_ALIMENTACION
+from seedwork.domain.value_objects import CATEGORIA_ALIMENTO, DEPORTE, TIPO_ALIMENTACION
 
 
 class TestRutinasAlimentacionAPI:
@@ -50,7 +50,7 @@ class TestRutinasAlimentacionAPI:
                     "grupo": CATEGORIA_ALIMENTO.VERDURA.value,
                     "porcion": 1.5,
                     "unidad": PORCION_UNIDAD.TAZA.value,
-                    "calorias": 500.0
+                    "calorias": 500.0,
                 }
             ],
         }
