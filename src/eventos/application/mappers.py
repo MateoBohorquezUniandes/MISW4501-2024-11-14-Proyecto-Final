@@ -82,4 +82,5 @@ class EventoAsociadoDTOEntityMapper(UnidirectionalDomainMapper):
             id=dto.id,
             tipo_identificacion=tipo_identificacion,
             identificacion=identificacion,
+            fecha=dto.fecha,
         )

@@ -26,3 +26,4 @@ class EventoAsociado(ValueObject):
     id: str = field(default_factory=str)
     tipo_identificacion: str = field(default_factory=str)
     identificacion: str = field(default_factory=str)
+    fecha: str = field(default_factory=str)

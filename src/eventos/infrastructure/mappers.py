@@ -47,6 +47,7 @@ class EventoAsociadoMapper(Mapper):
         asociacion.id = entity.id
         asociacion.tipo_identificacion = entity.tipo_identificacion
         asociacion.identificacion = entity.identificacion
+        asociacion.fecha = entity.fecha
         return asociacion
 
     def dto_to_entity(self, dto: EventoAsociadoDTO) -> EventoAsociado:
@@ -54,4 +55,5 @@ class EventoAsociadoMapper(Mapper):
             dto.id,
             dto.tipo_identificacion,
             dto.identificacion,
+            str(dto.fecha.date())
         )
