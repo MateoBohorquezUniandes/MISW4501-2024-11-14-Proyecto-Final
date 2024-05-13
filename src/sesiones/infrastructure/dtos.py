@@ -18,7 +18,7 @@ class SesionDeportiva(db.Model):
 
     createdAt = db.Column(
         db.DateTime(),
-        default=dt.utcnow(),
+        default=dt.utcnow,
     )
     completedAt = db.Column(
         db.DateTime(),
@@ -26,6 +26,6 @@ class SesionDeportiva(db.Model):
     )
     updateAt = db.Column(
         db.DateTime(),
-        default=dt.utcnow(),
-        onupdate=dt.utcnow(),
+        default=dt.utcnow,
+        onupdate=dt.utcnow,
     )

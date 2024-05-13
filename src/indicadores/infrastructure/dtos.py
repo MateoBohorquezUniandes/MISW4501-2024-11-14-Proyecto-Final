@@ -29,7 +29,7 @@ class Indicador(db.Model):
     identificacion = db.Column(db.String(20), nullable=False)
     valor = db.Column(db.Float(), nullable=False)
     varianza = db.Column(db.Float(), nullable=False)
-    created_at = db.Column(db.DateTime(), default=dt.utcnow())
+    created_at = db.Column(db.DateTime(), default=dt.utcnow)
 
 class Parametro(db.Model):
     __tablename__ = "parametro"
