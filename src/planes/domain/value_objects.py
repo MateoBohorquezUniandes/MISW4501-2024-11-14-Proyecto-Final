@@ -39,8 +39,8 @@ class EXIGENCIA(ExtendedEnum):
 
 class DURACION_UNIDAD(ExtendedEnum):
     REPETICIONES = "reps"
-    MINUTOS = "min"
-    HORAS = "h"
+    MINUTOS = "mins"
+    HORAS = "hrs"
 
 
 @dataclass(frozen=True)
@@ -71,7 +71,8 @@ class Porcion(ValueObject):
 @dataclass(frozen=True)
 class Frecuencia(ValueObject):
     valor: int = field(default_factory=int)
-    unidad: int = field(default_factory=int)
+    unidad: DURACION_UNIDAD = field(default=DURACION_UNIDAD.MINUTOS)
+
 
 
 class PORCION_UNIDAD(ExtendedEnum):

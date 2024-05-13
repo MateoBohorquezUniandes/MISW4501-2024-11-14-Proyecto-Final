@@ -1,14 +1,12 @@
-import uuid
 from http import HTTPStatus
 
-from planes.domain.value_objects import DEPORTE, PORCION_UNIDAD
+from planes.domain.value_objects import DEPORTE, DURACION_UNIDAD
 import pytest
 from flask_jwt_extended import create_access_token
 
 from planes.app import create_app
 from planes.infrastructure.db import db
-from planes.infrastructure.dtos import GrupoAlimenticio, RutinaAlimentacion
-from seedwork.domain.value_objects import CATEGORIA_ALIMENTO, TIPO_ALIMENTACION
+from planes.infrastructure.dtos import RutinaRecuperacion
 
 
 class TestRutinasAlimentacionAPI:
@@ -33,27 +31,23 @@ class TestRutinasAlimentacionAPI:
         Function fixture for cleaning the database tables
         before each test case
         """
-        db.session.query(GrupoAlimenticio).delete()
-        db.session.query(RutinaAlimentacion).delete()
+        db.session.query(RutinaRecuperacion).delete()
         db.session.commit()
 
-    def test_create_rutina_alimentacion_success(self, test_client):
+    def test_create_rutina_recuperacion_success(self, test_client):
         """Creacion exitosa de un usuario deportista"""
         payload = {
-            "nombre": "Fortalecimiento Espalda",
-            "descripcion": "Alimentate con los mejores alimentos",
+            "nombre": "Recuperacion Espalda",
+            "descripcion": "Recuperate despues de un ejercicio",
             "imagen": "https://imagen.fake.com",
-            "tipo_alimentacion": TIPO_ALIMENTACION.VEGETARIANO.value,
             "deporte": DEPORTE.CILICMO.value,
-            "grupos_alimenticios": [
-                {
-                    "grupo": CATEGORIA_ALIMENTO.VERDURA.value,
-                    "porcion": 1.5,
-                    "unidad": PORCION_UNIDAD.TAZA.value,
-                    "calorias": 500.0
-                }
-            ],
+            "frecuencia": {
+                "valor": 10.0,
+                "unidad": DURACION_UNIDAD.MINUTOS.value,
+            },
         }
 
-        response = test_client.post("/planes/commands/rutinas/alimentacion", json=payload)
+        response = test_client.post(
+            "/planes/commands/rutinas/recuperacion", json=payload
+        )
         assert response.status_code == HTTPStatus.ACCEPTED.value

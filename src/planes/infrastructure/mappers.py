@@ -5,13 +5,20 @@ from planes.domain.entities import (
     GrupoAlimenticio,
     PlanEntrenamiento,
     RutinaAlimentacion,
+    RutinaRecuperacion,
     UsuarioPlan,
 )
-from planes.domain.value_objects import Duracion, Imagen, ObjetivoEntrenamiento
+from planes.domain.value_objects import (
+    Duracion,
+    Frecuencia,
+    Imagen,
+    ObjetivoEntrenamiento,
+)
 from planes.infrastructure.dtos import Entrenamiento as EntrenamientoDTO
 from planes.infrastructure.dtos import GrupoAlimenticio as GrupoAlimenticioDTO
 from planes.infrastructure.dtos import PlanEntrenamiento as PlanEntrenamientoDTO
 from planes.infrastructure.dtos import RutinaAlimentacion as RutinaAlimentacionDTO
+from planes.infrastructure.dtos import RutinaRecuperacion as RutinaRecuperacionDTO
 from planes.infrastructure.dtos import UsuarioPlan as UsuarioPlanDTO
 from seedwork.domain.repositories import Mapper
 
@@ -157,4 +164,34 @@ class RutinaAlimentacionMapper(Mapper):
             tipo_alimentacion=dto.tipo_alimentacion,
             deporte=dto.deporte,
             grupos_alimenticios=grupos,
+        )
+
+
+class RutinaRecuperacionMapper(Mapper):
+    def type(self) -> type:
+        return RutinaRecuperacion
+
+    def entity_to_dto(self, entity: RutinaRecuperacion) -> RutinaRecuperacionDTO:
+        rutina_dto = RutinaRecuperacionDTO()
+        rutina_dto.id = str(entity.id)
+        rutina_dto.nombre = entity.nombre
+        rutina_dto.descripcion = entity.descripcion
+        rutina_dto.imagen = entity.imagen
+        rutina_dto.deporte = entity.deporte
+        rutina_dto.frecuencia = entity.frecuencia.valor
+        rutina_dto.frecuencia_unidad = entity.frecuencia.unidad
+
+        return rutina_dto
+
+    def dto_to_entity(self, dto: RutinaRecuperacionDTO) -> RutinaRecuperacion:
+        frecuencia = Frecuencia(dto.frecuencia, dto.frecuencia_unidad)
+        return RutinaRecuperacion(
+            UUID(dto.id),
+            created_at=dto.createdAt,
+            updated_at=dto.updateAt,
+            nombre=dto.nombre,
+            descripcion=dto.descripcion,
+            imagen=dto.imagen,
+            deporte=dto.deporte,
+            frecuencia=frecuencia,
         )

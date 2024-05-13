@@ -77,3 +77,23 @@ class RutinaAlimentacionDTO(DTO):
     deporte: str = field(default_factory=str)
 
     grupos_alimenticios: list[GrupoAlimenticioDTO] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class FrecuenciaDTO(DTO):
+    valor: int = field(default_factory=int)
+    unidad: str = field(default_factory=str)
+
+
+@dataclass(frozen=True)
+class RutinaRecuperacionDTO(DTO):
+    created_at: str = field(default_factory=str)
+    updated_at: str = field(default_factory=str)
+    id: str = field(default_factory=str)
+
+    nombre: str = field(default_factory=str)
+    descripcion: str = field(default_factory=str)
+    imagen: str = field(default_factory=str)
+
+    deporte: str = field(default_factory=str)
+    frecuencia: FrecuenciaDTO = field(default_factory=FrecuenciaDTO)

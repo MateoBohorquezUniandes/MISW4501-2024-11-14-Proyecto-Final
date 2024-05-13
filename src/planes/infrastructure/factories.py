@@ -1,12 +1,20 @@
 from dataclasses import dataclass
 
-from planes.domain.entities import Entrenamiento, GrupoAlimenticio, PlanEntrenamiento, RutinaAlimentacion, UsuarioPlan
+from planes.domain.entities import (
+    Entrenamiento,
+    GrupoAlimenticio,
+    PlanEntrenamiento,
+    RutinaAlimentacion,
+    RutinaRecuperacion,
+    UsuarioPlan,
+)
 from planes.infrastructure.exceptions import InvalidRepositoryFactoryException
 from planes.infrastructure.repositories import (
     EntrenamientoRepositoryPostgreSQL,
     GrupoAlimenticioRepositoryPostgreSQL,
     PlanEntrenamientoRepositoryPostgreSQL,
     RutinaAlimentacionRepositoryPostgreSQL,
+    RutinaRecuperacionRepositoryPostgreSQL,
     UsuarioPlanRepositoryPostgreSQL,
 )
 from seedwork.domain.factories import Factory
@@ -25,5 +33,7 @@ class RepositoryFactory(Factory):
             return GrupoAlimenticioRepositoryPostgreSQL()
         elif isinstance(obj, RutinaAlimentacion) or obj == RutinaAlimentacion:
             return RutinaAlimentacionRepositoryPostgreSQL()
+        elif isinstance(obj, RutinaRecuperacion) or obj == RutinaRecuperacion:
+            return RutinaRecuperacionRepositoryPostgreSQL()
         else:
             raise InvalidRepositoryFactoryException()
