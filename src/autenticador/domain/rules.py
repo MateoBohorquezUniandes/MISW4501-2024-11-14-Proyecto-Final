@@ -14,12 +14,21 @@ class ValidTokenIdentity(CompoundBusinessRule):
                 1,
                 None,
                 "El tipo de la identidad debe existir",
+                "tipo",
             ),
             ValidString(
                 self.identity.valor,
                 1,
                 None,
                 "El valor de la identidad debe existir",
+                "valor",
+            ),
+            ValidString(
+                self.identity.valor,
+                1,
+                None,
+                "El rol de la identidad debe existir",
+                "rol",
             ),
         ]
 

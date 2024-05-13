@@ -7,6 +7,7 @@ from seedwork.application.dtos import DTO
 class IdentidadDTO(DTO):
     tipo: str = field(default_factory=str)
     valor: str = field(default_factory=str)
+    rol: str = field(default_factory=str)
 
 
 @dataclass(frozen=True)
