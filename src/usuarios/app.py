@@ -1,8 +1,8 @@
 import os
 
 from flask import Flask, Response, jsonify
-from flask_swagger import swagger
 from flask_cors import CORS
+from flask_swagger import swagger
 
 __author__ = "Santiago Cortés Fernández"
 __email__ = "s.cortes@uniandes.edu.co"
@@ -54,7 +54,11 @@ def create_app(config={}):
     from usuarios.presentation.commands import bp as bpc
     from usuarios.presentation.commands import bp_prefix as bpc_prefix
 
+    from usuarios.presentation.queries import bp as bpq
+    from usuarios.presentation.queries import bp_prefix as bpq_prefix
+
     app.register_blueprint(bpc, url_prefix=bpc_prefix)
+    app.register_blueprint(bpq, url_prefix=bpq_prefix)
 
     from seedwork.presentation.exceptions import APIError
     from usuarios.presentation.handlers import api_custom_exception_handler
@@ -71,7 +75,7 @@ def create_app(config={}):
     @app.route("/health")
     def health():
         return jsonify({"status": "healthy"})
-    
+
     CORS(app)
 
     return app

@@ -1,9 +1,11 @@
 from flask import Blueprint, Response, jsonify, request
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 import seedwork.presentation.api as api
 from seedwork.application.commands import CommandResult, execute_command
 from usuarios.application.commands.create_usuario import CreateUsuario
 from usuarios.application.commands.login_usuario import LoginUsuario
+from usuarios.application.commands.patch_afiliacion import ActualizarAfiliacion
 from usuarios.application.mappers import (
     AuthResponseDTODictMapper,
     LoginDTODictMapper,
@@ -39,3 +41,17 @@ def login():
     result = auth_mapper.dto_to_external(command_response.result)
 
     return jsonify(result)
+
+
+@bp.route("/afiliacion", methods=("PATCH",))
+@jwt_required()
+def actualizar_afiliacion():
+    identificacion: dict = get_jwt_identity()
+    command = ActualizarAfiliacion(
+        tipo_identificacion=identificacion.get("tipo"),
+        identificacion=identificacion.get("valor"),
+        plan_afiliacion=request.json.get("plan_afiliacion", ""),
+    )
+    execute_command(command)
+
+    return {}, 202
