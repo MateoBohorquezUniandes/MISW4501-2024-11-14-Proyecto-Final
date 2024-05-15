@@ -3,11 +3,7 @@ from firebase_admin import credentials, messaging
 
 class MessageAdmin:
     def subscribe_topic(self, tokens, topic):  # tokens is a list of registration tokens
-        #   tokens = [
-        #     'YOUR_REGISTRATION_TOKEN_1',
-        #     # ...
-        #     'YOUR_REGISTRATION_TOKEN_n',
-        # ]
+
         response = messaging.subscribe_to_topic(tokens, topic)
         if response.failure_count > 0:
             print(
@@ -19,13 +15,6 @@ class MessageAdmin:
         message = messaging.Message(
             notification=messaging.Notification(title=title, body=body), topic=topic
         )
-        # message = messaging.Message(
-        #     data={
-        #         'score': '850',
-        #         'time': '2:45',
-        #     },
-        #     topic=topic,
-        # )
         # Send a message to the devices subscribed to the provided topic.
         response = messaging.send(message)
         # Response is a message ID string.

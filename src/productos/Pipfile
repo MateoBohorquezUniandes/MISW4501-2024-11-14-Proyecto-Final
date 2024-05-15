@@ -17,7 +17,6 @@ marshmallow-sqlalchemy = "*"
 colorama = "*"
 requests = "*"
 pydispatcher = "*"
-google-cloud-tasks = "*"
 flask-cors = "*"
 
 [dev-packages]
