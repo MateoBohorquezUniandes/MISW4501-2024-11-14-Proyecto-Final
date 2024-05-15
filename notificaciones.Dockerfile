@@ -9,8 +9,6 @@ RUN curl -sSL https://sdk.cloud.google.com | bash
 ADD ./src/notificaciones ./src/notificaciones
 ADD ./src/seedwork ./src/seedwork
 
-ADD service-account.json ./src/service-account.json
-
 RUN pip install pipenv
 RUN PIPENV_PIPFILE=./src/notificaciones/Pipfile pipenv install --system --deploy
 
