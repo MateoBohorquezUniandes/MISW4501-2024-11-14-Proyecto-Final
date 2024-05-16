@@ -59,6 +59,65 @@
 					"response": []
 				},
 				{
+					"name": "actualizar fisiologia",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"payload\": {\n        \"fisiologia\": {\n            \"peso\": {{demografico.fisiologia.peso.actualizar}},\n            \"altura\": {{demografico.fisiologia.altura.actualizar}}\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/perfiles/commands/demografico/fisiologia",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"commands",
+								"demografico",
+								"fisiologia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "perfil demografico",
 					"event": [
 						{
@@ -1270,6 +1329,16 @@
 		{
 			"key": "demografico.reporte.unidad",
 			"value": "\"mg/dL\"",
+			"type": "string"
+		},
+		{
+			"key": "demografico.fisiologia.peso.actualizar",
+			"value": "72.2",
+			"type": "string"
+		},
+		{
+			"key": "demografico.fisiologia.altura.actualizar",
+			"value": "1.79",
 			"type": "string"
 		}
 	]
