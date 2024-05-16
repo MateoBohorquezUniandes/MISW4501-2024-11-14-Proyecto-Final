@@ -11,6 +11,7 @@ from perfiles.application.commands.create_alimento import CreateAlimento
 from perfiles.application.commands.update_clasificacion_riesgo import (
     ActualizarClasificacionRiesgo,
 )
+from perfiles.application.commands.update_fisiologia import ActualizarFisiologia
 from perfiles.application.commands.update_tipo_alimentacion import (
     ActualizarTipoAlimentacion,
 )
@@ -91,6 +92,39 @@ def asociar_reporte_sanguineo():
         reporte_sanguineo_dto=reporte_sanguineo_dto,
         tipo_identificacion=identificacion.get("tipo"),
         identificacion=identificacion.get("valor"),
+    )
+
+    execute_command(command)
+
+    return {}, 202
+
+
+@bp.route("/demografico/fisiologia", methods=("PATCH",))
+@jwt_required()
+def actualizar_datos_perfil():
+    identificacion: dict = get_jwt_identity()
+    mapper = PerfilDemograficoDTODictMapper()
+    data = request.json
+
+    query_result = execute_query(
+        ObtenerPerfilDemografico(
+            tipo_identificacion=identificacion.get("tipo"),
+            identificacion=identificacion.get("valor"),
+        )
+    )
+
+    perfil_dict = mapper.dto_to_external(query_result.result)
+    peso_perfil = query_result.result.fisiologia.peso
+    altura_perfil = query_result.result.fisiologia.altura
+    peso = data.get("payload", {}).get("fisiologia", {}).get("peso", peso_perfil)
+    altura = data.get("payload", {}).get("fisiologia", {}).get("altura", altura_perfil)
+    perfil_dict["fisiologia"]["altura"] = altura
+    perfil_dict["fisiologia"]["peso"] = peso
+    perfil_dto = mapper.external_to_dto(perfil_dict)
+
+    print(perfil_dict)
+    command = ActualizarFisiologia(
+        perfil_dto=perfil_dto,
     )
 
     execute_command(command)
