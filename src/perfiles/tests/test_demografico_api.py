@@ -87,6 +87,6 @@ class TestPerfilDemograficoAPI:
         response = test_client.post(
             "/perfiles/commands/demografico/reporte-sanguineo",
             headers={"Authorization": f"Bearer {test_token}"},
-            json=payload,
+            json={"resultado": payload},
         )
         assert response.status_code == HTTPStatus.ACCEPTED.value
