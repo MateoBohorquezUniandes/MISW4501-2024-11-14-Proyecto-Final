@@ -44,7 +44,15 @@ class TestPerfilDemograficoAPI:
         perfil.identificacion = "111111111"
         perfil.clasificacion_riesgo = "Muy Bajo"
         perfil.vo_max_cateroria = "Excelente"
+        perfil.vo_max_valor = 35.0
+        perfil.imc_valor = 22.5
         perfil.imc_cateroria = "Peso Normal"
+        perfil.genero = "F"
+        perfil.edad = 28
+        perfil.peso = 80.0
+        perfil.altura = 1.79
+        perfil.pais = "Colombia"
+        perfil.ciudad = "wewew"
         db.session.add(perfil)
         db.session.commit()
 
@@ -96,7 +104,7 @@ class TestPerfilDemograficoAPI:
             "tipo": test_db_perfil.tipo_identificacion,
             "valor": test_db_perfil.identificacion,
         }
-        payload = {"fisiologia": {"peso": 87, "altura": 1.79}}
+        payload = {"fisiologia": {"peso": 75.8, "altura": 1.79}}
         test_token = create_access_token(identity=test_user)
         response = test_client.patch(
             "/perfiles/commands/demografico/fisiologia",
