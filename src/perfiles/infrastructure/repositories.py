@@ -5,6 +5,7 @@ from perfiles.domain.entities import (
     PerfilDemografico,
     PerfilDeportivo,
     Molestia,
+    ReporteSanguineo,
 )
 from perfiles.domain.factories import PerfilFactory
 from perfiles.domain.repositories import (
@@ -15,6 +16,7 @@ from perfiles.domain.repositories import (
     PerfilDemograficoRepository,
     PerfilDeportivoRepository,
     MolestiaRepository,
+    ReporteSanguineoRepository,
 )
 from perfiles.domain.value_objects import AlimentoAsociado
 from perfiles.infrastructure.db import db
@@ -31,6 +33,7 @@ from perfiles.infrastructure.mappers import (
     PerfilDemograficoMapper,
     PerfilDeportivoMapper,
     MolestiaMapper,
+    ReporteSanguineoMapper,
 )
 
 
@@ -314,4 +317,31 @@ class AlimentoAsociadoRepositoryPostgreSQL(AlimentoAsociadoRepository):
         query.delete()
 
     def update(self, asociacion: AlimentoAsociado):
+        pass
+
+
+class ReporteSanguineoRepositoryPostgreSQL(ReporteSanguineoRepository):
+    def __init__(self):
+        self._reporte_sanguineo_factory: PerfilFactory = PerfilFactory()
+
+    @property
+    def fabrica_reporte_sanguineo_factory(self):
+        return self._reporte_sanguineo_factory
+
+    def get_all(self) -> list[ReporteSanguineo]:
+        pass
+
+    def get(self, tipo_identificacion: str, identificacion: str) -> ReporteSanguineo:
+        pass
+
+    def append(self, reporte_sanguineo: ReporteSanguineo):
+        reporte_sanguineo_dto = self._reporte_sanguineo_factory.create(
+            reporte_sanguineo, ReporteSanguineoMapper()
+        )
+        db.session.add(reporte_sanguineo_dto)
+
+    def delete(self, tipo_identificacion: str, identificacion: str):
+        pass
+
+    def update(self):
         pass

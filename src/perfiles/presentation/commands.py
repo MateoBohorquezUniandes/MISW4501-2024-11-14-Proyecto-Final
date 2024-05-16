@@ -4,6 +4,9 @@ from flask import Blueprint, Response, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from perfiles.application.commands.associate_alimento import AssociateAlimento
+from perfiles.application.commands.associate_reporte_sanguineo import (
+    AssociateReporteSanguineo,
+)
 from perfiles.application.commands.create_alimento import CreateAlimento
 from perfiles.application.commands.update_clasificacion_riesgo import (
     ActualizarClasificacionRiesgo,
@@ -22,6 +25,7 @@ from perfiles.application.mappers import (
     PerfilAlimenticioDTODictMapper,
     PerfilDemograficoDTODictMapper,
     PerfilamientoInicialDTODictMapper,
+    ReporteSanguineoDTODictMapper,
 )
 from perfiles.application.queries.get_perfil_demografico import ObtenerPerfilDemografico
 from seedwork.application.commands import execute_command
@@ -72,6 +76,25 @@ def actualizar_riesgo_perfil():
         perfil_dto=perfil_dto,
     )
     execute_command(command)
+    return {}, 202
+
+
+@bp.route("/demografico/reporte-sanguineo", methods=("POST",))
+@jwt_required()
+def asociar_reporte_sanguineo():
+    identificacion: dict = get_jwt_identity()
+    reporte_sanguineo_dto = ReporteSanguineoDTODictMapper().external_to_dto(
+        request.json
+    )
+
+    command = AssociateReporteSanguineo(
+        reporte_sanguineo_dto=reporte_sanguineo_dto,
+        tipo_identificacion=identificacion.get("tipo"),
+        identificacion=identificacion.get("valor"),
+    )
+
+    execute_command(command)
+
     return {}, 202
 
 

@@ -7,6 +7,7 @@ from perfiles.domain.entities import (
     PerfilAlimenticio,
     PerfilDemografico,
     PerfilDeportivo,
+    ReporteSanguineo,
 )
 from perfiles.domain.exceptions import InvalidPerfilDemograficoFactoryException
 from perfiles.domain.rules import (
@@ -15,6 +16,7 @@ from perfiles.domain.rules import (
     ValidMolestia,
     ValidPerfilAlimenticio,
     ValidPerfilDemografico,
+    ValidReporteSanguineo,
 )
 from perfiles.domain.value_objects import AlimentoAsociado
 from seedwork.domain.entities import Entity
@@ -109,6 +111,17 @@ class _AlimentoAsociadoFactory(Factory):
 
 
 @dataclass
+class _ReporteSanguineoFactory(Factory):
+    def create(self, obj: any, mapper: Mapper = None, **kwargs) -> ReporteSanguineo:
+        if isinstance(obj, Entity) or isinstance(obj, DomainEvent):
+            return mapper.entity_to_dto(obj, **kwargs)
+        reporte_sanguineo: ReporteSanguineo = mapper.dto_to_entity(obj, **kwargs)
+        self.validate_rule(ValidReporteSanguineo(reporte_sanguineo))
+
+        return reporte_sanguineo
+
+
+@dataclass
 class PerfilFactory(Factory):
     def create(self, obj: any, mapper: Mapper, **kwargs):
         if mapper.type() == PerfilDemografico:
@@ -132,5 +145,8 @@ class PerfilFactory(Factory):
         elif mapper.type() == AlimentoAsociado:
             asociacion_factory = _AlimentoAsociadoFactory()
             return asociacion_factory.create(obj, mapper, **kwargs)
+        elif mapper.type() == ReporteSanguineo:
+            reporte_sanguineo_factory = _ReporteSanguineoFactory()
+            return reporte_sanguineo_factory.create(obj, mapper, **kwargs)
         else:
             raise InvalidPerfilDemograficoFactoryException()
