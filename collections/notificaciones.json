@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "2cd92f49-7a47-41c6-9b70-c2e1c19e4e86",
+		"name": "notificaciones",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3833174"
+	},
+	"item": [
+		{
+			"name": "suscribir a topico",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"registration_tokens\": [\r\n        \"{{token}}\"\r\n    ],\r\n    \"topic\": {{topico}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/notificaciones/commands/suscribir",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"notificaciones",
+						"commands",
+						"suscribir"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "enviar notificacion a topico",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"topic\": {{topico}},\r\n    \"titulo\": {{titulo}},\r\n    \"body\": {{cuerpo}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/notificaciones/commands/enviar-topico",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"notificaciones",
+						"commands",
+						"enviar-topico"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3050",
+			"type": "string"
+		},
+		{
+			"key": "topico",
+			"value": "\"evento-deportivo\"",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "cqN7WRwOQsSi-Fv-ci9TEJ:APA91bFPvp1_FoRhxKX9Bz4R66LUjlngqhO-q8TMeZHj02QOvgxhBUwcORQakWhDVkN17_UMhyE6r2pwg58ITgyYTPf5P9IkIb4-k_nz-ID05Fqwo6TNvI_51PkLHml2c7Ftnkz4HvcL",
+			"type": "string"
+		},
+		{
+			"key": "titulo",
+			"value": "\"notificacion de salud\"",
+			"type": "string"
+		},
+		{
+			"key": "cuerpo",
+			"value": "\"este es el cuerpo de la notificacion\"",
+			"type": "string"
+		}
+	]
+}

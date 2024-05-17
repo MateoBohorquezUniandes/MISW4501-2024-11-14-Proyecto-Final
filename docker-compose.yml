@@ -168,3 +168,17 @@ services:
     ports:
       - 3060:3060
     restart: always
+
+  notificaciones-api:
+    container_name: 'notificaciones-api'
+    build:
+      context: ./
+      dockerfile: notificaciones.Dockerfile
+    env_file:
+      - ./envs/.env.db.local
+      - ./envs/.env.notificaciones.local
+    networks:
+      - deportistas_net
+    ports:
+      - 3050:3050
+    restart: always

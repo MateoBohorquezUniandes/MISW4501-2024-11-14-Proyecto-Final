@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notificaciones
+  labels:
+    app: notificaciones
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notificaciones
+  template:
+    metadata:
+      labels:
+        app: notificaciones
+    spec:
+      volumes:
+        - name: google-cloud-key
+          secret:
+            secretName: tasks-key
+      containers:
+        - name: notificaciones
+          image: us-central1-docker.pkg.dev/proyecto-final-416123/misw450x-registry/notificaciones-api:latest
+          volumeMounts:
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+          env:
+            - name: "JWT_SECRET_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: authsecrets
+                  key: jwtsecretkey  
+            - name: "DB_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: pgsqluser
+            - name: "DB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: pgsqlpassword
+            - name: "DB_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: pgsqlhost
+            - name: "DB_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: pgsqlport
+            - name: "DB_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: pgsqlname
+            - name: "PROJECT_ID"
+              valueFrom:
+                secretKeyRef:
+                  name: deportistasecrets
+                  key: projectid
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+          ports:
+            - containerPort: 3050
+          imagePullPolicy: Always
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: notificaciones-backend-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3050
+    type: HTTP
+    requestPath: /health
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notificaciones-service
+  annotations:
+    cloud.google.com/backend-config: '{"default": "notificaciones-backend-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: notificaciones
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3050
+      nodePort: 30050

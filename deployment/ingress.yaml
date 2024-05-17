@@ -66,3 +66,10 @@ spec:
             name: indicadores-service
             port: 
               number: 80
+      - pathType: Prefix
+        path: /notificaciones
+        backend:
+          service:
+            name: notificaciones-service
+            port: 
+              number: 80
