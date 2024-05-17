@@ -1,4 +1,4 @@
-name: Eventos (Continuos Integration)
+name: Notificaciones (Continuos Integration)
 on:
   push:
     branches: 
