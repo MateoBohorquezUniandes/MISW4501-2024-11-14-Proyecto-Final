@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1d564828-8248-4fa2-97a8-f104bf7551c2",
+		"_postman_id": "092f1aff-0d75-4dd6-a8ff-cf0f43fc500d",
 		"name": "eventos",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25979776"
@@ -317,13 +317,14 @@
 					"    body: {",
 					"        mode: 'raw',",
 					"        raw: JSON.stringify({",
-					"            \"tipo\": pm.collectionVariables.get(\"tipo_identificacion\"),",
-					"            \"valor\": pm.collectionVariables.get(\"identificacion\")",
+					"            \"tipo\": pm.collectionVariables.get(\"tipo_identificacion\").replace(/['\"]+/g, ''),",
+					"            \"valor\": pm.collectionVariables.get(\"identificacion\").replace(/['\"]+/g, '')",
 					"        })",
 					"    }",
 					"},",
 					"    (_err, response) => pm.collectionVariables.set(\"token\", response.json().token)",
-					");"
+					");",
+					""
 				]
 			}
 		},
