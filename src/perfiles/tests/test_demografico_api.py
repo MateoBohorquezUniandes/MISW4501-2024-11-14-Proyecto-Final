@@ -99,15 +99,18 @@ class TestPerfilDemograficoAPI:
         )
         assert response.status_code == HTTPStatus.ACCEPTED.value
 
-    def test_update_demografico_fisiologia_success(self, test_client, test_db_perfil):
+    def test_update_demografico_success(self, test_client, test_db_perfil):
         test_user = {
             "tipo": test_db_perfil.tipo_identificacion,
             "valor": test_db_perfil.identificacion,
         }
-        payload = {"fisiologia": {"peso": 75.8, "altura": 1.79}}
+        payload = {
+            "fisiologia": {"peso": 75.8, "altura": 1.79, "genero": "M", "edad": 31},
+            "demografia": {"pais_residencia": "test", "ciudad_residencia": "test"},
+        }
         test_token = create_access_token(identity=test_user)
-        response = test_client.patch(
-            "/perfiles/commands/demografico/fisiologia",
+        response = test_client.put(
+            "/perfiles/commands/demografico",
             headers={"Authorization": f"Bearer {test_token}"},
             json={"payload": payload},
         )
