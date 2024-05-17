@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3033a109-e18d-4c92-843e-c7f045c31e58",
+		"_postman_id": "3bf90f20-a6c1-44f6-acd7-3387bdec4fd1",
 		"name": "usuarios",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25979776"
@@ -179,6 +179,8 @@
 									"    pm.expect(responseData.token).to.exist.and.to.be.a('string');",
 									"    pm.expect(responseData.rol).to.exist.and.to.be.a('string');",
 									"    pm.expect(responseData.rol).to.equals('DEPORTISTA');",
+									"",
+									"    pm.collectionVariables.set(\"token\", responseData.token);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -212,6 +214,34 @@
 								"usuarios",
 								"commands",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get deportista",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuarios/queries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"queries"
 							]
 						}
 					},
@@ -322,6 +352,87 @@
 								"usuarios",
 								"commands",
 								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "afiliacion success",
+			"item": [
+				{
+					"name": "cambiar a intermedio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"plan_afiliacion\": \"INTERMEDIO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/commands/afiliacion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"commands",
+								"afiliacion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cambiar a premium",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"plan_afiliacion\": \"PREMIUM\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/commands/afiliacion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"commands",
+								"afiliacion"
 							]
 						}
 					},
@@ -1497,6 +1608,7 @@
 			"value": "http://127.0.0.1:3011"
 		},
 		{
+			"key": "token",
 			"value": "",
 			"type": "string"
 		}

@@ -172,7 +172,7 @@ class UsuarioDTOEntityMapper(DomainMapper):
             identificacion=identificacion,
             contrasena=entity.contrasena.contrasena,
             rol=entity.rol,
-            planAfiliacion=entity.plan_afiliacion,
+            plan_afiliacion=entity.plan_afiliacion,
             nombre=entity.nombre,
             apellido=entity.apellido,
             demografia=demografia,

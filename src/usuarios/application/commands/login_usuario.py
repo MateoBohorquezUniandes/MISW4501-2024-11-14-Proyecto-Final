@@ -23,12 +23,6 @@ from usuarios.domain.entities import Deportista, Organizador, Socio
 from usuarios.domain.exceptions import InvalidPasswordMatchError
 from usuarios.domain.value_objects import ROL, LoginRequest
 
-usuario_map = {
-    ROL.DEPORTISTA.value: Deportista,
-    ROL.ORGANIZADOR.value: Organizador,
-    ROL.SOCIO.value: Socio,
-}
-
 
 @dataclass
 class LoginUsuario(Command):
@@ -44,9 +38,9 @@ class LoginUsuarioHandler(UsuarioBaseHandler):
             )
 
             # Get user from DB
-            repository = self.repository_factory.create(usuario_map[login.rol]())
+            repository = self.repository_factory.create(login.rol)
             usuario = repository.get(
-                login.identificacion.tipo, login.identificacion.valor, login.rol
+                login.identificacion.tipo, login.identificacion.valor
             )
 
             # Validate credentiales
@@ -59,7 +53,11 @@ class LoginUsuarioHandler(UsuarioBaseHandler):
 
             auth_mapper = AuthResponseDTODictMapper()
             auth_external = self.autenticacion_service.request(
-                login.identificacion.__dict__
+                dict(
+                    tipo=login.identificacion.tipo,
+                    valor=login.identificacion.valor,
+                    rol=login.rol,
+                )
             )
             login_response = auth_mapper.external_to_dto(auth_external, usuario.rol)
 

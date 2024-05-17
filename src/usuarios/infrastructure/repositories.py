@@ -5,6 +5,7 @@ from usuarios.domain.repositories import (
     OrganizadorRepository,
     SocioRepository,
 )
+from usuarios.domain.value_objects import ROL
 from usuarios.infrastructure.db import db
 from usuarios.infrastructure.dtos import Deportista as DeportistaDTO
 from usuarios.infrastructure.dtos import Organizador as OrganizadorDTO
@@ -32,33 +33,38 @@ class DeportistaRepositoryPostgreSQL(DeportistaRepository):
         ]
 
     def get(
-        self, tipo_identificacion: str, identificacion: str, rol: str
+        self, tipo_identificacion: str, identificacion: str, as_entity=True
     ) -> Deportista:
         deportista_dto = (
             db.session.query(DeportistaDTO)
             .filter_by(tipo_identificacion=tipo_identificacion)
             .filter_by(identificacion=identificacion)
-            .filter_by(rol=rol)
+            .filter_by(rol=ROL.DEPORTISTA.value)
             .one()
         )
-        return self.fabrica_deportistas.create(deportista_dto, DeportistaMapper())
+        return (
+            self.fabrica_deportistas.create(deportista_dto, DeportistaMapper())
+            if as_entity
+            else deportista_dto
+        )
 
     def append(self, deportista: Deportista):
         deportista_dto = self.fabrica_deportistas.create(deportista, DeportistaMapper())
         db.session.add(deportista_dto)
 
-    def delete(self, tipo_identificacion: str, identificacion: str, rol: str):
+    def delete(self, tipo_identificacion: str, identificacion: str):
         query = db.session.query(DeportistaDTO)
-        if all([tipo_identificacion, identificacion, rol]):
+        if all([tipo_identificacion, identificacion]):
             query = (
                 query.filter_by(tipo_identificacion=tipo_identificacion)
                 .filter_by(identificacion=identificacion)
-                .filter_by(rol=rol)
+                .filter_by(rol=ROL.DEPORTISTA.value)
             )
         query.delete()
 
-    def update(self):
-        pass
+    def update(self, tipo_identificacion: str, identificacion: str, **kwargs):
+        dto =self.get(tipo_identificacion, identificacion, as_entity=False)
+        dto.plan_afiliacion = kwargs.get("plan_afiliacion", dto.plan_afiliacion)
 
 
 class OrganizadorRepositoryPostgreSQL(OrganizadorRepository):
@@ -76,14 +82,12 @@ class OrganizadorRepositoryPostgreSQL(OrganizadorRepository):
             for dto in organizadores_dto
         ]
 
-    def get(
-        self, tipo_identificacion: str, identificacion: str, rol: str
-    ) -> Organizador:
+    def get(self, tipo_identificacion: str, identificacion: str) -> Organizador:
         organizador_dto = (
             db.session.query(OrganizadorDTO)
             .filter_by(tipo_identificacion=tipo_identificacion)
             .filter_by(identificacion=identificacion)
-            .filter_by(rol=rol)
+            .filter_by(rol=ROL.ORGANIZADOR.value)
             .one()
         )
         return self.fabrica_organizadores.create(organizador_dto, OrganizadorMapper())
@@ -94,13 +98,13 @@ class OrganizadorRepositoryPostgreSQL(OrganizadorRepository):
         )
         db.session.add(organizador_dto)
 
-    def delete(self, tipo_identificacion: str, identificacion: str, rol: str):
+    def delete(self, tipo_identificacion: str, identificacion: str):
         query = db.session.query(OrganizadorDTO)
-        if all([tipo_identificacion, identificacion, rol]):
+        if all([tipo_identificacion, identificacion]):
             query = (
                 query.filter_by(tipo_identificacion=tipo_identificacion)
                 .filter_by(identificacion=identificacion)
-                .filter_by(rol=rol)
+                .filter_by(rol=ROL.ORGANIZADOR.value)
             )
         query.delete()
 
@@ -120,12 +124,12 @@ class SocioRepositoryPostgreSQL(SocioRepository):
         socios_dto = db.session.query(SocioDTO).all()
         return [self.fabrica_socios.create(dto, SocioMapper()) for dto in socios_dto]
 
-    def get(self, tipo_identificacion: str, identificacion: str, rol: str) -> Socio:
+    def get(self, tipo_identificacion: str, identificacion: str) -> Socio:
         socio_dto = (
             db.session.query(SocioDTO)
             .filter_by(tipo_identificacion=tipo_identificacion)
             .filter_by(identificacion=identificacion)
-            .filter_by(rol=rol)
+            .filter_by(rol=ROL.SOCIO.value)
             .one()
         )
         return self.fabrica_socios.create(socio_dto, SocioMapper())
@@ -134,13 +138,13 @@ class SocioRepositoryPostgreSQL(SocioRepository):
         socio_dto = self.fabrica_socios.create(socio, SocioMapper())
         db.session.add(socio_dto)
 
-    def delete(self, tipo_identificacion: str, identificacion: str, rol: str):
+    def delete(self, tipo_identificacion: str, identificacion: str):
         query = db.session.query(SocioDTO)
-        if all([tipo_identificacion, identificacion, rol]):
+        if all([tipo_identificacion, identificacion]):
             query = (
                 query.filter_by(tipo_identificacion=tipo_identificacion)
                 .filter_by(identificacion=identificacion)
-                .filter_by(rol=rol)
+                .filter_by(rol=ROL.SOCIO.value)
             )
         query.delete()
 

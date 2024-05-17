@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 from flask_jwt_extended import create_access_token
 
@@ -22,7 +22,7 @@ class _TokenRequestFactory(Factory):
         self.validate_rule(ValidTokenIdentity(autenticacion.identity))
 
         autenticacion.token.valor = create_access_token(
-            identity=autenticacion.identity.__dict__,
+            identity=asdict(autenticacion.identity),
             expires_delta=autenticacion.token.expiration_delta,
         )
 

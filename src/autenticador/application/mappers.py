@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from autenticador.application.dtos import (
     IdentidadDTO,
     TokenRequestDTO,
@@ -12,12 +13,12 @@ from seedwork.domain.repositories import Mapper as DomainMapper
 class AuthDTODictMapper(ApplicationMapper):
     def external_to_dto(self, external: dict) -> TokenRequestDTO:
         identity: IdentidadDTO = IdentidadDTO(
-            external.get("tipo", ""), external.get("valor", "")
+            external.get("tipo", ""), external.get("valor", ""), external.get("rol", "")
         )
         return TokenRequestDTO(identity)
 
     def dto_to_external(self, dto: TokenRequestDTO) -> any:
-        return dto.__dict__
+        return asdict(dto)
 
 
 class AutenticacionEntityDTOMapper(DomainMapper):
@@ -25,7 +26,9 @@ class AutenticacionEntityDTOMapper(DomainMapper):
         return Autenticacion.__class__
 
     def dto_to_entity(self, dto: TokenRequestDTO) -> Autenticacion:
-        identity: Identidad = Identidad(dto.identity.tipo, dto.identity.valor)
+        identity: Identidad = Identidad(
+            dto.identity.tipo, dto.identity.valor, dto.identity.rol
+        )
         return Autenticacion(identity=identity)
 
     def entity_to_dto(self, entity: Autenticacion) -> TokenResponseDTO:

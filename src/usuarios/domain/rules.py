@@ -3,6 +3,7 @@ from re import fullmatch
 from seedwork.domain.rules import (
     BusinessRule,
     CompoundBusinessRule,
+    ValidExtendedEnum,
     ValidFloat,
     ValidInteger,
     ValidString,
@@ -10,22 +11,12 @@ from seedwork.domain.rules import (
 from seedwork.domain.value_objects import GENERO
 from usuarios.domain.entities import Deportista, Organizador, Socio
 from usuarios.domain.value_objects import (
+    PLAN_AFILIACION,
     ROL,
     TIPO_IDENTIFICACION,
     Demografia,
     Identificacion,
 )
-
-
-class _ValidTipoIdentificacion(BusinessRule):
-    tipo: str
-
-    def __init__(self, tipo, message="Tipo de identificacion invalida"):
-        super().__init__(message, "tipo")
-        self.tipo = tipo
-
-    def is_valid(self) -> bool:
-        return self.tipo in TIPO_IDENTIFICACION.list()
 
 
 class _ValidValoridentificacion(BusinessRule):
@@ -50,22 +41,13 @@ class ValidIdentificacion(CompoundBusinessRule):
         self.identificacion = identificacion
 
         rules = [
-            _ValidTipoIdentificacion(self.identificacion.tipo),
+            ValidExtendedEnum(
+                self.identificacion.tipo, TIPO_IDENTIFICACION, "rol invalido", "rol"
+            ),
             _ValidValoridentificacion(self.identificacion.valor),
         ]
 
         super().__init__(message, rules, "validation.identificacion")
-
-
-class _ValidGenero(BusinessRule):
-    genero: str
-
-    def __init__(self, genero, message="El genero no es una opcion valida"):
-        super().__init__(message, "genero")
-        self.genero = genero
-
-    def is_valid(self) -> bool:
-        return self.genero in GENERO.list()
 
 
 class ValidDemografia(CompoundBusinessRule):
@@ -75,7 +57,9 @@ class ValidDemografia(CompoundBusinessRule):
         self.demografia = demografia
 
         rules = [
-            _ValidGenero(self.demografia.genero),
+            ValidExtendedEnum(
+                self.demografia.genero, GENERO, "genero invalido", "genero"
+            ),
             ValidInteger(
                 self.demografia.tiempo_residencia,
                 0,
@@ -95,6 +79,18 @@ class ValidDemografia(CompoundBusinessRule):
         super().__init__(message, rules, "demografia")
 
 
+class ValidEmail(BusinessRule):
+    email: str
+    regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
+
+    def __init__(self, email, message="email invalido"):
+        super().__init__(message, "validation.email")
+        self.email = email
+
+    def is_valid(self) -> bool:
+        return fullmatch(self.regex, self.email)
+
+
 class ValidRol(BusinessRule):
     rol: str
 
@@ -106,16 +102,17 @@ class ValidRol(BusinessRule):
         return self.rol in ROL.list()
 
 
-class ValidEmail(BusinessRule):
-    email: str
-    regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
+class ValidPlanAfiliacion(BusinessRule):
+    plan_afiliacion: str
 
-    def __init__(self, email, message="email invalido"):
-        super().__init__(message, "validation.email")
-        self.email = email
+    def __init__(
+        self, plan_afiliacion, message="El plan de afiliacion no es una opcion valida"
+    ):
+        super().__init__(message, "validation.plan_afiliacion")
+        self.plan_afiliacion = plan_afiliacion
 
     def is_valid(self) -> bool:
-        return fullmatch(self.regex, self.email)
+        return self.plan_afiliacion in PLAN_AFILIACION.list()
 
 
 class ValidDeportista(CompoundBusinessRule):
@@ -139,7 +136,13 @@ class ValidDeportista(CompoundBusinessRule):
                 "Apellido debe tener entre 10 y 250 caracteres",
                 "apellido",
             ),
-            ValidRol(self.usuario.rol),
+            ValidExtendedEnum(self.usuario.rol, ROL, "rol invalido", "rol"),
+            ValidExtendedEnum(
+                self.usuario.plan_afiliacion,
+                PLAN_AFILIACION,
+                "afiliacion invalida",
+                "afiliacion",
+            ),
             ValidIdentificacion(self.usuario.identificacion),
             ValidDemografia(self.usuario.demografia),
         ]
@@ -155,7 +158,7 @@ class ValidOrganizador(CompoundBusinessRule):
 
         rules = [
             ValidIdentificacion(self.usuario.identificacion),
-            ValidRol(self.usuario.rol),
+            ValidExtendedEnum(self.usuario.rol, ROL, "rol invalido", "rol"),
             ValidString(
                 self.usuario.organizacion,
                 1,
@@ -176,7 +179,7 @@ class ValidSocio(CompoundBusinessRule):
 
         rules = [
             ValidIdentificacion(self.usuario.identificacion),
-            ValidRol(self.usuario.rol),
+            ValidExtendedEnum(self.usuario.rol, ROL, "rol invalido", "rol"),
             ValidString(
                 self.usuario.razon_social,
                 1,

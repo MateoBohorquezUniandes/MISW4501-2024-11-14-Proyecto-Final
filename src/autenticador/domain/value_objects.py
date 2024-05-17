@@ -8,3 +8,4 @@ from seedwork.domain.value_objects import ValueObject
 class Identidad(ValueObject):
     tipo: str = field(default_factory=str)
     valor: str = field(default_factory=str)
+    rol: str = field(default_factory=str)
