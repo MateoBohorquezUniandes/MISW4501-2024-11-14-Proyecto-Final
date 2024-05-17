@@ -20,13 +20,13 @@ from seedwork.presentation.exceptions import APIError
 
 
 @dataclass
-class ActualizarFisiologia(Command):
+class ActualizarPerfilDemografico(Command):
     perfil_dto: PerfilDemograficoDTO = field(default_factory=PerfilDemograficoDTO)
 
 
-class ActualizarFisiologiaHandler(PerfilCommandBaseHandler):
+class ActualizarPerfilDemograficoHandler(PerfilCommandBaseHandler):
 
-    def handle(self, command: ActualizarFisiologia):
+    def handle(self, command: ActualizarPerfilDemografico):
         uowf = None
         try:
             perfil_demografico: PerfilDemografico = self.perfiles_factory.create(
@@ -53,6 +53,6 @@ class ActualizarFisiologiaHandler(PerfilCommandBaseHandler):
             raise APIError(message=str(e), code="perfiles.error.internal")
 
 
-@execute_command.register(ActualizarFisiologia)
-def command_crear_perfil_demografico(command: ActualizarFisiologia):
-    ActualizarFisiologiaHandler().handle(command)
+@execute_command.register(ActualizarPerfilDemografico)
+def command_crear_perfil_demografico(command: ActualizarPerfilDemografico):
+    ActualizarPerfilDemograficoHandler().handle(command)

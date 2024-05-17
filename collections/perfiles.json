@@ -91,11 +91,11 @@
 								}
 							]
 						},
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"payload\": {\n        \"fisiologia\": {\n            \"peso\": {{demografico.fisiologia.peso.actualizar}},\n            \"altura\": {{demografico.fisiologia.altura.actualizar}}\n        }\n    }\n}",
+							"raw": "{\n    \"payload\": {\n        \"fisiologia\": {\n            \"peso\": {{demografico.fisiologia.peso.actualizar}},\n            \"altura\": {{demografico.fisiologia.altura.actualizar}},\n            \"genero\": {{demografico.fisiologia.genero}},\n            \"edad\": {{demografico.fisiologia.edad}}\n        },\n        \"demografia\": {\n            \"pais_residencia\": {{demografico.demografia.pais}},\n            \"ciudad_residencia\": {{demografico.demografia.ciudad.actualizar}}\n        }\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -103,15 +103,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/perfiles/commands/demografico/fisiologia",
+							"raw": "{{base_url}}/perfiles/commands/demografico",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"perfiles",
 								"commands",
-								"demografico",
-								"fisiologia"
+								"demografico"
 							]
 						}
 					},
@@ -1339,6 +1338,11 @@
 		{
 			"key": "demografico.fisiologia.altura.actualizar",
 			"value": "1.79",
+			"type": "string"
+		},
+		{
+			"key": "demografico.demografia.ciudad.actualizar",
+			"value": "\"Medellin\"",
 			"type": "string"
 		}
 	]

@@ -11,7 +11,7 @@ from perfiles.application.commands.create_alimento import CreateAlimento
 from perfiles.application.commands.update_clasificacion_riesgo import (
     ActualizarClasificacionRiesgo,
 )
-from perfiles.application.commands.update_fisiologia import ActualizarFisiologia
+from perfiles.application.commands.update_fisiologia import ActualizarPerfilDemografico
 from perfiles.application.commands.update_tipo_alimentacion import (
     ActualizarTipoAlimentacion,
 )
@@ -99,7 +99,7 @@ def asociar_reporte_sanguineo():
     return {}, 202
 
 
-@bp.route("/demografico/fisiologia", methods=("PATCH",))
+@bp.route("/demografico", methods=("PUT",))
 @jwt_required()
 def actualizar_datos_perfil():
     identificacion: dict = get_jwt_identity()
@@ -114,16 +114,31 @@ def actualizar_datos_perfil():
     )
 
     perfil_dict = mapper.dto_to_external(query_result.result)
+    edad = query_result.result.fisiologia.edad
+    genero = query_result.result.fisiologia.genero
     peso_perfil = query_result.result.fisiologia.peso
     altura_perfil = query_result.result.fisiologia.altura
+    pais = query_result.result.demografia.pais
+    ciudad = query_result.result.demografia.ciudad
     peso = data.get("payload", {}).get("fisiologia", {}).get("peso", peso_perfil)
     altura = data.get("payload", {}).get("fisiologia", {}).get("altura", altura_perfil)
+    edad = data.get("payload", {}).get("fisiologia", {}).get("edad", edad)
+    genero = data.get("payload", {}).get("fisiologia", {}).get("genero", genero)
+    pais = data.get("payload", {}).get("demografia", {}).get("pais_residencia", pais)
+    ciudad = (
+        data.get("payload", {}).get("demografia", {}).get("ciudad_residencia", ciudad)
+    )
     perfil_dict["fisiologia"]["altura"] = altura
     perfil_dict["fisiologia"]["peso"] = peso
+    perfil_dict["fisiologia"]["edad"] = edad
+    perfil_dict["fisiologia"]["genero"] = genero
+    perfil_dict["demografia"]["pais"] = pais
+    perfil_dict["demografia"]["ciudad"] = ciudad
+
     perfil_dto = mapper.external_to_dto(perfil_dict)
 
     print(perfil_dict)
-    command = ActualizarFisiologia(
+    command = ActualizarPerfilDemografico(
         perfil_dto=perfil_dto,
     )
 
