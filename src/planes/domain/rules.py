@@ -81,7 +81,7 @@ class ValidObjetivo(CompoundBusinessRule):
                 self.objetivo.exigencia, EXIGENCIA, "exigencia invalida", "exigencia"
             ),
             ValidExtendedEnum(
-                self.objetivo.deporte, DEPORTE, "deporte invalido", "deporte"
+                self.objetivo.deporte, DEPORTE, "deporte invalido", "deporte", soft_check=True
             ),
         ]
 
