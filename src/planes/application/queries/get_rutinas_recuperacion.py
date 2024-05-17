@@ -1,9 +1,9 @@
 import traceback
 from dataclasses import dataclass, field
 
-from planes.application.mappers import RutinaAlimentacionDTOEntityMapper
+from planes.application.mappers import RutinaRecuperacionDTOEntityMapper
 from planes.application.queries.base import PlanQueryBaseHandler
-from planes.domain.entities import RutinaAlimentacion
+from planes.domain.entities import RutinaRecuperacion
 from seedwork.application.queries import Query, QueryResult, execute_query
 from seedwork.presentation.exceptions import APIError
 
@@ -17,10 +17,10 @@ class GetRutinasRecuperacionQueryHandler(PlanQueryBaseHandler):
 
     def handle(self, query: GetRutinasRecuperacion) -> QueryResult:
         try:
-            repository = self.repository_factory.create(RutinaAlimentacion)
-            rutinas: list[RutinaAlimentacion] = repository.get_all(query.deporte)
+            repository = self.repository_factory.create(RutinaRecuperacion)
+            rutinas: list[RutinaRecuperacion] = repository.get_all(query.deporte)
 
-            mapper = RutinaAlimentacionDTOEntityMapper()
+            mapper = RutinaRecuperacionDTOEntityMapper()
             planes_dto = [self.planes_factory.create(e, mapper) for e in rutinas]
             print(planes_dto)
             return QueryResult(result=planes_dto)

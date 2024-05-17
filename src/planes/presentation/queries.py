@@ -8,6 +8,7 @@ from planes.application.mappers import (
     EntrenamientoDTODictMapper,
     PlanEntrenamientoDTODictMapper,
     RutinaAlimentacionDTODictMapper,
+    RutinaRecuperacionDTODictMapper,
     UsuarioPlanDTODictMapper,
 )
 from planes.application.queries.get_entrenamientos import GetEnternamientos
@@ -52,7 +53,7 @@ def get_rutinas_alimentacion():
 def get_rutinas_recuperacion():
     args = request.args
     deporte = args.get("deporte", None)
-    mapper = RutinaAlimentacionDTODictMapper()
+    mapper = RutinaRecuperacionDTODictMapper()
     query_result = execute_query(GetRutinasRecuperacion(deporte=deporte))
     return jsonify([mapper.dto_to_external(e) for e in query_result.result])
 
