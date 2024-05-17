@@ -84,7 +84,7 @@ class TestUserAPI:
                 "peso": 50.0,
                 "altura": 1.60,
             },
-            "deportes": ["ciclismo"],
+            "deportes": ["Ciclismo"],
         }
 
         response = test_client.post("/usuarios/commands/", json=payload)

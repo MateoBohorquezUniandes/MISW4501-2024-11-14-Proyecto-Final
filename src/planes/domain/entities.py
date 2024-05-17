@@ -70,27 +70,6 @@ class UsuarioPlan(RootAggregation):
 
 
 @dataclass
-class Alimento(Entity):
-    nombre: str = field(default_factory=str)
-    tipo: str = field(default_factory=str)
-    descripcion: str = field(default_factory=str)
-
-    imagen: vo.Imagen = field(default_factory=vo.Imagen)
-    porcion: vo.Porcion = field(default_factory=vo.Porcion)
-
-
-@dataclass
-class RutinaAlimentacion(Entity):
-    nombre: str = field(default_factory=str)
-
-    tipo: str = field(default_factory=str)
-    descripcion: str = field(default_factory=str)
-    imagen: vo.Imagen = field(default_factory=vo.Imagen)
-
-    alimentos: list[Alimento] = field(default_factory=list)
-
-
-@dataclass
 class RutinaRecuperacion(Entity):
     nombre: str = field(default_factory=str)
 
