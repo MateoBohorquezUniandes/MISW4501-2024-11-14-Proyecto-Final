@@ -177,13 +177,6 @@ services:
     env_file:
       - ./envs/.env.db.local
       - ./envs/.env.notificaciones.local
-      
-    volumes:
-      - type: bind
-        source: ./service-account.json
-        target: /src/service-account.json
-        read_only: true
-
     networks:
       - deportistas_net
     ports:
