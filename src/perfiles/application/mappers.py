@@ -253,6 +253,27 @@ class PerfilAlimenticioDTODictMapper(ApplicationMapper):
         return asdict(dto)
 
 
+class ReporteSanguineoDTODictMapper(ApplicationMapper):
+    def _external_to_resultado_elemento_sanguineo_dto(
+        self, external: dict
+    ) -> ResultadoElementoSanguineoDTO:
+        return ResultadoElementoSanguineoDTO(
+            external.get("tipo_examen", ""),
+            external.get("valor", ""),
+            external.get("unidad", ""),
+        )
+
+    def external_to_dto(self, external: dict) -> ReporteSanguineoDTO:
+        resultado = self._external_to_resultado_elemento_sanguineo_dto(
+            external.get("resultado", "")
+        )
+
+        return ReporteSanguineoDTO(resultado=resultado)
+
+    def dto_to_external(self, dto: HabitoDeportivoDTO) -> dict:
+        return asdict(dto)
+
+
 # #####################################################################################
 # Domain Mappers
 # #####################################################################################
@@ -515,3 +536,19 @@ class PerfilAlimenticioDTOEntityMapper(DomainMapper):
             tipo_alimentacion=entity.tipo_alimentacion,
             alimentos=alimentos,
         )
+
+
+class ReporteSanguineoDTOEntityMapper(DomainMapper):
+    def type(self) -> type:
+        return ReporteSanguineo
+
+    def dto_to_entity(self, dto: ReporteSanguineoDTO, **kwargs) -> ReporteSanguineo:
+
+        return ReporteSanguineo(
+            tipo_identificacion=kwargs.get("tipo_identificacion"),
+            identificacion=kwargs.get("identificacion"),
+            resultado=dto.resultado,
+        )
+
+    def entity_to_dto(self, entity: ReporteSanguineo) -> ReporteSanguineoDTO:
+        return ReporteSanguineoDTO(entity.resultado)

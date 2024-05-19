@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 import pytest
+from flask_jwt_extended import create_access_token
 
 from perfiles.app import create_app
 from perfiles.infrastructure.db import db
@@ -32,6 +33,31 @@ class TestPerfilDemograficoAPI:
         db.session.query(PerfilDemografico).delete()
         db.session.commit()
 
+    @pytest.fixture(scope="function")
+    def test_db_perfil(self):
+        """
+        Function fixture for creating an initial perfil
+        as a precondition for some test cases
+        """
+        perfil = PerfilDemografico()
+        perfil.tipo_identificacion = "CC"
+        perfil.identificacion = "111111111"
+        perfil.clasificacion_riesgo = "Muy Bajo"
+        perfil.vo_max_cateroria = "Excelente"
+        perfil.vo_max_valor = 35.0
+        perfil.imc_valor = 22.5
+        perfil.imc_cateroria = "Peso Normal"
+        perfil.genero = "F"
+        perfil.edad = 28
+        perfil.peso = 80.0
+        perfil.altura = 1.79
+        perfil.pais = "Colombia"
+        perfil.ciudad = "wewew"
+        db.session.add(perfil)
+        db.session.commit()
+
+        yield perfil
+
     def test_init_perfil_success(self, test_client):
         """Creacion exitosa de un usuario deportista"""
         payload = {
@@ -57,4 +83,35 @@ class TestPerfilDemograficoAPI:
         }
 
         response = test_client.post("/perfiles/commands/demografico/init", json=payload)
+        assert response.status_code == HTTPStatus.ACCEPTED.value
+
+    def test_add_reporte_sanguineo_success(self, test_client, test_db_perfil):
+        test_user = {
+            "tipo": test_db_perfil.tipo_identificacion,
+            "valor": test_db_perfil.identificacion,
+        }
+        payload = {"tipo_examen": "Creatinina", "valor": 2.5, "unidad": "mg/dL"}
+        test_token = create_access_token(identity=test_user)
+        response = test_client.post(
+            "/perfiles/commands/demografico/reporte-sanguineo",
+            headers={"Authorization": f"Bearer {test_token}"},
+            json={"resultado": payload},
+        )
+        assert response.status_code == HTTPStatus.ACCEPTED.value
+
+    def test_update_demografico_success(self, test_client, test_db_perfil):
+        test_user = {
+            "tipo": test_db_perfil.tipo_identificacion,
+            "valor": test_db_perfil.identificacion,
+        }
+        payload = {
+            "fisiologia": {"peso": 75.8, "altura": 1.79, "genero": "M", "edad": 31},
+            "demografia": {"pais_residencia": "test", "ciudad_residencia": "test"},
+        }
+        test_token = create_access_token(identity=test_user)
+        response = test_client.put(
+            "/perfiles/commands/demografico",
+            headers={"Authorization": f"Bearer {test_token}"},
+            json={"payload": payload},
+        )
         assert response.status_code == HTTPStatus.ACCEPTED.value

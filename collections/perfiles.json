@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d1c6833f-418a-4ef3-ac36-71cad9bb89d6",
+		"_postman_id": "25ebe1ef-3bb5-4b41-aa41-961f95dbf19d",
 		"name": "perfiles",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25979776"
+		"_exporter_id": "3833174"
 	},
 	"item": [
 		{
@@ -53,6 +53,64 @@
 								"commands",
 								"demografico",
 								"init"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar fisiologia",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Response status code is 202', function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test('Response has the required fields', function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('object');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"payload\": {\n        \"fisiologia\": {\n            \"peso\": {{demografico.fisiologia.peso.actualizar}},\n            \"altura\": {{demografico.fisiologia.altura.actualizar}},\n            \"genero\": {{demografico.fisiologia.genero}},\n            \"edad\": {{demografico.fisiologia.edad}}\n        },\n        \"demografia\": {\n            \"pais_residencia\": {{demografico.demografia.pais}},\n            \"ciudad_residencia\": {{demografico.demografia.ciudad.actualizar}}\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/perfiles/commands/demografico",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"commands",
+								"demografico"
 							]
 						}
 					},
@@ -247,6 +305,45 @@
 								"perfiles",
 								"queries",
 								"demografico"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "asociar reporte sanguineo Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"resultado\":{\r\n        \"tipo_examen\": {{demografico.reporte.tipo}},\r\n        \"valor\":{{demografico.reporte.valor}},\r\n        \"unidad\": {{demografico.reporte.unidad}}\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/perfiles/commands/demografico/reporte-sanguineo",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"perfiles",
+								"commands",
+								"demografico",
+								"reporte-sanguineo"
 							]
 						}
 					},
@@ -1216,6 +1313,36 @@
 		{
 			"key": "alimenticio.alimento.tipo_alimentacion",
 			"value": "\"Vegetariano\"",
+			"type": "string"
+		},
+		{
+			"key": "demografico.reporte.tipo",
+			"value": "\"Creatinina\"",
+			"type": "string"
+		},
+		{
+			"key": "demografico.reporte.valor",
+			"value": "2.5",
+			"type": "string"
+		},
+		{
+			"key": "demografico.reporte.unidad",
+			"value": "\"mg/dL\"",
+			"type": "string"
+		},
+		{
+			"key": "demografico.fisiologia.peso.actualizar",
+			"value": "72.2",
+			"type": "string"
+		},
+		{
+			"key": "demografico.fisiologia.altura.actualizar",
+			"value": "1.79",
+			"type": "string"
+		},
+		{
+			"key": "demografico.demografia.ciudad.actualizar",
+			"value": "\"Medellin\"",
 			"type": "string"
 		}
 	]

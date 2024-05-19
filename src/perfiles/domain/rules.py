@@ -53,7 +53,7 @@ class _ValidExamenSanguineo(BusinessRule):
         self.examen = examen
 
     def is_valid(self) -> bool:
-        return self.categoria in ExamenSanguineo.list()
+        return self.examen in ExamenSanguineo.list()
 
 
 class ValidReporteSanguineo(CompoundBusinessRule):

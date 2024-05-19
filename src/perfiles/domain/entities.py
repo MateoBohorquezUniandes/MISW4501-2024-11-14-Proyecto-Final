@@ -12,6 +12,8 @@ class ReporteSanguineo(Entity):
     resultado: vo.ResultadoElementoSanguineo = field(
         default_factory=vo.ResultadoElementoSanguineo
     )
+    tipo_identificacion: str = field(default_factory=str)
+    identificacion: str = field(default_factory=str)
 
 
 @dataclass

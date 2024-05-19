@@ -26,6 +26,7 @@ from perfiles.infrastructure.dtos import PerfilDeportivo as PerfilDeportivoDTO
 from perfiles.infrastructure.dtos import Molestia as MolestiaDTO
 from perfiles.infrastructure.dtos import Alimento as AlimentoDTO
 from perfiles.infrastructure.dtos import AlimentoAsociado as AlimentoAsociadoDTO
+from perfiles.infrastructure.dtos import ReporteSanguineo as ReporteSanguineoDTO
 from seedwork.domain.repositories import Mapper
 
 
@@ -224,3 +225,27 @@ class AlimentoAsociadoMapper(Mapper):
             dto.identificacion,
             dto.tipo,
         )
+
+
+class ReporteSanguineoMapper(Mapper):
+    def type(self) -> type:
+        return ReporteSanguineo
+
+    def dto_to_entity(self, dto: ReporteSanguineoDTO) -> ReporteSanguineo:
+        return ReporteSanguineo(
+            tipo_identificacion=dto.tipo_identificacion,
+            identificacion=dto.identificacion,
+            resultado=ResultadoElementoSanguineo(
+                dto.tipo_examen, dto.valor, dto.unidad
+            ),
+        )
+
+    def entity_to_dto(self, entity: ReporteSanguineo) -> ReporteSanguineoDTO:
+        reporte_sanguineo_dto = ReporteSanguineoDTO()
+        reporte_sanguineo_dto.unidad = entity.resultado.unidad
+        reporte_sanguineo_dto.tipo_examen = entity.resultado.tipo_examen
+        reporte_sanguineo_dto.valor = entity.resultado.valor
+        reporte_sanguineo_dto.tipo_identificacion = entity.tipo_identificacion
+        reporte_sanguineo_dto.identificacion = entity.identificacion
+
+        return reporte_sanguineo_dto
